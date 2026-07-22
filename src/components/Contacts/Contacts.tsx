@@ -37,7 +37,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
           <span className="contact-icon"><Icon name="mail" size={18} /></span>
           <address>
             <span className="contact-label">Email</span>
-            <a className="contact-value" href="mailto:info@circolotennis.it">info@circolotennis.it</a>
+            <a className="contact-value" href="mailto:info@circolotennis.it">mariodanzi@email.com</a>
           </address>
         </div>
       </div>

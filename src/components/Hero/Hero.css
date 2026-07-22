@@ -1,7 +1,7 @@
 .hero {
   align-items: center;
   text-align: center;
-  gap: var(--space-8);
+  gap: var(--space-7);
 }
 
 .hero-content {

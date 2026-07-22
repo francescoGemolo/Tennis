@@ -10,9 +10,9 @@ export function Hero({ onBook, onContact }: HeroProps) {
   return (
     <section className="view hero" aria-labelledby="welcome-title">
       <div className="hero-content">
-        <span className="eyebrow">Circolo Tennis</span>
-        <h1 id="welcome-title">Il campo ti aspetta</h1>
-        <p>Prenota il tuo turno o scrivi alla segreteria in pochi tocchi.</p>
+        <span className="eyebrow">Tennis Salandra</span>
+        <h1 id="welcome-title">Chi ha messo i tavoli qui?</h1>
+        <p>Ciao Pippo, sono stato io, Nicola Ciocia.</p>
       </div>
       <nav className="hero-cta" aria-label="Azioni principali">
         <button className="icon-cta cta-primary" type="button" onClick={onBook}>
