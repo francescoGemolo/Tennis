@@ -11,7 +11,7 @@ export function Hero({ onBook, onContact }: HeroProps) {
     <section className="view hero" aria-labelledby="welcome-title">
       <div className="hero-content">
         <span className="eyebrow">Tennis Salandra</span>
-        <h1 id="welcome-title">Chi ha messo i tavoli qui?</h1>
+        <h1 id="welcome-title">A te Nick</h1>
         <p>Ciao Pippo, sono stato io, Nicola Ciocia.</p>
       </div>
       <nav className="hero-cta" aria-label="Azioni principali">
