@@ -1,0 +1,99 @@
+.icon-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: var(--space-3) var(--space-5);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  text-align: center;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.icon-primary {
+  color: var(--neutral-50);
+  display: flex;
+}
+
+.icon-secondary {
+  color: var(--accent);
+  display: flex;
+}
+
+.cta-primary {
+  background: var(--accent-strong);
+  color: var(--neutral-50);
+}
+
+.cta-primary:hover {
+  background-color: var(--accent);
+}
+
+.cta-secondary {
+  background: transparent;
+  color: var(--accent);
+  border: var(--border-hairline);
+}
+
+.cta-secondary:hover {
+  background: var(--accent-strong);
+  color: var(--neutral-50);
+  border-color: var(--accent-strong);
+}
+
+.cta-secondary:hover .icon-secondary {
+  color: var(--neutral-50);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: none;
+  color: var(--neutral-300);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  padding: var(--space-2) 0;
+  transition: color var(--transition-fast);
+}
+
+.btn-ghost:hover {
+  color: var(--neutral-50);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.card {
+  background: var(--neutral-900);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}

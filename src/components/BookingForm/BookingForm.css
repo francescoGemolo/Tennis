@@ -1,0 +1,65 @@
+.booking-form {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.booking-summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.booking-summary-label {
+    font-size: var(--font-size-xs);
+    color: var(--neutral-500);
+}
+
+.booking-summary-value {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    color: var(--neutral-50);
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.field-row {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.field-row .field {
+    flex: 1;
+    min-width: 0;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.field label {
+    font-size: var(--font-size-sm);
+    color: var(--neutral-300);
+}
+
+.field input {
+    border: var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    background: var(--neutral-800);
+    color: var(--neutral-50);
+    font-family: inherit;
+    font-size: var(--font-size-md);
+    width: 100%;
+}
+
+.field input:focus {
+    border-color: var(--accent);
+}
