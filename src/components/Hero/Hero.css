@@ -1,7 +1,8 @@
 .hero {
+  justify-content: center;
   align-items: center;
   text-align: center;
-  gap: var(--space-7);
+  gap: var(--space-6);
 }
 
 .hero-content {
@@ -20,7 +21,8 @@
 }
 
 .hero-content h1 {
-  font-size: var(--font-size-2xl);
+  font-size: clamp(1.5rem, 8vw, 2.25rem);
+  white-space: nowrap;
 }
 
 .hero-cta {

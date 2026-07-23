@@ -1,6 +1,8 @@
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { BackButton } from '../common/BackButton';
 import { formatFullDate } from '../../data/calendar';
+import { MAX_PLAYERS, MIN_PLAYERS } from '../../data/constants';
+import { sanitizePhone, sanitizeText } from '../../utils/sanitize';
 import type { BookingFormValues } from '../../types/booking';
 import './BookingForm.css';
 
@@ -16,77 +18,118 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [players, setPlayers] = useState(2);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const honeypotRef = useRef<HTMLInputElement>(null);
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
-    if (!firstName || !lastName || !phone) return;
-    onSubmit({ firstName, lastName, phone, players });
+    if (isSubmitting) return;
+
+    // Campo honeypot: invisibile agli utenti reali, se compilato è un bot.
+    if (honeypotRef.current?.value) return;
+
+    const cleanFirstName = sanitizeText(firstName, 40);
+    const cleanLastName = sanitizeText(lastName, 40);
+    const cleanPhone = sanitizePhone(phone);
+    if (!cleanFirstName || !cleanLastName || !cleanPhone) return;
+
+    setIsSubmitting(true);
+    onSubmit({ firstName: cleanFirstName, lastName: cleanLastName, phone: cleanPhone, players });
   }
 
   return (
     <section className="view booking-form" aria-labelledby="booking-form-title">
       <BackButton onClick={onBack} />
 
-      <div className="card booking-summary">
-        <span className="booking-summary-label">Prenotazione per</span>
-        <span className="booking-summary-value">{formatFullDate(date)} · {time}</span>
+      <div className="booking-form-scroll">
+        <div className="card booking-summary">
+          <span className="booking-summary-label">Prenotazione per</span>
+          <span className="booking-summary-value">{formatFullDate(date)} · {time}</span>
+        </div>
+
+        <h2 className="view-title" id="booking-form-title">I tuoi dati</h2>
+
+        <form className="card field-group" onSubmit={handleSubmit}>
+          <input
+            ref={honeypotRef}
+            type="text"
+            name="companyWebsite"
+            className="honeypot-field"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+          />
+
+          <div className="field-row">
+            <div className="field">
+              <label htmlFor="firstName">Nome</label>
+              <input
+                id="firstName"
+                type="text"
+                autoComplete="given-name"
+                maxLength={40}
+                required
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="lastName">Cognome</label>
+              <input
+                id="lastName"
+                type="text"
+                autoComplete="family-name"
+                maxLength={40}
+                required
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="field">
+            <label htmlFor="phone">Telefono</label>
+            <input
+              id="phone"
+              type="tel"
+              autoComplete="tel"
+              maxLength={20}
+              required
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
+
+          <div className="field">
+            <span id="players-label">Numero di persone</span>
+            <div className="stepper" role="group" aria-labelledby="players-label">
+              <button
+                className="stepper-btn"
+                type="button"
+                aria-label="Diminuisci"
+                disabled={players <= MIN_PLAYERS}
+                onClick={() => setPlayers((p) => Math.max(MIN_PLAYERS, p - 1))}
+              >
+                −
+              </button>
+              <span className="stepper-value">{players}</span>
+              <button
+                className="stepper-btn"
+                type="button"
+                aria-label="Aumenta"
+                disabled={players >= MAX_PLAYERS}
+                onClick={() => setPlayers((p) => Math.min(MAX_PLAYERS, p + 1))}
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          <button className="icon-cta cta-primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Invio in corso…' : 'Invia prenotazione'}
+          </button>
+        </form>
       </div>
-
-      <h2 id="booking-form-title">I tuoi dati</h2>
-
-      <form className="card field-group" onSubmit={handleSubmit}>
-        <div className="field-row">
-          <div className="field">
-            <label htmlFor="firstName">Nome</label>
-            <input
-              id="firstName"
-              type="text"
-              autoComplete="given-name"
-              required
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="lastName">Cognome</label>
-            <input
-              id="lastName"
-              type="text"
-              autoComplete="family-name"
-              required
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="field">
-          <label htmlFor="phone">Telefono</label>
-          <input
-            id="phone"
-            type="tel"
-            autoComplete="tel"
-            required
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-
-        <div className="field">
-          <label htmlFor="players">Numero di persone</label>
-          <input
-            id="players"
-            type="number"
-            min={1}
-            max={4}
-            required
-            value={players}
-            onChange={(e) => setPlayers(Number(e.target.value))}
-          />
-        </div>
-
-        <button className="icon-cta cta-primary" type="submit">Invia prenotazione</button>
-      </form>
     </section>
   );
 }

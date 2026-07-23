@@ -97,3 +97,61 @@
   border-radius: var(--radius-lg);
   padding: var(--space-5);
 }
+
+.view-title {
+  font-size: clamp(1.05rem, 5.5vw, 1.375rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  background: var(--neutral-800);
+}
+
+.stepper-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--neutral-700);
+  color: var(--neutral-50);
+  font-size: var(--font-size-lg);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), opacity var(--transition-fast);
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background: var(--neutral-600);
+}
+
+.stepper-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepper-value {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-md);
+  min-width: 2ch;
+  text-align: center;
+}
+
+.honeypot-field {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  left: -9999px;
+}

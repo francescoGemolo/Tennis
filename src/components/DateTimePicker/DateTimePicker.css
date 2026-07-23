@@ -1,65 +1,47 @@
 .datetime {
-  padding: var(--space-5);
-  display: flex;
-  flex-direction: column;
   gap: var(--space-4);
 }
 
-.datetime-card {
+.datetime-topbar {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
 }
 
-.datetime-title {
+.datetime-date-pill {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--font-size-lg);
-}
-
-.datetime-title-icon {
-  display: flex;
-  color: var(--accent);
-}
-
-.datetime-section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.datetime-section-label {
-  font-size: var(--font-size-sm);
-  color: var(--neutral-300);
-}
-
-.date-field {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
   border: var(--border-hairline);
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4);
-  background: var(--neutral-800);
-  color: var(--neutral-50);
-}
-
-.date-field-icon {
-  display: flex;
+  background: var(--neutral-900);
   color: var(--accent);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .time-slots {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-2);
+  align-content: start;
+  padding-bottom: var(--space-1);
 }
 
 .time-slot {
+  width: 100%;
   border: var(--border-hairline);
   border-radius: var(--radius-md);
-  padding: var(--space-2);
+  padding: var(--space-3) var(--space-2);
   background: var(--neutral-800);
   color: var(--neutral-50);
   font-family: var(--font-family-mono);
@@ -87,6 +69,7 @@
 
 .datetime-confirm {
   width: 100%;
+  flex-shrink: 0;
 }
 
 .datetime-confirm:disabled {

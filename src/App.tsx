@@ -3,14 +3,23 @@ import { Hero } from './components/Hero/Hero';
 import { BookingCalendar } from './components/BookingCalendar/BookingCalendar';
 import { DateTimePicker } from './components/DateTimePicker/DateTimePicker';
 import { BookingForm } from './components/BookingForm/BookingForm';
+import { ConfirmationModal } from './components/ConfirmationModal/ConfirmationModal';
 import { Contacts } from './components/Contacts/Contacts';
+import { saveBookingTemp } from './utils/storage';
 import type { BookingFormValues, ContactFormValues, ViewId } from './types/booking';
 import './App.css';
+
+interface ConfirmedBooking {
+  date: Date;
+  time: string;
+  players: number;
+}
 
 function App() {
   const [view, setView] = useState<ViewId>('welcome');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [confirmedBooking, setConfirmedBooking] = useState<ConfirmedBooking | null>(null);
 
   function handleSelectDate(date: Date) {
     setSelectedDate(date);
@@ -23,12 +32,22 @@ function App() {
   }
 
   function handleBookingFormSubmit(values: BookingFormValues) {
-    // Raccolta dati temporanea, in attesa dell'integrazione con Firebase
-    console.log('Nuova prenotazione (temporanea)', {
-      date: selectedDate,
+    if (!selectedDate || !selectedTime) return;
+
+    // Persistenza temporanea in localStorage, in attesa dell'integrazione
+    // con un vero backend (es. Firebase). Vedi utils/storage.ts.
+    saveBookingTemp({
+      date: selectedDate.toISOString(),
       time: selectedTime,
+      createdAt: new Date().toISOString(),
       ...values,
     });
+
+    setConfirmedBooking({ date: selectedDate, time: selectedTime, players: values.players });
+  }
+
+  function handleConfirmationClose() {
+    setConfirmedBooking(null);
     setSelectedDate(null);
     setSelectedTime(null);
     setView('welcome');
@@ -69,6 +88,16 @@ function App() {
 
       {view === 'contacts' && (
         <Contacts onBack={() => setView('welcome')} onSubmit={handleContactSubmit} />
+      )}
+
+      {confirmedBooking && (
+        <ConfirmationModal
+          open
+          date={confirmedBooking.date}
+          time={confirmedBooking.time}
+          players={confirmedBooking.players}
+          onClose={handleConfirmationClose}
+        />
       )}
     </main>
   );

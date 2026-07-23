@@ -15,51 +15,41 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
   const [selected, setSelected] = useState<string | null>(null);
 
   return (
-    <section className="view datetime" aria-labelledby="datetime-title">
-      <BackButton onClick={onBack} />
-
-      <div className="card datetime-card">
-        <h2 className="datetime-title" id="datetime-title">
-          <span className="datetime-title-icon"><Icon name="calendar" /></span>
-          Data e Ora
-        </h2>
-
-        <div className="datetime-section">
-          <span className="datetime-section-label">Data selezionata</span>
-          <div className="date-field date-field--filled">
-            <span className="date-field-icon"><Icon name="calendar" size={18} /></span>
-            <span>{formatFullDate(date)}</span>
-          </div>
+    <section className="view datetime" aria-labelledby="datetime-heading">
+      <div className="datetime-topbar">
+        <BackButton onClick={onBack} />
+        <div className="datetime-date-pill">
+          <Icon name="calendar" size={16} />
+          <span>{formatFullDate(date)}</span>
         </div>
-
-        <div className="datetime-section">
-          <span className="datetime-section-label">Ora</span>
-          <ul className="time-slots" role="list">
-            {slots.map((slot) => (
-              <li key={slot.time}>
-                <button
-                  className={`time-slot${slot.taken ? ' time-slot--taken' : ''}${selected === slot.time ? ' time-slot--selected' : ''}`}
-                  type="button"
-                  disabled={slot.taken}
-                  aria-pressed={selected === slot.time}
-                  onClick={() => setSelected(slot.time)}
-                >
-                  {slot.time}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <button
-          className="icon-cta cta-primary datetime-confirm"
-          type="button"
-          disabled={!selected}
-          onClick={() => selected && onConfirm(selected)}
-        >
-          Continua
-        </button>
       </div>
+
+      <h2 className="view-title" id="datetime-heading">Orari disponibili</h2>
+
+      <ul className="time-slots" role="list">
+        {slots.map((slot) => (
+          <li key={slot.time}>
+            <button
+              className={`time-slot${slot.taken ? ' time-slot--taken' : ''}${selected === slot.time ? ' time-slot--selected' : ''}`}
+              type="button"
+              disabled={slot.taken}
+              aria-pressed={selected === slot.time}
+              onClick={() => setSelected(slot.time)}
+            >
+              {slot.time}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <button
+        className="icon-cta cta-primary datetime-confirm"
+        type="button"
+        disabled={!selected}
+        onClick={() => selected && onConfirm(selected)}
+      >
+        Continua
+      </button>
     </section>
   );
 }

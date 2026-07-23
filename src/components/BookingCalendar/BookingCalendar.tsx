@@ -34,7 +34,7 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
       <BackButton onClick={onBack} />
 
       <header className="booking-header">
-        <h2 id="booking-title">{formatMonthTitle(year, month)}</h2>
+        <h2 id="booking-title" className="view-title">{formatMonthTitle(year, month)}</h2>
       </header>
 
       <nav className="month-nav" aria-label="Cambia mese">

@@ -38,6 +38,11 @@ export const ICONS: Record<string, IconDefinition> = {
     strokeWidth: 2,
     paths: ['M9 6l6 6-6 6'],
   },
+  check: {
+    viewBox: '0 0 24 24',
+    strokeWidth: 2,
+    paths: ['M20 6 9 17l-5-5'],
+  },
 };
 
 export type IconName = keyof typeof ICONS;

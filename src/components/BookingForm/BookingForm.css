@@ -1,14 +1,22 @@
 .booking-form {
-    padding: var(--space-5);
+    gap: var(--space-3);
+}
+
+.booking-form-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-3);
 }
 
 .booking-summary {
     display: flex;
     flex-direction: column;
     gap: var(--space-1);
+    flex-shrink: 0;
 }
 
 .booking-summary-label {
@@ -44,7 +52,8 @@
     gap: var(--space-2);
 }
 
-.field label {
+.field label,
+.field span:first-child {
     font-size: var(--font-size-sm);
     color: var(--neutral-300);
 }
