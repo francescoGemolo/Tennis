@@ -14,33 +14,29 @@ export function ConfirmationModal({ open, date, time, players, onClose }: Confir
   if (!open) return null;
 
   return (
-    <div className="confirmation-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
-      <div className="confirmation-modal">
-        <span className="confirmation-handle" aria-hidden="true" />
+    <div
+      className="confirmation-banner-wrapper"
+      role="status"
+      aria-live="polite"
+      aria-labelledby="confirmation-title"
+    >
+      <div className="confirmation-banner">
+        <div className="confirmation-content">
+          <span className="confirmation-icon" aria-hidden="true">
+            <Icon name="check" size={18} />
+          </span>
 
-        <span className="confirmation-icon">
-          <Icon name="check" size={20} />
-        </span>
-
-        <h2 className="view-title" id="confirmation-title">Prenotazione confermata</h2>
-        <p className="confirmation-subtitle">Ti aspettiamo in campo, a presto.</p>
-
-        <dl className="confirmation-summary">
-          <div className="confirmation-row">
-            <dt>Data</dt>
-            <dd>{formatFullDate(date)}</dd>
+          <div className="confirmation-text">
+            <h2 className="confirmation-title" id="confirmation-title">
+              Prenotazione confermata
+            </h2>
+            <p className="confirmation-details">
+              <span>{formatFullDate(date)}</span> - <span className="confirmation-mono">{time}</span> - <span className="confirmation-mono">{players}p</span>
+            </p>
           </div>
-          <div className="confirmation-row">
-            <dt>Ora</dt>
-            <dd>{time}</dd>
-          </div>
-          <div className="confirmation-row">
-            <dt>Persone</dt>
-            <dd>{players}</dd>
-          </div>
-        </dl>
+        </div>
 
-        <button className="icon-cta cta-primary confirmation-done" type="button" onClick={onClose}>
+        <button className="confirmation-done-btn" type="button" onClick={onClose}>
           Fatto
         </button>
       </div>
