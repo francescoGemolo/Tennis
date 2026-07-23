@@ -18,6 +18,7 @@ dist-ssr
 
 # Claude
 .claude
+docs/
 
 # Editor directories and files
 .vscode/*
