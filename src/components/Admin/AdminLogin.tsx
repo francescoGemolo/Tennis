@@ -25,7 +25,7 @@ export function AdminLogin() {
     <section className="view admin-login" aria-labelledby="admin-login-title">
       <h2 className="view-title" id="admin-login-title">Accesso gestione</h2>
 
-      <form className="card field-group" onSubmit={handleSubmit}>
+      <form className="card field-group" onSubmit={ handleSubmit }>
         <div className="field">
           <label htmlFor="admin-email">Email</label>
           <input
@@ -33,8 +33,8 @@ export function AdminLogin() {
             type="email"
             autoComplete="username"
             required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={ email }
+            onChange={ (e) => setEmail(e.target.value) }
           />
         </div>
         <div className="field">
@@ -44,13 +44,13 @@ export function AdminLogin() {
             type="password"
             autoComplete="current-password"
             required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={ password }
+            onChange={ (e) => setPassword(e.target.value) }
           />
         </div>
-        {error && <p className="form-error" role="alert">{error}</p>}
-        <button className="icon-cta cta-primary" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Accesso in corso…' : 'Accedi'}
+        { error && <p className="form-error" role="alert">{ error }</p> }
+        <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
+          { isSubmitting ? 'Accesso in corso…' : 'Accedi' }
         </button>
       </form>
     </section>

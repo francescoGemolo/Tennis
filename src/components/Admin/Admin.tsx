@@ -14,7 +14,7 @@ export function Admin() {
 
   return (
     <main className="admin-app">
-      {user ? <AdminDashboard /> : <AdminLogin />}
+      { user ? <AdminDashboard /> : <AdminLogin /> }
     </main>
   );
 }

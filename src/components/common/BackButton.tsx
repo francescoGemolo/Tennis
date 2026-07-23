@@ -7,9 +7,9 @@ interface BackButtonProps {
 
 export function BackButton({ label = 'Indietro', onClick }: BackButtonProps) {
   return (
-    <button className="btn-ghost" type="button" onClick={onClick}>
-      <Icon name="arrowLeft" size={18} />
-      {label}
+    <button className="btn-ghost" type="button" onClick={ onClick }>
+      <Icon name="arrowLeft" size={ 18 } />
+      { label }
     </button>
   );
 }

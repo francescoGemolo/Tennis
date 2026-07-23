@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Delete02Icon } from '@hugeicons/core-free-icons';
 import { cancelBooking, fetchAllBookings } from '../../services/bookings';
 import { signOutAdmin } from '../../services/auth';
 import type { AdminBooking } from '../../types/booking';
@@ -76,7 +78,7 @@ export function AdminDashboard() {
     <section className="view admin-dashboard" aria-labelledby="admin-dashboard-title">
       <div className="admin-dashboard-header">
         <h2 className="view-title" id="admin-dashboard-title">Prenotazioni</h2>
-        <button type="button" className="btn-ghost" onClick={signOutAdmin}>Esci</button>
+        <button type="button" className="btn-ghost" onClick={ signOutAdmin }>Esci</button>
       </div>
 
       <div className="admin-toolbar">
@@ -84,59 +86,99 @@ export function AdminDashboard() {
           type="text"
           className="admin-input"
           placeholder="Cerca cliente o telefono"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          value={ search }
+          onChange={ (e) => setSearch(e.target.value) }
         />
-        <input type="date" className="admin-input" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
-        <input type="date" className="admin-input" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
-        <button type="button" className="icon-cta cta-secondary" onClick={handleExportCsv} disabled={filtered.length === 0}>
+        <input type="date" className="admin-input" value={ dateFrom } onChange={ (e) => setDateFrom(e.target.value) } />
+        <input type="date" className="admin-input" value={ dateTo } onChange={ (e) => setDateTo(e.target.value) } />
+        <button type="button" className="icon-cta cta-secondary" onClick={ handleExportCsv } disabled={ filtered.length === 0 }>
           Esporta CSV
         </button>
       </div>
 
-      {error && <p className="form-error" role="alert">{error}</p>}
+      { error && <p className="form-error" role="alert">{ error }</p> }
 
-      <div className="admin-table-wrap">
-        {isLoading ? (
-          <p className="section-label">Caricamento…</p>
-        ) : filtered.length === 0 ? (
-          <p className="section-label">Nessuna prenotazione trovata.</p>
-        ) : (
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Ora</th>
-                <th>Durata</th>
-                <th>Cliente</th>
-                <th>Telefono</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((b) => (
-                <tr key={b.id}>
-                  <td>{b.date}</td>
-                  <td>{b.time}</td>
-                  <td>{b.durationHours}h</td>
-                  <td>{b.firstName} {b.lastName}</td>
-                  <td>{b.phone}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn-ghost"
-                      disabled={deletingId === b.id}
-                      onClick={() => handleCancel(b)}
-                    >
-                      {deletingId === b.id ? 'Cancello…' : 'Elimina'}
-                    </button>
-                  </td>
+      { isLoading ? (
+        <p className="section-label">Caricamento…</p>
+      ) : filtered.length === 0 ? (
+        <p className="section-label">Nessuna prenotazione trovata.</p>
+      ) : (
+        <>
+          <div className="admin-table-wrap">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Ora</th>
+                  <th>Durata</th>
+                  <th>Cliente</th>
+                  <th>Telefono</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </div>
+              </thead>
+              <tbody>
+                { filtered.map((b) => (
+                  <tr key={ b.id }>
+                    <td>{ b.date }</td>
+                    <td>{ b.time }</td>
+                    <td>{ b.durationHours }h</td>
+                    <td>{ b.firstName } { b.lastName }</td>
+                    <td>{ b.phone }</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="admin-delete-btn"
+                        disabled={ deletingId === b.id }
+                        aria-label={ `Elimina prenotazione di ${b.firstName} ${b.lastName}` }
+                        onClick={ () => handleCancel(b) }
+                      >
+                        <HugeiconsIcon icon={ Delete02Icon } size={ 18 } strokeWidth={ 1.5 } />
+                      </button>
+                    </td>
+                  </tr>
+                )) }
+              </tbody>
+            </table>
+          </div>
+
+          <ul className="admin-cards">
+            { filtered.map((b) => (
+              <li className="admin-card" key={ b.id }>
+                <div className="admin-card-header">
+                  <span className="admin-card-name">{ b.firstName } { b.lastName }</span>
+                  <button
+                    type="button"
+                    className="admin-delete-btn"
+                    disabled={ deletingId === b.id }
+                    aria-label={ `Elimina prenotazione di ${b.firstName} ${b.lastName}` }
+                    onClick={ () => handleCancel(b) }
+                  >
+                    <HugeiconsIcon icon={ Delete02Icon } size={ 20 } strokeWidth={ 1.5 } />
+                  </button>
+                </div>
+                <dl className="admin-card-body">
+                  <div className="admin-card-row">
+                    <dt>Data</dt>
+                    <dd>{ b.date }</dd>
+                  </div>
+                  <div className="admin-card-row">
+                    <dt>Ora</dt>
+                    <dd>{ b.time }</dd>
+                  </div>
+                  <div className="admin-card-row">
+                    <dt>Durata</dt>
+                    <dd>{ b.durationHours }h</dd>
+                  </div>
+                  <div className="admin-card-row">
+                    <dt>Telefono</dt>
+                    <dd>{ b.phone }</dd>
+                  </div>
+                </dl>
+              </li>
+            )) }
+          </ul>
+        </>
+      ) }
     </section>
   );
 }

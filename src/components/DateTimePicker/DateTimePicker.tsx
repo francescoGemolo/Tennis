@@ -49,11 +49,11 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
   return (
     <section className="view datetime" aria-labelledby="datetime-heading">
       <div className="view-header">
-        <BackButton onClick={onBack} />
+        <BackButton onClick={ onBack } />
         <div className="datetime-topbar">
           <h2 className="view-title" id="datetime-heading">Orari disponibili</h2>
           <div className="datetime-date-pill">
-            <span>{formatFullDate(date)}</span>
+            <span>{ formatFullDate(date) }</span>
           </div>
         </div>
       </div>
@@ -61,46 +61,46 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
       <div className="duration-toggle" role="group" aria-label="Durata prenotazione">
         <button
           type="button"
-          className={`duration-toggle-btn${duration === 1 ? ' duration-toggle-btn--active' : ''}`}
-          aria-pressed={duration === 1}
-          onClick={() => handleDurationChange(1)}
+          className={ `duration-toggle-btn${duration === 1 ? ' duration-toggle-btn--active' : ''}` }
+          aria-pressed={ duration === 1 }
+          onClick={ () => handleDurationChange(1) }
         >
           1 Ora
         </button>
         <button
           type="button"
-          className={`duration-toggle-btn${duration === 2 ? ' duration-toggle-btn--active' : ''}`}
-          aria-pressed={duration === 2}
-          onClick={() => handleDurationChange(2)}
+          className={ `duration-toggle-btn${duration === 2 ? ' duration-toggle-btn--active' : ''}` }
+          aria-pressed={ duration === 2 }
+          onClick={ () => handleDurationChange(2) }
         >
           2 Ore
         </button>
       </div>
 
-      <ul className="time-slots" role="list" aria-busy={isLoading}>
-        {slots.map((slot) => (
-          <li key={slot.time}>
+      <ul className="time-slots" role="list" aria-busy={ isLoading }>
+        { slots.map((slot) => (
+          <li key={ slot.time }>
             <button
-              className={`time-slot${slot.taken ? ' time-slot--taken' : ''}${selected === slot.time ? ' time-slot--selected' : ''}`}
+              className={ `time-slot${slot.taken ? ' time-slot--taken' : ''}${selected === slot.time ? ' time-slot--selected' : ''}` }
               type="button"
-              disabled={slot.taken}
-              aria-pressed={selected === slot.time}
-              onClick={() => setSelected(slot.time)}
+              disabled={ slot.taken }
+              aria-pressed={ selected === slot.time }
+              onClick={ () => setSelected(slot.time) }
             >
-              {slot.time}
+              { slot.time }
             </button>
           </li>
-        ))}
+        )) }
       </ul>
 
       <button
         className="icon-cta cta-primary datetime-confirm"
         type="button"
-        disabled={!selected}
-        onClick={() => selected && onConfirm(selected, duration)}
+        disabled={ !selected }
+        onClick={ () => selected && onConfirm(selected, duration) }
       >
         Continua
-        <Icon name="arrowRight" size={16} className="icon-primary" />
+        <Icon name="arrowRight" size={ 16 } className="icon-primary" />
       </button>
     </section>
   );

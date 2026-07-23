@@ -52,21 +52,21 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
 
   return (
     <section className="view booking" aria-labelledby="booking-title">
-      <BackButton onClick={onBack} />
+      <BackButton onClick={ onBack } />
 
       <nav className="month-switcher" aria-label="Cambia mese">
         <button
           className="month-nav-btn"
           type="button"
           aria-label="Mese precedente"
-          disabled={isAtEarliestMonth}
-          onClick={() => goToMonth(-1)}
+          disabled={ isAtEarliestMonth }
+          onClick={ () => goToMonth(-1) }
         >
-          <Icon name="arrowLeft" size={18} />
+          <Icon name="arrowLeft" size={ 18 } />
         </button>
-        <h2 id="booking-title" className="view-title month-switcher-title">{formatMonthTitle(year, month)}</h2>
-        <button className="month-nav-btn" type="button" aria-label="Mese successivo" onClick={() => goToMonth(1)}>
-          <Icon name="arrowRight" size={18} />
+        <h2 id="booking-title" className="view-title month-switcher-title">{ formatMonthTitle(year, month) }</h2>
+        <button className="month-nav-btn" type="button" aria-label="Mese successivo" onClick={ () => goToMonth(1) }>
+          <Icon name="arrowRight" size={ 18 } />
         </button>
       </nav>
 
@@ -78,34 +78,34 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
 
       <div className="card calendar">
         <ul className="calendar-weekdays" aria-hidden="true">
-          {WEEKDAY_LABELS.map((label) => (
-            <li key={label}>{label}</li>
-          ))}
+          { WEEKDAY_LABELS.map((label) => (
+            <li key={ label }>{ label }</li>
+          )) }
         </ul>
-        <ol className="calendar-days" aria-busy={isLoading}>
-          {cells.map((cell, index) => {
+        <ol className="calendar-days" aria-busy={ isLoading }>
+          { cells.map((cell, index) => {
             if (!cell.date) {
               return (
-                <li key={index}>
-                  <button className="calendar-day calendar-day--empty" disabled tabIndex={-1} />
+                <li key={ index }>
+                  <button className="calendar-day calendar-day--empty" disabled tabIndex={ -1 } />
                 </li>
               );
             }
             const isSelectable = (cell.status === 'free' || cell.status === 'partial') && !cell.isPast;
             const statusClass = cell.isPast ? 'past' : cell.status;
             return (
-              <li key={index}>
+              <li key={ index }>
                 <button
-                  className={`calendar-day calendar-day--${statusClass}`}
+                  className={ `calendar-day calendar-day--${statusClass}` }
                   type="button"
-                  disabled={!isSelectable}
-                  onClick={() => handleCellClick(cell)}
+                  disabled={ !isSelectable }
+                  onClick={ () => handleCellClick(cell) }
                 >
-                  <time dateTime={cell.date.toISOString().slice(0, 10)}>{cell.day}</time>
+                  <time dateTime={ cell.date.toISOString().slice(0, 10) }>{ cell.day }</time>
                 </button>
               </li>
             );
-          })}
+          }) }
         </ol>
       </div>
     </section>

@@ -41,12 +41,12 @@ export function ConfirmationModal({ open, date, time, durationHours, onClose }: 
       aria-labelledby="confirmation-title"
     >
       <div
-        className={`confirmation-banner${closing ? ' confirmation-banner--closing' : ''}`}
-        onAnimationEnd={handleAnimationEnd}
+        className={ `confirmation-banner${closing ? ' confirmation-banner--closing' : ''}` }
+        onAnimationEnd={ handleAnimationEnd }
       >
         <div className="confirmation-content">
           <span className="confirmation-icon" aria-hidden="true">
-            <Icon name="check" size={18} />
+            <Icon name="check" size={ 18 } />
           </span>
 
           <div className="confirmation-text">
@@ -54,12 +54,12 @@ export function ConfirmationModal({ open, date, time, durationHours, onClose }: 
               Prenotazione confermata
             </h2>
             <p className="confirmation-details">
-              <span>{formatFullDate(date)}</span> - <span className="confirmation-mono">{time}</span> - <span className="confirmation-mono">{durationHours}h · {totalPrice} €</span>
+              <span>{ formatFullDate(date) }</span> - <span className="confirmation-mono">{ time }</span> - <span className="confirmation-mono">{ durationHours }h · { totalPrice } €</span>
             </p>
           </div>
         </div>
 
-        <button className="confirmation-done-btn" type="button" onClick={handleDoneClick}>
+        <button className="confirmation-done-btn" type="button" onClick={ handleDoneClick }>
           Fatto
         </button>
       </div>

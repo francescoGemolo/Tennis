@@ -88,3 +88,103 @@
 .admin-table tbody tr:last-child td {
   border-bottom: none;
 }
+
+.admin-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--neutral-300);
+  cursor: pointer;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.admin-delete-btn:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--danger) 16%, transparent);
+  color: var(--danger);
+}
+
+.admin-delete-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.admin-delete-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.admin-cards {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .admin-table-wrap {
+    display: none;
+  }
+
+  .admin-cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .admin-card {
+    border: var(--border-hairline);
+    border-radius: var(--radius-lg);
+    background: var(--neutral-900);
+    padding: var(--space-4);
+  }
+
+  .admin-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .admin-card-name {
+    font-weight: 600;
+    color: var(--neutral-50);
+  }
+
+  .admin-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+  }
+
+  .admin-card-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+    border-top: var(--border-hairline);
+  }
+
+  .admin-card-row dt {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--neutral-500);
+  }
+
+  .admin-card-row dd {
+    margin: 0;
+    color: var(--neutral-50);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    text-align: right;
+  }
+}

@@ -83,45 +83,45 @@ function App() {
 
   return (
     <main className="app">
-      {view === 'welcome' && (
-        <Hero onBook={() => setView('booking')} onContact={() => setView('contacts')} />
-      )}
+      { view === 'welcome' && (
+        <Hero onBook={ () => setView('booking') } onContact={ () => setView('contacts') } />
+      ) }
 
-      {view === 'booking' && (
-        <BookingCalendar onBack={() => setView('welcome')} onSelectDate={handleSelectDate} />
-      )}
+      { view === 'booking' && (
+        <BookingCalendar onBack={ () => setView('welcome') } onSelectDate={ handleSelectDate } />
+      ) }
 
-      {view === 'datetime' && selectedDate && (
+      { view === 'datetime' && selectedDate && (
         <DateTimePicker
-          date={selectedDate}
-          onBack={() => setView('booking')}
-          onConfirm={handleSelectTime}
+          date={ selectedDate }
+          onBack={ () => setView('booking') }
+          onConfirm={ handleSelectTime }
         />
-      )}
+      ) }
 
-      {view === 'bookingForm' && selectedDate && selectedTime && selectedDuration && (
+      { view === 'bookingForm' && selectedDate && selectedTime && selectedDuration && (
         <BookingForm
-          date={selectedDate}
-          time={selectedTime}
-          durationHours={selectedDuration}
-          onBack={() => setView('datetime')}
-          onSubmit={handleBookingFormSubmit}
+          date={ selectedDate }
+          time={ selectedTime }
+          durationHours={ selectedDuration }
+          onBack={ () => setView('datetime') }
+          onSubmit={ handleBookingFormSubmit }
         />
-      )}
+      ) }
 
-      {view === 'contacts' && (
-        <Contacts onBack={() => setView('welcome')} onSubmit={handleContactSubmit} />
-      )}
+      { view === 'contacts' && (
+        <Contacts onBack={ () => setView('welcome') } onSubmit={ handleContactSubmit } />
+      ) }
 
-      {confirmedBooking && (
+      { confirmedBooking && (
         <ConfirmationModal
           open
-          date={confirmedBooking.date}
-          time={confirmedBooking.time}
-          durationHours={confirmedBooking.durationHours}
-          onClose={handleConfirmationClose}
+          date={ confirmedBooking.date }
+          time={ confirmedBooking.time }
+          durationHours={ confirmedBooking.durationHours }
+          onClose={ handleConfirmationClose }
         />
-      )}
+      ) }
     </main>
   );
 }

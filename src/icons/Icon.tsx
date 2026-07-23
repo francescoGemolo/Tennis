@@ -12,20 +12,20 @@ export function Icon({ name, size = 20, className }: IconProps) {
 
   return (
     <svg
-      width={size}
-      height={size}
-      viewBox={icon.viewBox}
+      width={ size }
+      height={ size }
+      viewBox={ icon.viewBox }
       fill="none"
       stroke="currentColor"
-      strokeWidth={icon.strokeWidth}
+      strokeWidth={ icon.strokeWidth }
       strokeLinecap="round"
       strokeLinejoin="round"
-      className={className}
+      className={ className }
       aria-hidden="true"
     >
-      {icon.paths.map((d, i) => (
-        <path key={i} d={d} />
-      ))}
+      { icon.paths.map((d, i) => (
+        <path key={ i } d={ d } />
+      )) }
     </svg>
   );
 }
