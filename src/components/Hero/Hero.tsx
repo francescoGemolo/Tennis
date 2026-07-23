@@ -1,4 +1,4 @@
-// import { Icon } from '../../icons/Icon';
+import { Icon } from '../../icons/Icon';
 import { BADGE_NAME, HERO_SUBTITLE, HERO_TITLE } from '../../data/content';
 import './Hero.css';
 
@@ -17,11 +17,11 @@ export function Hero({ onBook, onContact }: HeroProps) {
       </div>
       <nav className="hero-cta" aria-label="Azioni principali">
         <button className="icon-cta cta-primary" type="button" onClick={onBook}>
-          {/* <Icon name="calendar" className="icon-primary" /> */}
+          <Icon name="calendar" size={16} className="icon-primary" />
           Prenota
         </button>
         <button className="icon-cta cta-secondary" type="button" onClick={onContact}>
-          {/* <Icon name="phone" className="icon-secondary" /> */}
+          <Icon name="phone" size={16} className="icon-secondary" />
           Contatti
         </button>
       </nav>

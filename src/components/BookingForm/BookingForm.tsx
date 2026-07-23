@@ -1,27 +1,38 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { BackButton } from '../common/BackButton';
 import { formatFullDate } from '../../data/calendar';
-import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_PLAYERS, MAX_TEXT_LENGTH, MIN_PLAYERS } from '../../data/constants';
+import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH, PRICE_PER_HOUR } from '../../data/constants';
 import { sanitizePhone, sanitizeText } from '../../utils/sanitize';
-import type { BookingFormValues } from '../../types/booking';
+import { isValidName, isValidPhone } from '../../utils/validation';
+import type { BookingFormValues, DurationHours } from '../../types/booking';
 import './BookingForm.css';
 
 interface BookingFormProps {
   date: Date;
   time: string;
+  durationHours: DurationHours;
   onBack: () => void;
-  onSubmit: (values: BookingFormValues) => void;
+  onSubmit: (values: BookingFormValues) => Promise<void>;
 }
 
-export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) {
+interface FieldErrors {
+  firstName: boolean;
+  lastName: boolean;
+  phone: boolean;
+}
+
+export function BookingForm({ date, time, durationHours, onBack, onSubmit }: BookingFormProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
-  const [players, setPlayers] = useState(2);
+  const [errors, setErrors] = useState<FieldErrors>({ firstName: false, lastName: false, phone: false });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
 
-  function handleSubmit(event: FormEvent) {
+  const totalPrice = durationHours * PRICE_PER_HOUR;
+
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (isSubmitting) return;
 
@@ -31,23 +42,38 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
     const cleanFirstName = sanitizeText(firstName, MAX_TEXT_LENGTH);
     const cleanLastName = sanitizeText(lastName, MAX_TEXT_LENGTH);
     const cleanPhone = sanitizePhone(phone, MAX_PHONE_LENGTH);
-    if (!cleanFirstName || !cleanLastName || !cleanPhone) return;
 
+    const nextErrors: FieldErrors = {
+      firstName: !isValidName(cleanFirstName),
+      lastName: !isValidName(cleanLastName),
+      phone: !isValidPhone(cleanPhone),
+    };
+    setErrors(nextErrors);
+    if (nextErrors.firstName || nextErrors.lastName || nextErrors.phone) return;
+
+    setSubmitError(null);
     setIsSubmitting(true);
-    onSubmit({ firstName: cleanFirstName, lastName: cleanLastName, phone: cleanPhone, players });
+    try {
+      await onSubmit({ firstName: cleanFirstName, lastName: cleanLastName, phone: cleanPhone });
+    } catch {
+      setSubmitError('Non è stato possibile completare la prenotazione. Riprova.');
+      setIsSubmitting(false);
+    }
   }
 
   return (
     <section className="view booking-form" aria-labelledby="booking-form-title">
-      <BackButton onClick={onBack} />
+      <div className="view-header">
+        <BackButton onClick={onBack} />
+        <h2 className="view-title" id="booking-form-title">I tuoi dati</h2>
+      </div>
 
       <div className="booking-form-scroll">
         <div className="card booking-summary">
           <span className="booking-summary-label">Prenotazione per</span>
-          <span className="booking-summary-value">{formatFullDate(date)} · {time}</span>
+          <span className="booking-summary-value">{formatFullDate(date)} - {time} - {durationHours}h</span>
+          <span className="booking-summary-price">Totale: {totalPrice} €</span>
         </div>
-
-        <h2 className="view-title" id="booking-form-title">I tuoi dati</h2>
 
         <form className="card field-group" onSubmit={handleSubmit}>
           <input
@@ -61,7 +87,7 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
           />
 
           <div className="field-row">
-            <div className="field">
+            <div className={`field${errors.firstName ? ' field--invalid' : ''}`}>
               <label htmlFor="firstName">Nome</label>
               <input
                 id="firstName"
@@ -69,11 +95,15 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
                 autoComplete="given-name"
                 maxLength={MAX_TEXT_LENGTH}
                 required
+                aria-invalid={errors.firstName}
                 value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                  if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: false }));
+                }}
               />
             </div>
-            <div className="field">
+            <div className={`field${errors.lastName ? ' field--invalid' : ''}`}>
               <label htmlFor="lastName">Cognome</label>
               <input
                 id="lastName"
@@ -81,13 +111,17 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
                 autoComplete="family-name"
                 maxLength={MAX_TEXT_LENGTH}
                 required
+                aria-invalid={errors.lastName}
                 value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                  if (errors.lastName) setErrors((prev) => ({ ...prev, lastName: false }));
+                }}
               />
             </div>
           </div>
 
-          <div className="field">
+          <div className={`field${errors.phone ? ' field--invalid' : ''}`}>
             <label htmlFor="phone">Telefono</label>
             <input
               id="phone"
@@ -95,35 +129,16 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
               autoComplete="tel"
               maxLength={MAX_PHONE_LENGTH}
               required
+              aria-invalid={errors.phone}
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => {
+                setPhone(e.target.value);
+                if (errors.phone) setErrors((prev) => ({ ...prev, phone: false }));
+              }}
             />
           </div>
 
-          <div className="field">
-            <span id="players-label">Numero di persone</span>
-            <div className="stepper" role="group" aria-labelledby="players-label">
-              <button
-                className="stepper-btn"
-                type="button"
-                aria-label="Diminuisci"
-                disabled={players <= MIN_PLAYERS}
-                onClick={() => setPlayers((p) => Math.max(MIN_PLAYERS, p - 1))}
-              >
-                −
-              </button>
-              <span className="stepper-value">{players}</span>
-              <button
-                className="stepper-btn"
-                type="button"
-                aria-label="Aumenta"
-                disabled={players >= MAX_PLAYERS}
-                onClick={() => setPlayers((p) => Math.min(MAX_PLAYERS, p + 1))}
-              >
-                +
-              </button>
-            </div>
-          </div>
+          {submitError && <p className="form-error" role="alert">{submitError}</p>}
 
           <button className="icon-cta cta-primary" type="submit" disabled={isSubmitting}>
             {isSubmitting ? 'Invio in corso…' : 'Invia prenotazione'}

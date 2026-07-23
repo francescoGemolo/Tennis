@@ -30,6 +30,18 @@
     color: var(--neutral-50);
 }
 
+.booking-summary-price {
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.form-error {
+    color: var(--danger);
+    font-size: var(--font-size-sm);
+}
+
 .field-group {
     display: flex;
     flex-direction: column;

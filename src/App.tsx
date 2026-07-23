@@ -5,21 +5,22 @@ import { DateTimePicker } from './components/DateTimePicker/DateTimePicker';
 import { BookingForm } from './components/BookingForm/BookingForm';
 import { ConfirmationModal } from './components/ConfirmationModal/ConfirmationModal';
 import { Contacts } from './components/Contacts/Contacts';
-import { saveBookingTemp } from './utils/storage';
+import { createBooking, createMessage } from './services/bookings';
 import { toDateKey } from './data/calendar';
-import type { BookingFormValues, ContactFormValues, ViewId } from './types/booking';
+import type { BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types/booking';
 import './App.css';
 
 interface ConfirmedBooking {
   date: Date;
   time: string;
-  players: number;
+  durationHours: DurationHours;
 }
 
 function App() {
   const [view, setView] = useState<ViewId>('welcome');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedDuration, setSelectedDuration] = useState<DurationHours | null>(null);
   const [confirmedBooking, setConfirmedBooking] = useState<ConfirmedBooking | null>(null);
 
   function handleSelectDate(date: Date) {
@@ -27,36 +28,36 @@ function App() {
     setView('datetime');
   }
 
-  function handleSelectTime(time: string) {
+  function handleSelectTime(time: string, durationHours: DurationHours) {
     setSelectedTime(time);
+    setSelectedDuration(durationHours);
     setView('bookingForm');
   }
 
-  function handleBookingFormSubmit(values: BookingFormValues) {
-    if (!selectedDate || !selectedTime) return;
+  async function handleBookingFormSubmit(values: BookingFormValues) {
+    if (!selectedDate || !selectedTime || !selectedDuration) return;
 
-    // Persistenza temporanea in localStorage, in attesa dell'integrazione
-    // con un vero backend (es. Firebase). Vedi utils/storage.ts.
-    saveBookingTemp({
+    await createBooking({
       date: toDateKey(selectedDate),
       time: selectedTime,
-      createdAt: new Date().toISOString(),
+      durationHours: selectedDuration,
       ...values,
     });
 
-    setConfirmedBooking({ date: selectedDate, time: selectedTime, players: values.players });
+    setConfirmedBooking({ date: selectedDate, time: selectedTime, durationHours: selectedDuration });
+    setView('welcome');
   }
 
   function handleConfirmationClose() {
     setConfirmedBooking(null);
     setSelectedDate(null);
     setSelectedTime(null);
+    setSelectedDuration(null);
     setView('welcome');
   }
 
-  function handleContactSubmit(values: ContactFormValues) {
-    // TODO: inviare il messaggio (values) tramite Firebase
-    void values;
+  async function handleContactSubmit(values: ContactFormValues) {
+    await createMessage(values);
     setView('welcome');
   }
 
@@ -78,10 +79,11 @@ function App() {
         />
       )}
 
-      {view === 'bookingForm' && selectedDate && selectedTime && (
+      {view === 'bookingForm' && selectedDate && selectedTime && selectedDuration && (
         <BookingForm
           date={selectedDate}
           time={selectedTime}
+          durationHours={selectedDuration}
           onBack={() => setView('datetime')}
           onSubmit={handleBookingFormSubmit}
         />
@@ -96,7 +98,7 @@ function App() {
           open
           date={confirmedBooking.date}
           time={confirmedBooking.time}
-          players={confirmedBooking.players}
+          durationHours={confirmedBooking.durationHours}
           onClose={handleConfirmationClose}
         />
       )}

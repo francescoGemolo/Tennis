@@ -2,10 +2,6 @@
   gap: var(--space-3);
 }
 
-.booking-header h2 {
-  font-weight: 700;
-}
-
 .month-nav {
   display: flex;
   justify-content: space-between;
@@ -67,10 +63,6 @@
 
 .legend-dot--busy {
   background: var(--danger);
-}
-
-.legend-dot--closed {
-  background: var(--neutral-600);
 }
 
 .legend-dot--partial {
@@ -140,7 +132,7 @@
   cursor: not-allowed;
 }
 
-.calendar-day--closed {
+.calendar-day--past {
   background: transparent;
   color: var(--neutral-700);
   cursor: not-allowed;

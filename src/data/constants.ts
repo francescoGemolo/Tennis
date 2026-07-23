@@ -1,11 +1,8 @@
-export const MIN_PLAYERS = 1;
-export const MAX_PLAYERS = 8;
-
-export const CLOSED_WEEKDAY = 1;
-
 export const OPENING_MINUTES = 9 * 60;
-export const CLOSING_MINUTES = 19 * 60 + 30;
-export const SLOT_DURATION_MINUTES = 30;
+export const CLOSING_MINUTES = 20 * 60;
+export const SLOT_DURATION_MINUTES = 60;
+
+export const PRICE_PER_HOUR = 20;
 
 export const HONEYPOT_FIELD_NAME = 'companyWebsite';
 

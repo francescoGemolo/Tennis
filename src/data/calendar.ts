@@ -1,6 +1,5 @@
-import { CLOSED_WEEKDAY, CLOSING_MINUTES, OPENING_MINUTES, SLOT_DURATION_MINUTES } from './constants';
-import type { CalendarCell, DayStatus, TimeSlot } from '../types/booking';
-import type { StoredBooking } from '../utils/storage';
+import { CLOSING_MINUTES, OPENING_MINUTES, SLOT_DURATION_MINUTES } from './constants';
+import type { AvailabilityRecord, CalendarCell, DayStatus, DurationHours, TimeSlot } from '../types/booking';
 
 export const WEEKDAY_LABELS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 
@@ -26,9 +25,10 @@ function isBeforeToday(date: Date): boolean {
   return compare < today;
 }
 
-export function getSlotTimes(): string[] {
+export function getSlotTimes(durationHours: DurationHours = 1): string[] {
   const times: string[] = [];
-  for (let minutes = OPENING_MINUTES; minutes <= CLOSING_MINUTES; minutes += SLOT_DURATION_MINUTES) {
+  const lastStart = CLOSING_MINUTES - durationHours * SLOT_DURATION_MINUTES;
+  for (let minutes = OPENING_MINUTES; minutes <= lastStart; minutes += SLOT_DURATION_MINUTES) {
     const hh = String(Math.floor(minutes / 60)).padStart(2, '0');
     const mm = String(minutes % 60).padStart(2, '0');
     times.push(`${hh}:${mm}`);
@@ -36,19 +36,39 @@ export function getSlotTimes(): string[] {
   return times;
 }
 
-export function getDayStatus(date: Date, bookings: StoredBooking[]): DayStatus {
-  if (isBeforeToday(date)) return 'closed';
-  if (date.getDay() === CLOSED_WEEKDAY) return 'closed';
-
-  const dateKey = toDateKey(date);
-  const bookedCount = bookings.filter((b) => b.date === dateKey).length;
-  if (bookedCount === 0) return 'free';
-
-  const totalSlots = getSlotTimes().length;
-  return bookedCount >= totalSlots ? 'busy' : 'partial';
+function timeToMinutes(time: string): number {
+  const [hh, mm] = time.split(':').map(Number);
+  return hh * 60 + mm;
 }
 
-export function getMonthMatrix(year: number, month: number, bookings: StoredBooking[]): CalendarCell[] {
+function minutesToTime(minutes: number): string {
+  const hh = String(Math.floor(minutes / 60)).padStart(2, '0');
+  const mm = String(minutes % 60).padStart(2, '0');
+  return `${hh}:${mm}`;
+}
+
+/** Espande una prenotazione negli slot orari che occupa (orario di inizio incluso). */
+export function getOccupiedTimes(booking: AvailabilityRecord): string[] {
+  const start = timeToMinutes(booking.time);
+  const times: string[] = [];
+  for (let i = 0; i < booking.durationHours; i++) {
+    times.push(minutesToTime(start + i * SLOT_DURATION_MINUTES));
+  }
+  return times;
+}
+
+export function getDayStatus(date: Date, bookings: AvailabilityRecord[]): DayStatus {
+  const dateKey = toDateKey(date);
+  const occupiedTimes = new Set(
+    bookings.filter((b) => b.date === dateKey).flatMap((b) => getOccupiedTimes(b)),
+  );
+  if (occupiedTimes.size === 0) return 'free';
+
+  const totalSlots = getSlotTimes().length;
+  return occupiedTimes.size >= totalSlots ? 'busy' : 'partial';
+}
+
+export function getMonthMatrix(year: number, month: number, bookings: AvailabilityRecord[]): CalendarCell[] {
   const firstDay = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const offset = (firstDay.getDay() + 6) % 7;
@@ -57,19 +77,27 @@ export function getMonthMatrix(year: number, month: number, bookings: StoredBook
   for (let i = 0; i < TOTAL_CELLS; i++) {
     const day = i - offset + 1;
     if (day < 1 || day > daysInMonth) {
-      cells.push({ date: null, day: null, status: 'closed' });
+      cells.push({ date: null, day: null, status: 'free', isPast: false });
     } else {
       const date = new Date(year, month, day);
-      cells.push({ date, day, status: getDayStatus(date, bookings) });
+      cells.push({ date, day, status: getDayStatus(date, bookings), isPast: isBeforeToday(date) });
     }
   }
   return cells;
 }
 
-export function getTimeSlots(date: Date, bookings: StoredBooking[]): TimeSlot[] {
+export function getTimeSlots(date: Date, bookings: AvailabilityRecord[], durationHours: DurationHours): TimeSlot[] {
   const dateKey = toDateKey(date);
-  const bookedTimes = new Set(bookings.filter((b) => b.date === dateKey).map((b) => b.time));
-  return getSlotTimes().map((time) => ({ time, taken: bookedTimes.has(time) }));
+  const occupiedTimes = new Set(
+    bookings.filter((b) => b.date === dateKey).flatMap((b) => getOccupiedTimes(b)),
+  );
+
+  return getSlotTimes(durationHours).map((time) => {
+    const start = timeToMinutes(time);
+    const requiredTimes = Array.from({ length: durationHours }, (_, i) => minutesToTime(start + i * SLOT_DURATION_MINUTES));
+    const taken = requiredTimes.some((t) => occupiedTimes.has(t));
+    return { time, taken };
+  });
 }
 
 export function formatMonthTitle(year: number, month: number): string {

@@ -91,3 +91,8 @@
 .field textarea:focus {
   border-color: var(--accent);
 }
+
+.form-error {
+  color: var(--danger);
+  font-size: var(--font-size-sm);
+}
