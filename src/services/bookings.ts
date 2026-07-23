@@ -1,7 +1,7 @@
-import { addDoc, collection, doc, getDocs, query, runTransaction, where } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, query, runTransaction, where, writeBatch } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { getOccupiedTimes } from '../data/calendar';
-import type { AvailabilityRecord, BookingFormValues, ContactFormValues, DurationHours } from '../types/booking';
+import type { AdminBooking, AvailabilityRecord, BookingFormValues, ContactFormValues, DurationHours } from '../types/booking';
 
 const AVAILABILITY_COLLECTION = 'availability';
 const BOOKINGS_COLLECTION = 'bookings';
@@ -56,10 +56,37 @@ export async function createBooking(input: CreateBookingInput): Promise<void> {
     transaction.set(availabilityRef, { date, time, durationHours, createdAt });
 
     const bookingRef = doc(collection(db, BOOKINGS_COLLECTION));
-    transaction.set(bookingRef, { date, time, durationHours, firstName, lastName, phone, createdAt });
+    transaction.set(bookingRef, {
+      date,
+      time,
+      durationHours,
+      firstName,
+      lastName,
+      phone,
+      createdAt,
+      availabilityId: availabilityRef.id,
+    });
   });
 }
 
 export async function createMessage(values: ContactFormValues): Promise<void> {
   await addDoc(collection(db, MESSAGES_COLLECTION), { ...values, createdAt: new Date().toISOString() });
+}
+
+export async function fetchAllBookings(): Promise<AdminBooking[]> {
+  const snapshot = await getDocs(collection(db, BOOKINGS_COLLECTION));
+  return snapshot.docs
+    .map((d) => ({ id: d.id, ...(d.data() as Omit<AdminBooking, 'id'>) }))
+    .sort((a, b) => (a.date + a.time < b.date + b.time ? 1 : -1));
+}
+
+export async function cancelBooking(booking: AdminBooking): Promise<void> {
+  const batch = writeBatch(db);
+  batch.delete(doc(db, BOOKINGS_COLLECTION, booking.id));
+  batch.delete(doc(db, AVAILABILITY_COLLECTION, booking.availabilityId));
+  const occupiedTimes = getOccupiedTimes(booking);
+  occupiedTimes.forEach((t) => {
+    batch.delete(doc(db, SLOT_LOCKS_COLLECTION, `${booking.date}_${t}`));
+  });
+  await batch.commit();
 }

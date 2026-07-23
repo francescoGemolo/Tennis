@@ -1,4 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
+import { Icon } from '../../icons/Icon';
 import { BackButton } from '../common/BackButton';
 import { formatFullDate } from '../../data/calendar';
 import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH, PRICE_PER_HOUR } from '../../data/constants';
@@ -35,8 +36,6 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (isSubmitting) return;
-
-    // Campo honeypot: invisibile agli utenti reali, se compilato è un bot.
     if (honeypotRef.current?.value) return;
 
     const cleanFirstName = sanitizeText(firstName, MAX_TEXT_LENGTH);
@@ -70,7 +69,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
 
       <div className="booking-form-scroll">
         <div className="card booking-summary">
-          <span className="booking-summary-label">Prenotazione per</span>
+          <span className="section-label">Prenotazione per</span>
           <span className="booking-summary-value">{formatFullDate(date)} - {time} - {durationHours}h</span>
           <span className="booking-summary-price">Totale: {totalPrice} €</span>
         </div>
@@ -141,6 +140,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
           {submitError && <p className="form-error" role="alert">{submitError}</p>}
 
           <button className="icon-cta cta-primary" type="submit" disabled={isSubmitting}>
+            {!isSubmitting && <Icon name="check" size={16} className="icon-primary" />}
             {isSubmitting ? 'Invio in corso…' : 'Invia prenotazione'}
           </button>
         </form>

@@ -53,7 +53,6 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
         <div className="datetime-topbar">
           <h2 className="view-title" id="datetime-heading">Orari disponibili</h2>
           <div className="datetime-date-pill">
-            <Icon name="calendar" size={16} />
             <span>{formatFullDate(date)}</span>
           </div>
         </div>
@@ -101,6 +100,7 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
         onClick={() => selected && onConfirm(selected, duration)}
       >
         Continua
+        <Icon name="arrowRight" size={16} className="icon-primary" />
       </button>
     </section>
   );

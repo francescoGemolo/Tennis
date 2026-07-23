@@ -25,9 +25,9 @@ function isBeforeToday(date: Date): boolean {
   return compare < today;
 }
 
-export function getSlotTimes(durationHours: DurationHours = 1): string[] {
+export function getSlotTimes(): string[] {
   const times: string[] = [];
-  const lastStart = CLOSING_MINUTES - durationHours * SLOT_DURATION_MINUTES;
+  const lastStart = CLOSING_MINUTES - SLOT_DURATION_MINUTES;
   for (let minutes = OPENING_MINUTES; minutes <= lastStart; minutes += SLOT_DURATION_MINUTES) {
     const hh = String(Math.floor(minutes / 60)).padStart(2, '0');
     const mm = String(minutes % 60).padStart(2, '0');
@@ -47,7 +47,6 @@ function minutesToTime(minutes: number): string {
   return `${hh}:${mm}`;
 }
 
-/** Espande una prenotazione negli slot orari che occupa (orario di inizio incluso). */
 export function getOccupiedTimes(booking: AvailabilityRecord): string[] {
   const start = timeToMinutes(booking.time);
   const times: string[] = [];
@@ -92,11 +91,12 @@ export function getTimeSlots(date: Date, bookings: AvailabilityRecord[], duratio
     bookings.filter((b) => b.date === dateKey).flatMap((b) => getOccupiedTimes(b)),
   );
 
-  return getSlotTimes(durationHours).map((time) => {
+  return getSlotTimes().map((time) => {
     const start = timeToMinutes(time);
+    const fitsBeforeClosing = start + durationHours * SLOT_DURATION_MINUTES <= CLOSING_MINUTES;
     const requiredTimes = Array.from({ length: durationHours }, (_, i) => minutesToTime(start + i * SLOT_DURATION_MINUTES));
-    const taken = requiredTimes.some((t) => occupiedTimes.has(t));
-    return { time, taken };
+    const overlapsExisting = requiredTimes.some((t) => occupiedTimes.has(t));
+    return { time, taken: !fitsBeforeClosing || overlapsExisting };
   });
 }
 

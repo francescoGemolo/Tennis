@@ -41,16 +41,21 @@
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-full);
-  border: var(--border-hairline);
-  background: var(--neutral-900);
-  color: var(--accent);
+  color: var(--neutral-300);
   font-family: var(--font-family-mono);
   font-size: var(--font-size-xs);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.datetime-date-pill::before {
+  content: '';
+  width: 0.4rem;
+  height: 0.4rem;
+  flex-shrink: 0;
+  border-radius: var(--radius-full);
+  background: var(--accent);
 }
 
 .time-slots {

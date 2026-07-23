@@ -63,14 +63,14 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
           <div className="contact-item">
             <span className="contact-icon"><Icon name="phone" size={18} /></span>
             <address>
-              <span className="contact-label">Telefono</span>
+              <span className="section-label">Telefono</span>
               <a className="contact-value" href={`tel:${CONTACT_PHONE_HREF}`}>{CONTACT_PHONE_DISPLAY}</a>
             </address>
           </div>
           <div className="contact-item">
             <span className="contact-icon"><Icon name="mail" size={18} /></span>
             <address>
-              <span className="contact-label">Email</span>
+              <span className="section-label">Email</span>
               <a className="contact-value" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
             </address>
           </div>
@@ -121,6 +121,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
           </div>
           {submitError && <p className="form-error" role="alert">{submitError}</p>}
           <button className="icon-cta cta-primary" type="submit" disabled={isSubmitting}>
+            {!isSubmitting && <Icon name="sent" size={16} className="icon-primary" />}
             {isSubmitting ? 'Invio in corso…' : 'Invia'}
           </button>
         </form>

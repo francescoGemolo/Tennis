@@ -2,10 +2,20 @@
   gap: var(--space-3);
 }
 
-.month-nav {
+.booking>.btn-ghost {
+  margin-bottom: var(--space-4);
+}
+
+.month-switcher {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
+}
+
+.month-switcher-title {
+  flex: 1;
+  text-align: center;
 }
 
 .month-nav-btn {
@@ -14,6 +24,7 @@
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
+  flex-shrink: 0;
   border: var(--border-hairline);
   border-radius: var(--radius-md);
   background: var(--neutral-900);

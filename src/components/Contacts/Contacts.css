@@ -9,6 +9,7 @@
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--space-4);
 }
 
@@ -41,11 +42,6 @@
   flex-direction: column;
   font-style: normal;
   gap: var(--space-1);
-}
-
-.contact-label {
-  font-size: var(--font-size-xs);
-  color: var(--neutral-500);
 }
 
 .contact-value {

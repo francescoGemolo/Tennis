@@ -21,7 +21,7 @@ export function Hero({ onBook, onContact }: HeroProps) {
           Prenota
         </button>
         <button className="icon-cta cta-secondary" type="button" onClick={onContact}>
-          <Icon name="phone" size={16} className="icon-secondary" />
+          <Icon name="message" size={16} className="icon-secondary" />
           Contatti
         </button>
       </nav>

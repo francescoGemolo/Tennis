@@ -1,0 +1,90 @@
+.admin-app {
+  max-width: 900px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.admin-login {
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.admin-login .card {
+  width: 100%;
+  max-width: 360px;
+}
+
+.admin-dashboard {
+  gap: var(--space-4);
+}
+
+.admin-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.admin-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.admin-input {
+  flex: 1;
+  min-width: 8rem;
+  border: var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  background: var(--neutral-800);
+  color: var(--neutral-50);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+}
+
+.admin-input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.admin-table-wrap {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: var(--space-3);
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: var(--border-hairline);
+}
+
+.admin-table th {
+  position: sticky;
+  top: 0;
+  background: var(--neutral-900);
+  color: var(--neutral-500);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-table tbody tr:hover {
+  background: var(--neutral-900);
+}
+
+.admin-table tbody tr:last-child td {
+  border-bottom: none;
+}

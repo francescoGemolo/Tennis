@@ -1,5 +1,5 @@
 export const OPENING_MINUTES = 9 * 60;
-export const CLOSING_MINUTES = 20 * 60;
+export const CLOSING_MINUTES = 22 * 60;
 export const SLOT_DURATION_MINUTES = 60;
 
 export const PRICE_PER_HOUR = 20;

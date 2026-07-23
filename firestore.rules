@@ -11,19 +11,16 @@ service cloud.firestore {
       return value is string && value.matches('^([0-1][0-9]|2[0-3]):[0-5][0-9]$');
     }
 
-    // Lucchetti interni (un documento per ogni ora prenotata, ID "data_ora"):
-    // servono solo a bloccare atomicamente gli slot ed evitare doppie
-    // prenotazioni concorrenti. Nessun dato personale.
     match /slotLocks/{docId} {
       allow read: if true;
       allow create: if
         request.resource.data.keys().hasOnly(['date', 'createdAt']) &&
         isValidDate(request.resource.data.date) &&
         request.resource.data.createdAt is string;
-      allow update, delete: if false;
+      allow update: if false;
+      allow delete: if request.auth != null;
     }
 
-    // Disponibilità pubblica: nessun dato personale, letta dal calendario.
     match /availability/{docId} {
       allow read: if true;
       allow create: if
@@ -32,26 +29,26 @@ service cloud.firestore {
         isValidTime(request.resource.data.time) &&
         request.resource.data.durationHours in [1, 2] &&
         request.resource.data.createdAt is string;
-      allow update, delete: if false;
+      allow update: if false;
+      allow delete: if request.auth != null;
     }
 
-    // Prenotazioni con dati del cliente: scrivibili dal form pubblico,
-    // leggibili/gestibili solo dalla Console Firebase (accesso da proprietario).
     match /bookings/{docId} {
-      allow read: if false;
+      allow read: if request.auth != null;
       allow create: if
-        request.resource.data.keys().hasOnly(['date', 'time', 'durationHours', 'firstName', 'lastName', 'phone', 'createdAt']) &&
+        request.resource.data.keys().hasOnly(['date', 'time', 'durationHours', 'firstName', 'lastName', 'phone', 'createdAt', 'availabilityId']) &&
         isValidDate(request.resource.data.date) &&
         isValidTime(request.resource.data.time) &&
         request.resource.data.durationHours in [1, 2] &&
         request.resource.data.firstName is string && request.resource.data.firstName.size() > 0 && request.resource.data.firstName.size() <= 40 &&
         request.resource.data.lastName is string && request.resource.data.lastName.size() > 0 && request.resource.data.lastName.size() <= 40 &&
         request.resource.data.phone is string && request.resource.data.phone.size() > 0 && request.resource.data.phone.size() <= 20 &&
-        request.resource.data.createdAt is string;
-      allow update, delete: if false;
+        request.resource.data.createdAt is string &&
+        request.resource.data.availabilityId is string;
+      allow update: if false;
+      allow delete: if request.auth != null;
     }
 
-    // Messaggi dal form contatti: solo scrittura, nessuna lettura pubblica.
     match /messages/{docId} {
       allow read: if false;
       allow create: if

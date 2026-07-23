@@ -52,12 +52,9 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
 
   return (
     <section className="view booking" aria-labelledby="booking-title">
-      <div className="view-header">
-        <BackButton onClick={onBack} />
-        <h2 id="booking-title" className="view-title">{formatMonthTitle(year, month)}</h2>
-      </div>
+      <BackButton onClick={onBack} />
 
-      <nav className="month-nav" aria-label="Cambia mese">
+      <nav className="month-switcher" aria-label="Cambia mese">
         <button
           className="month-nav-btn"
           type="button"
@@ -67,6 +64,7 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
         >
           <Icon name="arrowLeft" size={18} />
         </button>
+        <h2 id="booking-title" className="view-title month-switcher-title">{formatMonthTitle(year, month)}</h2>
         <button className="month-nav-btn" type="button" aria-label="Mese successivo" onClick={() => goToMonth(1)}>
           <Icon name="arrowRight" size={18} />
         </button>

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Hero } from './components/Hero/Hero';
 import { BookingCalendar } from './components/BookingCalendar/BookingCalendar';
 import { DateTimePicker } from './components/DateTimePicker/DateTimePicker';
 import { BookingForm } from './components/BookingForm/BookingForm';
 import { ConfirmationModal } from './components/ConfirmationModal/ConfirmationModal';
 import { Contacts } from './components/Contacts/Contacts';
+import { Admin } from './components/Admin/Admin';
 import { createBooking, createMessage } from './services/bookings';
 import { toDateKey } from './data/calendar';
 import type { BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types/booking';
@@ -16,7 +17,22 @@ interface ConfirmedBooking {
   durationHours: DurationHours;
 }
 
+function useIsAdminRoute(): boolean {
+  const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === '#admin');
+
+  useEffect(() => {
+    function handleHashChange() {
+      setIsAdminRoute(window.location.hash === '#admin');
+    }
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  return isAdminRoute;
+}
+
 function App() {
+  const isAdminRoute = useIsAdminRoute();
   const [view, setView] = useState<ViewId>('welcome');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -59,6 +75,10 @@ function App() {
   async function handleContactSubmit(values: ContactFormValues) {
     await createMessage(values);
     setView('welcome');
+  }
+
+  if (isAdminRoute) {
+    return <Admin />;
   }
 
   return (

@@ -20,6 +20,18 @@ export interface AvailabilityRecord {
   durationHours: DurationHours;
 }
 
+export interface AdminBooking {
+  id: string;
+  availabilityId: string;
+  date: string;
+  time: string;
+  durationHours: DurationHours;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  createdAt: string;
+}
+
 export type ViewId = 'welcome' | 'booking' | 'datetime' | 'bookingForm' | 'contacts';
 
 export interface ContactFormValues {
