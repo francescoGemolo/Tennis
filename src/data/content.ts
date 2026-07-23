@@ -1,4 +1,4 @@
-export const CLUB_NAME = 'Prenotazione rapida';
+export const BADGE_NAME = 'Prenotazione rapida';
 export const HERO_TITLE = 'Tennis Salandra';
 export const HERO_SUBTITLE = 'Prenota il campo online e scendi in gioco.';
 

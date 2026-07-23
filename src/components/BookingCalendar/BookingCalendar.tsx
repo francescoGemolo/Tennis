@@ -59,7 +59,7 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
         <li><span className="legend-dot legend-dot--free" aria-hidden="true" />Libero</li>
         <li><span className="legend-dot legend-dot--partial" aria-hidden="true" />Parziale</li>
         <li><span className="legend-dot legend-dot--busy" aria-hidden="true" />Occupato</li>
-        <li><span className="legend-dot legend-dot--closed" aria-hidden="true" />Chiuso</li>
+        {/* <li><span className="legend-dot legend-dot--closed" aria-hidden="true" />Chiuso</li> */}
       </ul>
 
       <div className="card calendar">
