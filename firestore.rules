@@ -42,7 +42,7 @@ service cloud.firestore {
         request.resource.data.durationHours in [1, 2] &&
         request.resource.data.firstName is string && request.resource.data.firstName.size() > 0 && request.resource.data.firstName.size() <= 40 &&
         request.resource.data.lastName is string && request.resource.data.lastName.size() > 0 && request.resource.data.lastName.size() <= 40 &&
-        request.resource.data.phone is string && request.resource.data.phone.size() > 0 && request.resource.data.phone.size() <= 20 &&
+        request.resource.data.phone is string && request.resource.data.phone.size() > 0 && request.resource.data.phone.size() <= 10 &&
         request.resource.data.createdAt is string &&
         request.resource.data.availabilityId is string;
       allow update: if false;

@@ -89,11 +89,11 @@ export function AdminDashboard() {
           value={ search }
           onChange={ (e) => setSearch(e.target.value) }
         />
-        <input type="date" className="admin-input" value={ dateFrom } onChange={ (e) => setDateFrom(e.target.value) } />
-        <input type="date" className="admin-input" value={ dateTo } onChange={ (e) => setDateTo(e.target.value) } />
-        <button type="button" className="icon-cta cta-secondary" onClick={ handleExportCsv } disabled={ filtered.length === 0 }>
+        <button type="button" className="icon-cta cta-primary admin-toolbar-btn" onClick={ handleExportCsv } disabled={ filtered.length === 0 }>
           Esporta CSV
         </button>
+        <input type="date" className="admin-input" value={ dateFrom } onChange={ (e) => setDateFrom(e.target.value) } />
+        <input type="date" className="admin-input" value={ dateTo } onChange={ (e) => setDateTo(e.target.value) } />
       </div>
 
       { error && <p className="form-error" role="alert">{ error }</p> }

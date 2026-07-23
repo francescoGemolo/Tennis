@@ -144,3 +144,18 @@ select:focus-visible {
     animation: none !important;
   }
 }
+
+.site-signature {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 0.25rem);
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  letter-spacing: 0.02em;
+  color: var(--neutral-700);
+  opacity: 0.4;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 1;
+}

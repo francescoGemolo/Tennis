@@ -9,10 +9,10 @@ function isTrivialSequence(digits: string): boolean {
   return false;
 }
 
-export function isValidPhone(value: string, maxLength = 20): boolean {
+export function isValidPhone(value: string, maxLength = 10): boolean {
   const clean = sanitizePhone(value, maxLength);
   const digits = clean.replace(/\D/g, '');
-  if (digits.length < 8 || digits.length > 15) return false;
+  if (digits.length < 8 || digits.length > 10) return false;
   if (!/^\+?[0-9\s()-]+$/.test(clean)) return false;
   if (isTrivialSequence(digits)) return false;
   return true;
