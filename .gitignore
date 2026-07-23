@@ -16,10 +16,6 @@ dist-ssr
 .env
 .env.*.local
 
-# Claude
-.claude
-docs/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -31,4 +27,7 @@ docs/
 *.sln
 *.sw?
 
+# Claude
+.claude
+docs/
 Brief.txt
