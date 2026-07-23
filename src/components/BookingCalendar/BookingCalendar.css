@@ -73,6 +73,10 @@
   background: var(--neutral-600);
 }
 
+.legend-dot--partial {
+  background: var(--partial);
+}
+
 .calendar {
   flex: 1;
   min-height: 0;
@@ -140,4 +144,14 @@
   background: transparent;
   color: var(--neutral-700);
   cursor: not-allowed;
+}
+
+.calendar-day--partial {
+  background: color-mix(in srgb, var(--partial) 18%, transparent);
+  color: var(--partial);
+  cursor: pointer;
+}
+
+.calendar-day--partial:hover {
+  background: color-mix(in srgb, var(--partial) 30%, transparent);
 }

@@ -16,8 +16,10 @@ export function ConfirmationModal({ open, date, time, players, onClose }: Confir
   return (
     <div className="confirmation-overlay" role="dialog" aria-modal="true" aria-labelledby="confirmation-title">
       <div className="confirmation-modal">
+        <span className="confirmation-handle" aria-hidden="true" />
+
         <span className="confirmation-icon">
-          <Icon name="check" size={26} />
+          <Icon name="check" size={20} />
         </span>
 
         <h2 className="view-title" id="confirmation-title">Prenotazione confermata</h2>

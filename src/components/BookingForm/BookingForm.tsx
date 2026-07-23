@@ -1,7 +1,7 @@
 import { useRef, useState, type FormEvent } from 'react';
 import { BackButton } from '../common/BackButton';
 import { formatFullDate } from '../../data/calendar';
-import { MAX_PLAYERS, MIN_PLAYERS } from '../../data/constants';
+import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_PLAYERS, MAX_TEXT_LENGTH, MIN_PLAYERS } from '../../data/constants';
 import { sanitizePhone, sanitizeText } from '../../utils/sanitize';
 import type { BookingFormValues } from '../../types/booking';
 import './BookingForm.css';
@@ -28,9 +28,9 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
     // Campo honeypot: invisibile agli utenti reali, se compilato è un bot.
     if (honeypotRef.current?.value) return;
 
-    const cleanFirstName = sanitizeText(firstName, 40);
-    const cleanLastName = sanitizeText(lastName, 40);
-    const cleanPhone = sanitizePhone(phone);
+    const cleanFirstName = sanitizeText(firstName, MAX_TEXT_LENGTH);
+    const cleanLastName = sanitizeText(lastName, MAX_TEXT_LENGTH);
+    const cleanPhone = sanitizePhone(phone, MAX_PHONE_LENGTH);
     if (!cleanFirstName || !cleanLastName || !cleanPhone) return;
 
     setIsSubmitting(true);
@@ -53,7 +53,7 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
           <input
             ref={honeypotRef}
             type="text"
-            name="companyWebsite"
+            name={HONEYPOT_FIELD_NAME}
             className="honeypot-field"
             tabIndex={-1}
             autoComplete="off"
@@ -67,7 +67,7 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
                 id="firstName"
                 type="text"
                 autoComplete="given-name"
-                maxLength={40}
+                maxLength={MAX_TEXT_LENGTH}
                 required
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
@@ -79,7 +79,7 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
                 id="lastName"
                 type="text"
                 autoComplete="family-name"
-                maxLength={40}
+                maxLength={MAX_TEXT_LENGTH}
                 required
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
@@ -93,7 +93,7 @@ export function BookingForm({ date, time, onBack, onSubmit }: BookingFormProps) 
               id="phone"
               type="tel"
               autoComplete="tel"
-              maxLength={20}
+              maxLength={MAX_PHONE_LENGTH}
               required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}

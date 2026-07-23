@@ -6,6 +6,7 @@ import { BookingForm } from './components/BookingForm/BookingForm';
 import { ConfirmationModal } from './components/ConfirmationModal/ConfirmationModal';
 import { Contacts } from './components/Contacts/Contacts';
 import { saveBookingTemp } from './utils/storage';
+import { toDateKey } from './data/calendar';
 import type { BookingFormValues, ContactFormValues, ViewId } from './types/booking';
 import './App.css';
 
@@ -37,7 +38,7 @@ function App() {
     // Persistenza temporanea in localStorage, in attesa dell'integrazione
     // con un vero backend (es. Firebase). Vedi utils/storage.ts.
     saveBookingTemp({
-      date: selectedDate.toISOString(),
+      date: toDateKey(selectedDate),
       time: selectedTime,
       createdAt: new Date().toISOString(),
       ...values,

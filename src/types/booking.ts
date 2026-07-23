@@ -1,4 +1,4 @@
-export type DayStatus = 'free' | 'busy' | 'closed';
+export type DayStatus = 'free' | 'partial' | 'busy' | 'closed';
 
 export interface CalendarCell {
   date: Date | null;

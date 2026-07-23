@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Icon } from '../../icons/Icon';
 import { BackButton } from '../common/BackButton';
 import { formatFullDate, getTimeSlots } from '../../data/calendar';
+import { getStoredBookings } from '../../utils/storage';
 import './DateTimePicker.css';
 
 interface DateTimePickerProps {
@@ -11,7 +12,8 @@ interface DateTimePickerProps {
 }
 
 export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps) {
-  const slots = useMemo(() => getTimeSlots(date), [date]);
+  const bookings = useMemo(() => getStoredBookings(), []);
+  const slots = useMemo(() => getTimeSlots(date, bookings), [date, bookings]);
   const [selected, setSelected] = useState<string | null>(null);
 
   return (

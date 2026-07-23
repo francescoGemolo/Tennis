@@ -3,53 +3,61 @@
     inset: 0;
     z-index: 50;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    padding: calc(var(--safe-top) + var(--space-5)) calc(var(--safe-right) + var(--space-5)) calc(var(--safe-bottom) + var(--space-5)) calc(var(--safe-left) + var(--space-5));
     background: rgba(0, 0, 0, 0.4);
     animation: confirmation-fade 180ms ease-out;
 }
 
 .confirmation-modal {
     width: 100%;
-    max-width: 320px;
+    max-width: 480px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: var(--space-4);
-    padding: var(--space-7) var(--space-6);
-    border-radius: var(--radius-lg);
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-5) calc(var(--safe-bottom) + var(--space-5));
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
+    border-bottom: none;
     box-shadow: var(--shadow-lg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
-    animation: confirmation-scale-in 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: confirmation-slide-up 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.confirmation-handle {
+    width: 2.25rem;
+    height: 0.25rem;
+    border-radius: var(--radius-full);
+    background: rgba(245, 248, 250, 0.25);
+    margin-bottom: var(--space-1);
 }
 
 .confirmation-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3.25rem;
-    height: 3.25rem;
+    width: 2.5rem;
+    height: 2.5rem;
     border-radius: var(--radius-full);
     background: color-mix(in srgb, var(--success) 22%, transparent);
     color: var(--success);
 }
 
 .confirmation-subtitle {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
 }
 
 .confirmation-summary {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-1);
     margin: 0;
-    padding: var(--space-4);
+    padding: var(--space-3);
     border-radius: var(--radius-md);
     background: rgba(245, 248, 250, 0.06);
     border: var(--border-hairline);
@@ -88,15 +96,15 @@
     }
 }
 
-@keyframes confirmation-scale-in {
+@keyframes confirmation-slide-up {
     from {
         opacity: 0;
-        transform: scale(0.92) translateY(6px);
+        transform: translateY(100%);
     }
 
     to {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: translateY(0);
     }
 }
 

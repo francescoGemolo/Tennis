@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Icon } from '../../icons/Icon';
 import { BackButton } from '../common/BackButton';
 import { WEEKDAY_LABELS, formatMonthTitle, getMonthMatrix } from '../../data/calendar';
+import { getStoredBookings } from '../../utils/storage';
 import type { CalendarCell } from '../../types/booking';
 import './BookingCalendar.css';
 
@@ -14,8 +15,9 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
   const today = useMemo(() => new Date(), []);
   const [year, setYear] = useState(today.getFullYear());
   const [month, setMonth] = useState(today.getMonth());
+  const bookings = useMemo(() => getStoredBookings(), []);
 
-  const cells = useMemo(() => getMonthMatrix(year, month), [year, month]);
+  const cells = useMemo(() => getMonthMatrix(year, month, bookings), [year, month, bookings]);
   const isAtEarliestMonth = year === today.getFullYear() && month === today.getMonth();
 
   function goToMonth(delta: number) {
@@ -25,7 +27,8 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
   }
 
   function handleCellClick(cell: CalendarCell) {
-    if (!cell.date || cell.status !== 'free') return;
+    if (!cell.date) return;
+    if (cell.status !== 'free' && cell.status !== 'partial') return;
     onSelectDate(cell.date);
   }
 
@@ -54,6 +57,7 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
 
       <ul className="calendar-legend" aria-label="Legenda disponibilità">
         <li><span className="legend-dot legend-dot--free" aria-hidden="true" />Libero</li>
+        <li><span className="legend-dot legend-dot--partial" aria-hidden="true" />Parziale</li>
         <li><span className="legend-dot legend-dot--busy" aria-hidden="true" />Occupato</li>
         <li><span className="legend-dot legend-dot--closed" aria-hidden="true" />Chiuso</li>
       </ul>
@@ -73,13 +77,13 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
                 </li>
               );
             }
-            const isFree = cell.status === 'free';
+            const isSelectable = cell.status === 'free' || cell.status === 'partial';
             return (
               <li key={index}>
                 <button
                   className={`calendar-day calendar-day--${cell.status}`}
                   type="button"
-                  disabled={!isFree}
+                  disabled={!isSelectable}
                   onClick={() => handleCellClick(cell)}
                 >
                   <time dateTime={cell.date.toISOString().slice(0, 10)}>{cell.day}</time>
