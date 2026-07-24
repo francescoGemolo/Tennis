@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { InformationCircleIcon, AppleIcon, AndroidIcon } from '@hugeicons/core-free-icons';
+import { AiPhone01Icon, AppleIcon, AndroidIcon } from '@hugeicons/core-free-icons';
 import './InstallGuide.css';
 
 function isStandalone(): boolean {
@@ -21,7 +21,7 @@ export function InstallGuide() {
         aria-label="Come installare l'app"
         onClick={() => setOpen(true)}
       >
-        <HugeiconsIcon icon={InformationCircleIcon} size={20} strokeWidth={1.5} />
+        <HugeiconsIcon icon={AiPhone01Icon} size={20} strokeWidth={1.5} />
       </button>
 
       {open && (

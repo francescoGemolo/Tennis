@@ -3,7 +3,7 @@
   "short_name": "SL Admin",
   "description": "Gestione prenotazioni Circolo Tennis.",
   "lang": "it",
-  "start_url": "/Tennis/#admin",
+  "start_url": "/Tennis/admin",
   "scope": "/Tennis/",
   "display": "standalone",
   "background_color": "#0E1116",

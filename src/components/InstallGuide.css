@@ -7,17 +7,17 @@
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
-  border: var(--border-input);
+  border: var(--border-hairline);
   border-radius: var(--radius-full);
   background: transparent;
-  color: var(--neutral-300);
+  color: var(--accent);
   cursor: pointer;
   z-index: 2;
   transition: color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .install-guide-trigger:hover {
-  color: var(--neutral-50);
+  color: var(--accent);
   border-color: var(--accent);
 }
 
@@ -73,7 +73,7 @@
   padding: var(--space-4);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: var(--border-hairline);
 }
 
 .install-guide-step-os-icon {

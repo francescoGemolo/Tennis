@@ -17,15 +17,24 @@ interface Confirmation {
   details: ReactNode;
 }
 
+function isAdminLocation(): boolean {
+  const path = window.location.pathname.replace(import.meta.env.BASE_URL, '');
+  return path === 'admin' || path === 'admin/' || window.location.hash === '#admin';
+}
+
 function useIsAdminRoute(): boolean {
-  const [isAdminRoute, setIsAdminRoute] = useState(() => window.location.hash === '#admin');
+  const [isAdminRoute, setIsAdminRoute] = useState(isAdminLocation);
 
   useEffect(() => {
-    function handleHashChange() {
-      setIsAdminRoute(window.location.hash === '#admin');
+    function handleLocationChange() {
+      setIsAdminRoute(isAdminLocation());
     }
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+    return () => {
+      window.removeEventListener('hashchange', handleLocationChange);
+      window.removeEventListener('popstate', handleLocationChange);
+    };
   }, []);
 
   return isAdminRoute;
