@@ -1,11 +1,11 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Icon } from '../../icons/Icon';
-import { BackButton } from '../common/BackButton';
-import { formatFullDate } from '../../data/calendar';
-import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH, PRICE_PER_HOUR } from '../../data/constants';
-import { sanitizePhone, sanitizeText } from '../../utils/sanitize';
-import { isValidName, isValidPhone } from '../../utils/validation';
-import type { BookingFormValues, DurationHours } from '../../types/booking';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
+import { BackButton } from '../components/BackButton';
+import { formatFullDate } from '../calendar';
+import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH, PRICE_PER_HOUR } from '../config';
+import { isValidName, isValidPhone, sanitizePhone, sanitizeText } from '../validation';
+import type { BookingFormValues, DurationHours } from '../types';
 import './BookingForm.css';
 
 interface BookingFormProps {
@@ -71,7 +71,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
         <div className="card booking-summary">
           <span className="section-label">Prenotazione per</span>
           <span className="booking-summary-value">{ formatFullDate(date) } - { time } - { durationHours }h</span>
-          <span className="booking-summary-price">Totale: { totalPrice } €</span>
+          <span className="booking-summary-price">Totale: { totalPrice } € a persona</span>
         </div>
 
         <form className="card field-group" onSubmit={ handleSubmit }>
@@ -140,8 +140,8 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
           { submitError && <p className="form-error" role="alert">{ submitError }</p> }
 
           <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
-            { !isSubmitting && <Icon name="check" size={ 16 } className="icon-primary" /> }
-            { isSubmitting ? 'Invio in corso…' : 'Invia prenotazione' }
+            { !isSubmitting && <HugeiconsIcon icon={ ArrowBigRightDashIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" /> }
+            { isSubmitting ? 'Invio in corso…' : 'Conferma prenotazione' }
           </button>
         </form>
       </div>

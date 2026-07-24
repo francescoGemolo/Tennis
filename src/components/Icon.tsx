@@ -1,4 +1,4 @@
-import { ICONS, type IconName } from './paths';
+import { ICONS, type IconName } from './icon-paths';
 
 interface IconProps {
   name: IconName;

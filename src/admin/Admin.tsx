@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
-import { subscribeToAuth } from '../../services/auth';
+import { subscribeToAuth } from '../services/auth';
 import { AdminLogin } from './AdminLogin';
 import { AdminDashboard } from './AdminDashboard';
 import './Admin.css';

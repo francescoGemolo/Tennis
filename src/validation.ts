@@ -1,4 +1,14 @@
-import { sanitizePhone, sanitizeText } from './sanitize';
+export function sanitizeText(value: string, maxLength = 60): string {
+  return value
+    .replace(/[<>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, maxLength);
+}
+
+export function sanitizePhone(value: string, maxLength = 20): string {
+  return value.replace(/[^0-9+\s()-]/g, '').trim().slice(0, maxLength);
+}
 
 const ASCENDING_DIGITS = '0123456789';
 const DESCENDING_DIGITS = '9876543210';
@@ -9,10 +19,10 @@ function isTrivialSequence(digits: string): boolean {
   return false;
 }
 
-export function isValidPhone(value: string, maxLength = 10): boolean {
+export function isValidPhone(value: string, maxLength = 20): boolean {
   const clean = sanitizePhone(value, maxLength);
   const digits = clean.replace(/\D/g, '');
-  if (digits.length < 8 || digits.length > 10) return false;
+  if (digits.length < 8 || digits.length > 15) return false;
   if (!/^\+?[0-9\s()-]+$/.test(clean)) return false;
   if (isTrivialSequence(digits)) return false;
   return true;

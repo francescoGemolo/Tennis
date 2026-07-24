@@ -64,7 +64,7 @@
   --transition-fast: 150ms ease;
   --transition-normal: 240ms ease;
 
-  --border-hairline: 1px solid var(--neutral-700);
+  --border-hairline: 1px solid var(--neutral-800);
 
   --glass-bg: rgba(245, 248, 250, 0.08);
   --glass-border: rgba(245, 248, 250, 0.18);
@@ -143,19 +143,4 @@ select:focus-visible {
     transition: none !important;
     animation: none !important;
   }
-}
-
-.site-signature {
-  position: fixed;
-  left: 50%;
-  bottom: calc(var(--safe-bottom) + 0.25rem);
-  transform: translateX(-50%);
-  font-size: 0.55rem;
-  letter-spacing: 0.02em;
-  color: var(--neutral-700);
-  opacity: 0.4;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-  z-index: 1;
 }

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Delete02Icon } from '@hugeicons/core-free-icons';
-import { cancelBooking, fetchAllBookings } from '../../services/bookings';
-import { signOutAdmin } from '../../services/auth';
-import type { AdminBooking } from '../../types/booking';
+import { Delete02Icon, Download04Icon } from '@hugeicons/core-free-icons';
+import { cancelBooking, fetchAllBookings } from '../services/bookings';
+import { signOutAdmin } from '../services/auth';
+import type { AdminBooking } from '../types';
 import './Admin.css';
 
 export function AdminDashboard() {
@@ -11,8 +11,6 @@ export function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [dateFrom, setDateFrom] = useState('');
-  const [dateTo, setDateTo] = useState('');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,17 +31,13 @@ export function AdminDashboard() {
   }
 
   const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return bookings;
     return bookings.filter((b) => {
-      if (dateFrom && b.date < dateFrom) return false;
-      if (dateTo && b.date > dateTo) return false;
-      if (search) {
-        const q = search.trim().toLowerCase();
-        const name = `${b.firstName} ${b.lastName}`.toLowerCase();
-        if (!name.includes(q) && !b.phone.includes(q)) return false;
-      }
-      return true;
+      const name = `${b.firstName} ${b.lastName}`.toLowerCase();
+      return name.includes(q) || b.phone.includes(q);
     });
-  }, [bookings, search, dateFrom, dateTo]);
+  }, [bookings, search]);
 
   async function handleCancel(booking: AdminBooking) {
     if (!window.confirm(`Cancellare la prenotazione di ${booking.firstName} ${booking.lastName} (${booking.date} ${booking.time})?`)) return;
@@ -78,7 +72,7 @@ export function AdminDashboard() {
     <section className="view admin-dashboard" aria-labelledby="admin-dashboard-title">
       <div className="admin-dashboard-header">
         <h2 className="view-title" id="admin-dashboard-title">Prenotazioni</h2>
-        <button type="button" className="btn-ghost" onClick={ signOutAdmin }>Esci</button>
+        <button type="button" className="btn-ghost" onClick={signOutAdmin}>Esci</button>
       </div>
 
       <div className="admin-toolbar">
@@ -86,19 +80,23 @@ export function AdminDashboard() {
           type="text"
           className="admin-input"
           placeholder="Cerca cliente o telefono"
-          value={ search }
-          onChange={ (e) => setSearch(e.target.value) }
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <button type="button" className="icon-cta cta-primary admin-toolbar-btn" onClick={ handleExportCsv } disabled={ filtered.length === 0 }>
-          Esporta CSV
+        <button
+          type="button"
+          className="admin-icon-btn"
+          aria-label="Esporta CSV"
+          onClick={handleExportCsv}
+          disabled={filtered.length === 0}
+        >
+          <HugeiconsIcon icon={Download04Icon} size={20} strokeWidth={1.5} />
         </button>
-        <input type="date" className="admin-input" value={ dateFrom } onChange={ (e) => setDateFrom(e.target.value) } />
-        <input type="date" className="admin-input" value={ dateTo } onChange={ (e) => setDateTo(e.target.value) } />
       </div>
 
-      { error && <p className="form-error" role="alert">{ error }</p> }
+      {error && <p className="form-error" role="alert">{error}</p>}
 
-      { isLoading ? (
+      {isLoading ? (
         <p className="section-label">Caricamento…</p>
       ) : filtered.length === 0 ? (
         <p className="section-label">Nessuna prenotazione trovata.</p>
@@ -117,68 +115,68 @@ export function AdminDashboard() {
                 </tr>
               </thead>
               <tbody>
-                { filtered.map((b) => (
-                  <tr key={ b.id }>
-                    <td>{ b.date }</td>
-                    <td>{ b.time }</td>
-                    <td>{ b.durationHours }h</td>
-                    <td>{ b.firstName } { b.lastName }</td>
-                    <td>{ b.phone }</td>
+                {filtered.map((b) => (
+                  <tr key={b.id}>
+                    <td>{b.date}</td>
+                    <td>{b.time}</td>
+                    <td>{b.durationHours}h</td>
+                    <td>{b.firstName} {b.lastName}</td>
+                    <td>{b.phone}</td>
                     <td>
                       <button
                         type="button"
                         className="admin-delete-btn"
-                        disabled={ deletingId === b.id }
-                        aria-label={ `Elimina prenotazione di ${b.firstName} ${b.lastName}` }
-                        onClick={ () => handleCancel(b) }
+                        disabled={deletingId === b.id}
+                        aria-label={`Elimina prenotazione di ${b.firstName} ${b.lastName}`}
+                        onClick={() => handleCancel(b)}
                       >
-                        <HugeiconsIcon icon={ Delete02Icon } size={ 18 } strokeWidth={ 1.5 } />
+                        <HugeiconsIcon icon={Delete02Icon} size={18} strokeWidth={1.5} />
                       </button>
                     </td>
                   </tr>
-                )) }
+                ))}
               </tbody>
             </table>
           </div>
 
           <ul className="admin-cards">
-            { filtered.map((b) => (
-              <li className="admin-card" key={ b.id }>
+            {filtered.map((b) => (
+              <li className="admin-card" key={b.id}>
                 <div className="admin-card-header">
-                  <span className="admin-card-name">{ b.firstName } { b.lastName }</span>
+                  <span className="admin-card-name">{b.firstName} {b.lastName}</span>
                   <button
                     type="button"
                     className="admin-delete-btn"
-                    disabled={ deletingId === b.id }
-                    aria-label={ `Elimina prenotazione di ${b.firstName} ${b.lastName}` }
-                    onClick={ () => handleCancel(b) }
+                    disabled={deletingId === b.id}
+                    aria-label={`Elimina prenotazione di ${b.firstName} ${b.lastName}`}
+                    onClick={() => handleCancel(b)}
                   >
-                    <HugeiconsIcon icon={ Delete02Icon } size={ 20 } strokeWidth={ 1.5 } />
+                    <HugeiconsIcon icon={Delete02Icon} size={20} strokeWidth={1.5} />
                   </button>
                 </div>
                 <dl className="admin-card-body">
                   <div className="admin-card-row">
                     <dt>Data</dt>
-                    <dd>{ b.date }</dd>
+                    <dd>{b.date}</dd>
                   </div>
                   <div className="admin-card-row">
                     <dt>Ora</dt>
-                    <dd>{ b.time }</dd>
+                    <dd>{b.time}</dd>
                   </div>
                   <div className="admin-card-row">
                     <dt>Durata</dt>
-                    <dd>{ b.durationHours }h</dd>
+                    <dd>{b.durationHours}h</dd>
                   </div>
                   <div className="admin-card-row">
                     <dt>Telefono</dt>
-                    <dd>{ b.phone }</dd>
+                    <dd>{b.phone}</dd>
                   </div>
                 </dl>
               </li>
-            )) }
+            ))}
           </ul>
         </>
-      ) }
+      )}
     </section>
   );
 }

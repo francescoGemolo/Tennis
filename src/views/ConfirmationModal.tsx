@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Icon } from '../../icons/Icon';
-import { formatFullDate } from '../../data/calendar';
-import { PRICE_PER_HOUR } from '../../data/constants';
-import type { DurationHours } from '../../types/booking';
+import { useEffect, useState } from 'react';
+import { Icon } from '../components/Icon';
+import { formatFullDate } from '../calendar';
+import { PRICE_PER_HOUR } from '../config';
+import type { DurationHours } from '../types';
 import './ConfirmationModal.css';
 
 interface ConfirmationModalProps {
@@ -15,6 +15,19 @@ interface ConfirmationModalProps {
 
 export function ConfirmationModal({ open, date, time, durationHours, onClose }: ConfirmationModalProps) {
   const [closing, setClosing] = useState(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(() => {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        onClose();
+      } else {
+        setClosing(true);
+      }
+    }, 4000);
+    return () => clearTimeout(timer);
+  }, [open, onClose]);
 
   if (!open) return null;
 

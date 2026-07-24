@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Icon } from '../../icons/Icon';
-import { BackButton } from '../common/BackButton';
-import { formatFullDate, getTimeSlots, toDateKey } from '../../data/calendar';
-import { fetchBookingsForDate } from '../../services/bookings';
-import type { AvailabilityRecord, DurationHours } from '../../types/booking';
+import { Icon } from '../components/Icon';
+import { BackButton } from '../components/BackButton';
+import { formatFullDate, getTimeSlots, toDateKey } from '../calendar';
+import { fetchBookingsForDate } from '../services/bookings';
+import type { AvailabilityRecord, DurationHours } from '../types';
 import './DateTimePicker.css';
 
 interface DateTimePickerProps {

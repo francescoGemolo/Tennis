@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Icon } from '../../icons/Icon';
-import { BackButton } from '../common/BackButton';
-import { WEEKDAY_LABELS, formatMonthTitle, getMonthMatrix, toDateKey } from '../../data/calendar';
-import { fetchBookingsForMonth } from '../../services/bookings';
-import type { AvailabilityRecord, CalendarCell } from '../../types/booking';
+import { Icon } from '../components/Icon';
+import { BackButton } from '../components/BackButton';
+import { WEEKDAY_LABELS, formatMonthTitle, getMonthMatrix, toDateKey } from '../calendar';
+import { fetchBookingsForMonth } from '../services/bookings';
+import type { AvailabilityRecord, CalendarCell } from '../types';
 import './BookingCalendar.css';
 
 interface BookingCalendarProps {

@@ -16,7 +16,7 @@
 .contact-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .contact-item {
@@ -57,7 +57,7 @@
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .field {

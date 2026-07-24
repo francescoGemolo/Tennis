@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Hero } from './components/Hero/Hero';
-import { BookingCalendar } from './components/BookingCalendar/BookingCalendar';
-import { DateTimePicker } from './components/DateTimePicker/DateTimePicker';
-import { BookingForm } from './components/BookingForm/BookingForm';
-import { ConfirmationModal } from './components/ConfirmationModal/ConfirmationModal';
-import { Contacts } from './components/Contacts/Contacts';
-import { Admin } from './components/Admin/Admin';
+import { Hero } from './views/Hero';
+import { BookingCalendar } from './views/BookingCalendar';
+import { DateTimePicker } from './views/DateTimePicker';
+import { BookingForm } from './views/BookingForm';
+import { ConfirmationModal } from './views/ConfirmationModal';
+import { Contacts } from './views/Contacts';
+import { Admin } from './admin/Admin';
 import { createBooking, createMessage } from './services/bookings';
-import { toDateKey } from './data/calendar';
-import type { BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types/booking';
+import { toDateKey } from './calendar';
+import type { BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types';
 import './App.css';
 
 interface ConfirmedBooking {
@@ -66,10 +66,6 @@ function App() {
 
   function handleConfirmationClose() {
     setConfirmedBooking(null);
-    setSelectedDate(null);
-    setSelectedTime(null);
-    setSelectedDuration(null);
-    setView('welcome');
   }
 
   async function handleContactSubmit(values: ContactFormValues) {

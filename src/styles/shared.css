@@ -108,7 +108,7 @@
   background: var(--neutral-900);
   border: var(--border-hairline);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-6);
 }
 
 .view-title {

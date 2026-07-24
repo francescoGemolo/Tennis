@@ -1,5 +1,5 @@
-import { CLOSING_MINUTES, OPENING_MINUTES, SLOT_DURATION_MINUTES } from './constants';
-import type { AvailabilityRecord, CalendarCell, DayStatus, DurationHours, TimeSlot } from '../types/booking';
+import { CLOSING_MINUTES, OPENING_MINUTES, SLOT_DURATION_MINUTES } from './config';
+import type { AvailabilityRecord, CalendarCell, DayStatus, DurationHours, TimeSlot } from './types';
 
 export const WEEKDAY_LABELS = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
 

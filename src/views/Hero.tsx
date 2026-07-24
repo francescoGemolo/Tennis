@@ -1,7 +1,7 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { TennisBallIcon } from '@hugeicons/core-free-icons';
-import { Icon } from '../../icons/Icon';
-import { BADGE_NAME, HERO_SUBTITLE, HERO_TITLE } from '../../data/content';
+import { Icon } from '../components/Icon';
+import { BADGE_NAME, HERO_SUBTITLE, HERO_TITLE } from '../config';
 import './Hero.css';
 
 interface HeroProps {
@@ -27,6 +27,7 @@ export function Hero({ onBook, onContact }: HeroProps) {
           Contatti
         </button>
       </nav>
+      <span className="site-signature" aria-hidden="true">made by Gemolo</span>
     </section>
   );
 }

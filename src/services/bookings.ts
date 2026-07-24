@@ -1,7 +1,7 @@
 import { addDoc, collection, doc, getDocs, query, runTransaction, where, writeBatch } from 'firebase/firestore';
-import { db } from '../lib/firebase';
-import { getOccupiedTimes } from '../data/calendar';
-import type { AdminBooking, AvailabilityRecord, BookingFormValues, ContactFormValues, DurationHours } from '../types/booking';
+import { db } from './firebase';
+import { getOccupiedTimes } from '../calendar';
+import type { AdminBooking, AvailabilityRecord, BookingFormValues, ContactFormValues, DurationHours } from '../types';
 
 const AVAILABILITY_COLLECTION = 'availability';
 const BOOKINGS_COLLECTION = 'bookings';

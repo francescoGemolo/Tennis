@@ -1,11 +1,9 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Icon } from '../../icons/Icon';
-import { BackButton } from '../common/BackButton';
-import { sanitizeText } from '../../utils/sanitize';
-import { isValidName } from '../../utils/validation';
-import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF } from '../../data/content';
-import { HONEYPOT_FIELD_NAME, MAX_MESSAGE_LENGTH, MAX_TEXT_LENGTH } from '../../data/constants';
-import type { ContactFormValues } from '../../types/booking';
+import { Icon } from '../components/Icon';
+import { BackButton } from '../components/BackButton';
+import { isValidName, sanitizeText } from '../validation';
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF, HONEYPOT_FIELD_NAME, MAX_MESSAGE_LENGTH, MAX_TEXT_LENGTH } from '../config';
+import type { ContactFormValues } from '../types';
 import './Contacts.css';
 
 interface ContactsProps {

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { signIn } from '../../services/auth';
+import { signIn } from '../services/auth';
 import './Admin.css';
 
 export function AdminLogin() {

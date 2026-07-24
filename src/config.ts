@@ -1,0 +1,19 @@
+export const OPENING_MINUTES = 9 * 60;
+export const CLOSING_MINUTES = 22 * 60;
+export const SLOT_DURATION_MINUTES = 60;
+
+export const PRICE_PER_HOUR = 2.5;
+
+export const HONEYPOT_FIELD_NAME = 'companyWebsite';
+
+export const MAX_TEXT_LENGTH = 40;
+export const MAX_PHONE_LENGTH = 10;
+export const MAX_MESSAGE_LENGTH = 200;
+
+export const BADGE_NAME = 'Prenotazione rapida';
+export const HERO_TITLE = 'Tennis Salandra';
+export const HERO_SUBTITLE = 'Prenota il campo online e scendi in gioco.';
+
+export const CONTACT_PHONE_DISPLAY = '+39 348 462 5219';
+export const CONTACT_PHONE_HREF = '+393484625219';
+export const CONTACT_EMAIL = 'mariodanzi99@gmail.com';
