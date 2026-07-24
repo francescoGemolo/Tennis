@@ -1,6 +1,6 @@
 {
-  "name": "SL Admin",
-  "short_name": "Admin",
+  "name": "Salandra Admin",
+  "short_name": "SL Admin",
   "description": "Gestione prenotazioni Circolo Tennis.",
   "lang": "it",
   "start_url": "/Tennis/#admin",

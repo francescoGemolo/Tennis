@@ -10,8 +10,8 @@ export default defineConfig({
       injectRegister: false,
       includeAssets: ['icons/apple-touch-icon.png'],
       manifest: {
-        name: 'SL Tennis',
-        short_name: 'Tennis',
+        name: 'Salandra Tennis',
+        short_name: 'SL Tennis',
         description: 'Prenota il tuo turno al Circolo Tennis in pochi tocchi.',
         lang: 'it',
         start_url: '/Tennis/',
