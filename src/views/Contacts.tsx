@@ -106,7 +106,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
             <textarea
               id="message"
               name="message"
-              rows={ 4 }
+              rows={ 3 }
               maxLength={ MAX_MESSAGE_LENGTH }
               required
               aria-invalid={ errors.message }

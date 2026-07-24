@@ -1,19 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Icon } from '../components/Icon';
-import { formatFullDate } from '../calendar';
-import { PRICE_PER_HOUR } from '../config';
-import type { DurationHours } from '../types';
 import './ConfirmationModal.css';
 
 interface ConfirmationModalProps {
   open: boolean;
-  date: Date;
-  time: string;
-  durationHours: DurationHours;
+  title: string;
+  details: ReactNode;
   onClose: () => void;
 }
 
-export function ConfirmationModal({ open, date, time, durationHours, onClose }: ConfirmationModalProps) {
+export function ConfirmationModal({ open, title, details, onClose }: ConfirmationModalProps) {
   const [closing, setClosing] = useState(false);
 
   useEffect(() => {
@@ -30,8 +26,6 @@ export function ConfirmationModal({ open, date, time, durationHours, onClose }: 
   }, [open, onClose]);
 
   if (!open) return null;
-
-  const totalPrice = durationHours * PRICE_PER_HOUR;
 
   function handleDoneClick() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -54,25 +48,23 @@ export function ConfirmationModal({ open, date, time, durationHours, onClose }: 
       aria-labelledby="confirmation-title"
     >
       <div
-        className={ `confirmation-banner${closing ? ' confirmation-banner--closing' : ''}` }
-        onAnimationEnd={ handleAnimationEnd }
+        className={`confirmation-banner${closing ? ' confirmation-banner--closing' : ''}`}
+        onAnimationEnd={handleAnimationEnd}
       >
         <div className="confirmation-content">
           <span className="confirmation-icon" aria-hidden="true">
-            <Icon name="check" size={ 18 } />
+            <Icon name="check" size={18} />
           </span>
 
           <div className="confirmation-text">
             <h2 className="confirmation-title" id="confirmation-title">
-              Prenotazione confermata
+              {title}
             </h2>
-            <p className="confirmation-details">
-              <span>{ formatFullDate(date) }</span> - <span className="confirmation-mono">{ time }</span> - <span className="confirmation-mono">{ durationHours }h · { totalPrice } €</span>
-            </p>
+            <p className="confirmation-details">{details}</p>
           </div>
         </div>
 
-        <button className="confirmation-done-btn" type="button" onClick={ handleDoneClick }>
+        <button className="confirmation-done-btn" type="button" onClick={handleDoneClick}>
           Fatto
         </button>
       </div>

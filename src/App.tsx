@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Hero } from './views/Hero';
 import { BookingCalendar } from './views/BookingCalendar';
 import { DateTimePicker } from './views/DateTimePicker';
@@ -7,14 +7,14 @@ import { ConfirmationModal } from './views/ConfirmationModal';
 import { Contacts } from './views/Contacts';
 import { Admin } from './admin/Admin';
 import { createBooking, createMessage } from './services/bookings';
-import { toDateKey } from './calendar';
+import { formatFullDate, toDateKey } from './calendar';
+import { PRICE_PER_HOUR } from './config';
 import type { BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types';
 import './App.css';
 
-interface ConfirmedBooking {
-  date: Date;
-  time: string;
-  durationHours: DurationHours;
+interface Confirmation {
+  title: string;
+  details: ReactNode;
 }
 
 function useIsAdminRoute(): boolean {
@@ -37,7 +37,7 @@ function App() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedDuration, setSelectedDuration] = useState<DurationHours | null>(null);
-  const [confirmedBooking, setConfirmedBooking] = useState<ConfirmedBooking | null>(null);
+  const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
 
   function handleSelectDate(date: Date) {
     setSelectedDate(date);
@@ -60,16 +60,28 @@ function App() {
       ...values,
     });
 
-    setConfirmedBooking({ date: selectedDate, time: selectedTime, durationHours: selectedDuration });
+    const totalPrice = selectedDuration * PRICE_PER_HOUR;
+    setConfirmation({
+      title: 'Prenotazione confermata',
+      details: (
+        <>
+          {formatFullDate(selectedDate)} - <span className="confirmation-mono">{selectedTime}</span> - <span className="confirmation-mono">{selectedDuration}h · {totalPrice} €</span>
+        </>
+      ),
+    });
     setView('welcome');
   }
 
   function handleConfirmationClose() {
-    setConfirmedBooking(null);
+    setConfirmation(null);
   }
 
   async function handleContactSubmit(values: ContactFormValues) {
     await createMessage(values);
+    setConfirmation({
+      title: 'Messaggio inviato',
+      details: 'Ti risponderemo il prima possibile.',
+    });
     setView('welcome');
   }
 
@@ -109,12 +121,11 @@ function App() {
         <Contacts onBack={ () => setView('welcome') } onSubmit={ handleContactSubmit } />
       ) }
 
-      { confirmedBooking && (
+      { confirmation && (
         <ConfirmationModal
           open
-          date={ confirmedBooking.date }
-          time={ confirmedBooking.time }
-          durationHours={ confirmedBooking.durationHours }
+          title={ confirmation.title }
+          details={ confirmation.details }
           onClose={ handleConfirmationClose }
         />
       ) }

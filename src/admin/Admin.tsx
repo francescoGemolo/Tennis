@@ -10,6 +10,11 @@ export function Admin() {
 
   useEffect(() => subscribeToAuth(setUser), []);
 
+  useEffect(() => {
+    document.body.classList.add('admin-mode');
+    return () => document.body.classList.remove('admin-mode');
+  }, []);
+
   if (user === undefined) return null;
 
   return (

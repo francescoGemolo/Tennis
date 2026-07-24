@@ -1,7 +1,12 @@
+body.admin-mode {
+  height: auto;
+  overflow: auto;
+}
+
 .admin-app {
   max-width: 900px;
   margin: 0 auto;
-  height: 100%;
+  min-height: 100dvh;
 }
 
 .admin-login {
@@ -16,6 +21,10 @@
 }
 
 .admin-dashboard {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+  padding: var(--space-4) var(--space-5);
   gap: var(--space-4);
 }
 
@@ -80,9 +89,7 @@
 }
 
 .admin-table-wrap {
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
+  overflow-x: auto;
   border: var(--border-hairline);
   border-radius: var(--radius-lg);
 }
@@ -152,13 +159,6 @@
 }
 
 @media (max-width: 767px) {
-  .admin-dashboard {
-    height: auto;
-    min-height: 100dvh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
   .admin-table-wrap {
     display: none;
   }
@@ -167,9 +167,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-    flex: none;
-    min-height: 0;
-    overflow-y: visible;
   }
 
   .admin-card {
