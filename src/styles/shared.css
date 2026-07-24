@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  min-height: 3rem;
   border: none;
   border-radius: var(--radius-full);
   padding: var(--space-3) var(--space-5);
@@ -62,19 +61,6 @@
   color: var(--neutral-50);
 }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: transparent;
-  color: inherit;
-  font-size: var(--font-size-md);
-  font-weight: 500;
-  cursor: pointer;
-  padding: 0;
-}
-
 .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -90,18 +76,6 @@
 
 .btn-ghost:hover {
   color: var(--neutral-50);
-}
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
 
 .card {
@@ -125,53 +99,43 @@
   color: var(--neutral-500);
 }
 
-.stepper {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: var(--border-hairline);
-  border-radius: var(--radius-md);
-  padding: var(--space-2);
-  background: var(--neutral-800);
-}
-
-.stepper-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: var(--neutral-700);
-  color: var(--neutral-50);
-  font-size: var(--font-size-lg);
-  line-height: 1;
-  cursor: pointer;
-  transition: background-color var(--transition-fast), opacity var(--transition-fast);
-}
-
-.stepper-btn:hover:not(:disabled) {
-  background: var(--neutral-600);
-}
-
-.stepper-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.stepper-value {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-md);
-  min-width: 2ch;
-  text-align: center;
-}
-
 .view-header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-5);
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.field label {
+  font-size: var(--font-size-sm);
+  color: var(--neutral-300);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: var(--border-input);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  background: var(--neutral-800);
+  color: var(--neutral-50);
+  font-family: inherit;
+  font-size: var(--font-size-md);
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--accent);
 }
 
 .field--invalid input,

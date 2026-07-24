@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Icon } from '../components/Icon';
 import { BackButton } from '../components/BackButton';
 import { formatFullDate, getTimeSlots, toDateKey } from '../calendar';
 import { fetchBookingsForDate } from '../services/bookings';
@@ -100,7 +99,6 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
         onClick={ () => selected && onConfirm(selected, duration) }
       >
         Continua
-        <Icon name="arrowRight" size={ 16 } className="icon-primary" />
       </button>
     </section>
   );

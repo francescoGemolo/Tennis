@@ -104,8 +104,3 @@
   width: 100%;
   flex-shrink: 0;
 }
-
-.datetime-confirm:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}

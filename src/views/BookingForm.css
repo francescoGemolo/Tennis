@@ -38,9 +38,7 @@
     font-size: var(--font-size-sm);
 }
 
-.field-group {
-    display: flex;
-    flex-direction: column;
+.booking-form .field-group {
     gap: var(--space-5);
 }
 
@@ -58,25 +56,4 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
-}
-
-.field label,
-.field span:first-child {
-    font-size: var(--font-size-sm);
-    color: var(--neutral-300);
-}
-
-.field input {
-    border: var(--border-hairline);
-    border-radius: var(--radius-md);
-    padding: var(--space-3);
-    background: var(--neutral-800);
-    color: var(--neutral-50);
-    font-family: inherit;
-    font-size: var(--font-size-md);
-    width: 100%;
-}
-
-.field input:focus {
-    border-color: var(--accent);
 }

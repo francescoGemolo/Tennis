@@ -1,5 +1,6 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Icon } from '../components/Icon';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowBigRightDashIcon, CallIcon, Mail01Icon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
 import { isValidName, sanitizeText } from '../validation';
 import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF, HONEYPOT_FIELD_NAME, MAX_MESSAGE_LENGTH, MAX_TEXT_LENGTH } from '../config';
@@ -59,14 +60,14 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
       <div className="contacts-scroll">
         <div className="card contact-list">
           <div className="contact-item">
-            <span className="contact-icon"><Icon name="phone" size={ 18 } /></span>
+            <span className="contact-icon"><HugeiconsIcon icon={ CallIcon } size={ 18 } strokeWidth={ 1.5 } /></span>
             <address>
               <span className="section-label">Telefono</span>
               <a className="contact-value" href={ `tel:${CONTACT_PHONE_HREF}` }>{ CONTACT_PHONE_DISPLAY }</a>
             </address>
           </div>
           <div className="contact-item">
-            <span className="contact-icon"><Icon name="mail" size={ 18 } /></span>
+            <span className="contact-icon"><HugeiconsIcon icon={ Mail01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
             <address>
               <span className="section-label">Email</span>
               <a className="contact-value" href={ `mailto:${CONTACT_EMAIL}` }>{ CONTACT_EMAIL }</a>
@@ -119,7 +120,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
           </div>
           { submitError && <p className="form-error" role="alert">{ submitError }</p> }
           <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
-            { !isSubmitting && <Icon name="sent" size={ 16 } className="icon-primary" /> }
+            { !isSubmitting && <HugeiconsIcon icon={ ArrowBigRightDashIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" /> }
             { isSubmitting ? 'Invio in corso…' : 'Invia' }
           </button>
         </form>

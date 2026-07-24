@@ -1,6 +1,5 @@
 import { HugeiconsIcon } from '@hugeicons/react';
-import { TennisBallIcon } from '@hugeicons/core-free-icons';
-import { Icon } from '../components/Icon';
+import { Message01Icon, TennisBallIcon } from '@hugeicons/core-free-icons';
 import { BADGE_NAME, HERO_SUBTITLE, HERO_TITLE } from '../config';
 import './Hero.css';
 
@@ -23,7 +22,7 @@ export function Hero({ onBook, onContact }: HeroProps) {
           Prenota
         </button>
         <button className="icon-cta cta-secondary" type="button" onClick={ onContact }>
-          <Icon name="message" size={ 16 } className="icon-secondary" />
+          <HugeiconsIcon icon={ Message01Icon } size={ 16 } strokeWidth={ 1.5 } className="icon-secondary" />
           Contatti
         </button>
       </nav>

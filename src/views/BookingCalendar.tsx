@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Icon } from '../components/Icon';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
 import { WEEKDAY_LABELS, formatMonthTitle, getMonthMatrix, toDateKey } from '../calendar';
 import { fetchBookingsForMonth } from '../services/bookings';
@@ -62,11 +63,11 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
           disabled={ isAtEarliestMonth }
           onClick={ () => goToMonth(-1) }
         >
-          <Icon name="arrowLeft" size={ 18 } />
+          <HugeiconsIcon icon={ ArrowLeft01Icon } size={ 18 } strokeWidth={ 1.5 } />
         </button>
         <h2 id="booking-title" className="view-title month-switcher-title">{ formatMonthTitle(year, month) }</h2>
         <button className="month-nav-btn" type="button" aria-label="Mese successivo" onClick={ () => goToMonth(1) }>
-          <Icon name="arrowRight" size={ 18 } />
+          <HugeiconsIcon icon={ ArrowRight01Icon } size={ 18 } strokeWidth={ 1.5 } />
         </button>
       </nav>
 

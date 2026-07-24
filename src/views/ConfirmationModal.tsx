@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Icon } from '../components/Icon';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Tick02Icon } from '@hugeicons/core-free-icons';
 import './ConfirmationModal.css';
 
 interface ConfirmationModalProps {
@@ -53,7 +54,7 @@ export function ConfirmationModal({ open, title, details, onClose }: Confirmatio
       >
         <div className="confirmation-content">
           <span className="confirmation-icon" aria-hidden="true">
-            <Icon name="check" size={18} />
+            <HugeiconsIcon icon={Tick02Icon} size={18} strokeWidth={1.5} />
           </span>
 
           <div className="confirmation-text">
