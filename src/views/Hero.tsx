@@ -1,5 +1,6 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Message01Icon, TennisBallIcon } from '@hugeicons/core-free-icons';
+import { InstallGuide } from '../components/InstallGuide';
 import { BADGE_NAME, HERO_SUBTITLE, HERO_TITLE } from '../config';
 import './Hero.css';
 
@@ -11,6 +12,7 @@ interface HeroProps {
 export function Hero({ onBook, onContact }: HeroProps) {
   return (
     <section className="view hero" aria-labelledby="welcome-title">
+      <InstallGuide />
       <div className="hero-content">
         <span className="eyebrow">{ BADGE_NAME }</span>
         <h1 id="welcome-title">{ HERO_TITLE }</h1>

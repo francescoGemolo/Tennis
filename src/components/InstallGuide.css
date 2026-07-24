@@ -1,0 +1,99 @@
+.install-guide-trigger {
+  position: fixed;
+  top: calc(var(--safe-top) + var(--space-4));
+  right: calc(var(--safe-right) + var(--space-5));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: var(--border-input);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--neutral-300);
+  cursor: pointer;
+  z-index: 2;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.install-guide-trigger:hover {
+  color: var(--neutral-50);
+  border-color: var(--accent);
+}
+
+.install-guide-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background: rgba(14, 17, 22, 0.7);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 50;
+}
+
+.install-guide-panel {
+  width: 100%;
+  max-width: 440px;
+  background: var(--neutral-900);
+  border: var(--border-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.install-guide-title {
+  font-size: var(--font-size-lg);
+}
+
+.install-guide-intro {
+  font-size: var(--font-size-sm);
+  color: var(--neutral-400);
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.install-guide-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.install-guide-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.install-guide-step-os-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.install-guide-step-text {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--neutral-300);
+  margin: 0;
+  max-width: 320px;
+}
+
+.install-guide-step-text strong {
+  color: var(--neutral-50);
+}
+
+.install-guide-close {
+  width: 100%;
+  margin-top: var(--space-2);
+}
