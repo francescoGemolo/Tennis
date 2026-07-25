@@ -64,7 +64,7 @@
   --transition-fast: 150ms ease;
   --transition-normal: 240ms ease;
 
-  --border-hairline: 1px solid var(--neutral-800);
+  --border-hairline: 1px solid var(--neutral-700);
 
   --glass-bg: rgba(245, 248, 250, 0.08);
   --glass-border: rgba(245, 248, 250, 0.18);

@@ -54,9 +54,11 @@ export function Account({ account, onBack }: AccountProps) {
         <ul className="account-stats">
           { stats.map((stat) => (
             <li className="card account-stat" key={ stat.label }>
-              <HugeiconsIcon icon={ stat.icon } size={ 16 } strokeWidth={ 1.5 } className="account-stat-icon" />
+              <span className="account-stat-icon">
+                <HugeiconsIcon icon={ stat.icon } size={ 16 } strokeWidth={ 1.5 } />
+              </span>
+              <span className="section-label account-stat-label">{ stat.label }</span>
               <span className="account-stat-value">{ stat.value }</span>
-              <span className="section-label">{ stat.label }</span>
             </li>
           )) }
         </ul>

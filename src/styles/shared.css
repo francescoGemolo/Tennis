@@ -14,8 +14,10 @@
   transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.icon-cta:active:not(:disabled) {
-  transform: scale(0.97);
+@media (hover: hover) {
+  .icon-cta:active:not(:disabled) {
+    transform: scale(0.97);
+  }
 }
 
 .icon-cta:disabled {
@@ -97,8 +99,10 @@
   background: color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
-.btn-round:active {
-  transform: scale(0.95);
+@media (hover: hover) {
+  .btn-round:active {
+    transform: scale(0.95);
+  }
 }
 
 .card {
@@ -120,13 +124,11 @@
 }
 
 .view-utilities {
-  position: absolute;
-  top: calc(var(--safe-top) + var(--space-4));
-  right: calc(var(--safe-right) + var(--space-5));
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  z-index: 2;
+  justify-content: space-between;
+  width: 100%;
+  flex-shrink: 0;
 }
 
 .view-title {
@@ -246,10 +248,6 @@
     padding-right: calc(var(--safe-right) + var(--space-6));
     gap: var(--space-4);
   }
-
-  .view-utilities {
-    right: calc(var(--safe-right) + var(--space-6));
-  }
 }
 
 @media (orientation: landscape) and (max-height: 520px) {
@@ -257,10 +255,6 @@
     padding-top: calc(var(--safe-top) + var(--space-3));
     padding-bottom: calc(var(--safe-bottom) + var(--space-3));
     gap: var(--space-2);
-  }
-
-  .view-utilities {
-    top: calc(var(--safe-top) + var(--space-3));
   }
 
   .card {
