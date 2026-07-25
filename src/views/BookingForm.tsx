@@ -6,7 +6,7 @@ import { formatFullDate } from '../calendar';
 import { bookingPrice, formatPrice } from '../pricing';
 import { SlotUnavailableError } from '../services/bookings';
 import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH } from '../config';
-import { isValidName, isValidPhone, sanitizePhone, sanitizeText } from '../validation';
+import { nameError, phoneError, sanitizePhone, sanitizeText } from '../validation';
 import type { BookingFormValues, DurationHours } from '../types';
 import './BookingForm.css';
 
@@ -19,16 +19,16 @@ interface BookingFormProps {
 }
 
 interface FieldErrors {
-  firstName: boolean;
-  lastName: boolean;
-  phone: boolean;
+  firstName: string | null;
+  lastName: string | null;
+  phone: string | null;
 }
 
 export function BookingForm({ date, time, durationHours, onBack, onSubmit }: BookingFormProps) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
-  const [errors, setErrors] = useState<FieldErrors>({ firstName: false, lastName: false, phone: false });
+  const [errors, setErrors] = useState<FieldErrors>({ firstName: null, lastName: null, phone: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
@@ -45,9 +45,9 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
     const cleanPhone = sanitizePhone(phone, MAX_PHONE_LENGTH);
 
     const nextErrors: FieldErrors = {
-      firstName: !isValidName(cleanFirstName),
-      lastName: !isValidName(cleanLastName),
-      phone: !isValidPhone(cleanPhone),
+      firstName: nameError(cleanFirstName, MAX_TEXT_LENGTH),
+      lastName: nameError(cleanLastName, MAX_TEXT_LENGTH),
+      phone: phoneError(cleanPhone, MAX_PHONE_LENGTH),
     };
     setErrors(nextErrors);
     if (nextErrors.firstName || nextErrors.lastName || nextErrors.phone) return;
@@ -100,14 +100,14 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
                 autoComplete="given-name"
                 maxLength={ MAX_TEXT_LENGTH }
                 required
-                aria-invalid={ errors.firstName }
+                aria-invalid={ !!errors.firstName }
                 value={ firstName }
                 onChange={ (e) => {
                   setFirstName(e.target.value);
-                  if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: false }));
+                  if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: null }));
                 } }
               />
-              { errors.firstName && <span className="field-error">Nome non valido</span> }
+              { errors.firstName && <span className="field-error">{ errors.firstName }</span> }
             </div>
             <div className={ `field${errors.lastName ? ' field--invalid' : ''}` }>
               <label htmlFor="lastName">Cognome</label>
@@ -117,14 +117,14 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
                 autoComplete="family-name"
                 maxLength={ MAX_TEXT_LENGTH }
                 required
-                aria-invalid={ errors.lastName }
+                aria-invalid={ !!errors.lastName }
                 value={ lastName }
                 onChange={ (e) => {
                   setLastName(e.target.value);
-                  if (errors.lastName) setErrors((prev) => ({ ...prev, lastName: false }));
+                  if (errors.lastName) setErrors((prev) => ({ ...prev, lastName: null }));
                 } }
               />
-              { errors.lastName && <span className="field-error">Cognome non valido</span> }
+              { errors.lastName && <span className="field-error">{ errors.lastName }</span> }
             </div>
           </div>
 
@@ -133,17 +133,18 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
             <input
               id="phone"
               type="tel"
+              inputMode="numeric"
               autoComplete="tel"
               maxLength={ MAX_PHONE_LENGTH }
               required
-              aria-invalid={ errors.phone }
+              aria-invalid={ !!errors.phone }
               value={ phone }
               onChange={ (e) => {
-                setPhone(e.target.value);
-                if (errors.phone) setErrors((prev) => ({ ...prev, phone: false }));
+                setPhone(sanitizePhone(e.target.value, MAX_PHONE_LENGTH));
+                if (errors.phone) setErrors((prev) => ({ ...prev, phone: null }));
               } }
             />
-            { errors.phone && <span className="field-error">Numero di telefono non valido</span> }
+            { errors.phone && <span className="field-error">{ errors.phone }</span> }
           </div>
 
           { submitError && <p className="form-error" role="alert">{ submitError }</p> }

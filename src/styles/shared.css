@@ -116,6 +116,19 @@
   border: var(--border-hairline);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
+  animation: fade-in-up 280ms ease-out both;
+}
+
+.card:nth-of-type(2) {
+  animation-delay: 60ms;
+}
+
+.card:nth-of-type(3) {
+  animation-delay: 120ms;
+}
+
+.card:nth-of-type(4) {
+  animation-delay: 180ms;
 }
 
 .view {
@@ -127,6 +140,7 @@
   overflow: hidden;
   padding: calc(var(--safe-top) + var(--space-4)) calc(var(--safe-right) + var(--space-5)) calc(var(--safe-bottom) + var(--space-4)) calc(var(--safe-left) + var(--space-5));
   gap: var(--space-3);
+  animation: fade-in-up 240ms ease-out;
 }
 
 .view-utilities {
@@ -171,6 +185,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;

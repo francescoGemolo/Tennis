@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
   --neutral-950: #0E1116;
@@ -42,8 +42,8 @@
   --radius-lg: 1.25rem;
   --radius-full: 999px;
 
-  --font-family-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'IBM Plex Mono', 'SF Mono', monospace;
 
   --font-size-xs: 0.75rem;
@@ -64,7 +64,7 @@
   --transition-fast: 150ms ease;
   --transition-normal: 240ms ease;
 
-  --border-hairline: 1px solid #323b4740;
+  --border-hairline: 1px solid #323b4750;
 
   --glass-bg: rgba(245, 248, 250, 0.08);
   --glass-border: rgba(245, 248, 250, 0.18);
@@ -83,12 +83,15 @@
 html {
   color-scheme: dark;
   height: 100%;
+  background: var(--neutral-950);
+  overscroll-behavior: none;
 }
 
 body {
   margin: 0;
   height: 100%;
   overflow: hidden;
+  overscroll-behavior: none;
   font-family: var(--font-family-body);
   font-size: var(--font-size-md);
   line-height: var(--line-height-normal);
@@ -136,6 +139,40 @@ input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
   outline: none;
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes overlay-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

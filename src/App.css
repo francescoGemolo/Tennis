@@ -9,3 +9,7 @@
     max-width: 560px;
   }
 }
+
+.app:has(.confirmation-banner-wrapper) .site-signature {
+  opacity: 0;
+}

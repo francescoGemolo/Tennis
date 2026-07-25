@@ -61,7 +61,7 @@ function App() {
     await createMessage(values);
     setConfirmation({
       title: 'Messaggio inviato',
-      details: 'Ti risponderemo il prima possibile.',
+      details: 'Ti risponderemo presto.',
     });
     setView('welcome');
   }

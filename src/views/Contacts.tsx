@@ -2,7 +2,7 @@ import { useRef, useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon, CallIcon, Mail01Icon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
-import { isValidName, sanitizeText } from '../validation';
+import { messageError, nameError, sanitizeText } from '../validation';
 import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF, HONEYPOT_FIELD_NAME, MAX_MESSAGE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import type { ContactFormValues } from '../types';
 import './Contacts.css';
@@ -13,14 +13,14 @@ interface ContactsProps {
 }
 
 interface FieldErrors {
-  name: boolean;
-  message: boolean;
+  name: string | null;
+  message: string | null;
 }
 
 export function Contacts({ onBack, onSubmit }: ContactsProps) {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
-  const [errors, setErrors] = useState<FieldErrors>({ name: false, message: false });
+  const [errors, setErrors] = useState<FieldErrors>({ name: null, message: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
@@ -34,8 +34,8 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
     const cleanMessage = sanitizeText(message, MAX_MESSAGE_LENGTH);
 
     const nextErrors: FieldErrors = {
-      name: !isValidName(cleanName),
-      message: cleanMessage.length < 2,
+      name: nameError(cleanName, MAX_TEXT_LENGTH),
+      message: messageError(cleanMessage, MAX_MESSAGE_LENGTH),
     };
     setErrors(nextErrors);
     if (nextErrors.name || nextErrors.message) return;
@@ -94,14 +94,14 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
               autoComplete="name"
               maxLength={ MAX_TEXT_LENGTH }
               required
-              aria-invalid={ errors.name }
+              aria-invalid={ !!errors.name }
               value={ name }
               onChange={ (e) => {
                 setName(e.target.value);
-                if (errors.name) setErrors((prev) => ({ ...prev, name: false }));
+                if (errors.name) setErrors((prev) => ({ ...prev, name: null }));
               } }
             />
-            { errors.name && <span className="field-error">Nome non valido</span> }
+            { errors.name && <span className="field-error">{ errors.name }</span> }
           </div>
           <div className={ `field${errors.message ? ' field--invalid' : ''}` }>
             <label htmlFor="message">Messaggio</label>
@@ -111,14 +111,14 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
               rows={ 3 }
               maxLength={ MAX_MESSAGE_LENGTH }
               required
-              aria-invalid={ errors.message }
+              aria-invalid={ !!errors.message }
               value={ message }
               onChange={ (e) => {
                 setMessage(e.target.value);
-                if (errors.message) setErrors((prev) => ({ ...prev, message: false }));
+                if (errors.message) setErrors((prev) => ({ ...prev, message: null }));
               } }
             />
-            { errors.message && <span className="field-error">Messaggio troppo breve</span> }
+            { errors.message && <span className="field-error">{ errors.message }</span> }
           </div>
           { submitError && <p className="form-error" role="alert">{ submitError }</p> }
           <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
