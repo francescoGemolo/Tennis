@@ -80,7 +80,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
           <span className="booking-summary-price">Totale: { formatPrice(totalPrice) } a persona</span>
         </div>
 
-        <form className="card field-group" onSubmit={ handleSubmit }>
+        <form className="card field-group" noValidate onSubmit={ handleSubmit }>
           <input
             ref={ honeypotRef }
             type="text"
@@ -107,6 +107,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
                   if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: false }));
                 } }
               />
+              { errors.firstName && <span className="field-error">Nome non valido</span> }
             </div>
             <div className={ `field${errors.lastName ? ' field--invalid' : ''}` }>
               <label htmlFor="lastName">Cognome</label>
@@ -123,6 +124,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
                   if (errors.lastName) setErrors((prev) => ({ ...prev, lastName: false }));
                 } }
               />
+              { errors.lastName && <span className="field-error">Cognome non valido</span> }
             </div>
           </div>
 
@@ -141,6 +143,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
                 if (errors.phone) setErrors((prev) => ({ ...prev, phone: false }));
               } }
             />
+            { errors.phone && <span className="field-error">Numero di telefono non valido</span> }
           </div>
 
           { submitError && <p className="form-error" role="alert">{ submitError }</p> }

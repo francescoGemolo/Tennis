@@ -1,5 +1,4 @@
 import { useState, type FormEvent } from 'react';
-import { InstallGuide } from '../components/InstallGuide';
 import { signIn } from '../services/auth';
 import './Admin.css';
 
@@ -24,10 +23,6 @@ export function AdminLogin() {
 
   return (
     <section className="view admin-login" aria-labelledby="admin-login-title">
-      <div className="view-utilities">
-        <InstallGuide />
-      </div>
-
       <h2 className="view-title" id="admin-login-title">Accesso gestione</h2>
 
       <form className="card field-group" onSubmit={ handleSubmit }>

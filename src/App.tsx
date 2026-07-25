@@ -8,8 +8,7 @@ import { Contacts } from './views/Contacts';
 import { Account } from './views/Account';
 import { PLACEHOLDER_ACCOUNT } from './account';
 import { createBooking, createMessage } from './services/bookings';
-import { formatFullDate, toDateKey } from './calendar';
-import { bookingPrice, formatPrice } from './pricing';
+import { formatShortDate, toDateKey } from './calendar';
 import type { BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types';
 import './App.css';
 
@@ -39,8 +38,9 @@ function App() {
   async function handleBookingFormSubmit(values: BookingFormValues) {
     if (!selectedDate || !selectedTime || !selectedDuration) return;
 
+    const dateKey = toDateKey(selectedDate);
     await createBooking({
-      date: toDateKey(selectedDate),
+      date: dateKey,
       time: selectedTime,
       durationHours: selectedDuration,
       ...values,
@@ -50,7 +50,7 @@ function App() {
       title: 'Prenotazione confermata',
       details: (
         <>
-          { formatFullDate(selectedDate) } - <span className="confirmation-mono">{ selectedTime }</span> - <span className="confirmation-mono">{ selectedDuration }h · { formatPrice(bookingPrice(selectedDuration)) }</span>
+          { formatShortDate(dateKey) } · <span className="confirmation-mono">{ selectedTime }</span> · <span className="confirmation-mono">{ selectedDuration }h</span>
         </>
       ),
     });

@@ -75,7 +75,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
           </div>
         </div>
 
-        <form className="card field-group" aria-label="Scrivici un messaggio" onSubmit={ handleSubmit }>
+        <form className="card field-group" aria-label="Scrivici un messaggio" noValidate onSubmit={ handleSubmit }>
           <input
             ref={ honeypotRef }
             type="text"
@@ -101,6 +101,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
                 if (errors.name) setErrors((prev) => ({ ...prev, name: false }));
               } }
             />
+            { errors.name && <span className="field-error">Nome non valido</span> }
           </div>
           <div className={ `field${errors.message ? ' field--invalid' : ''}` }>
             <label htmlFor="message">Messaggio</label>
@@ -117,6 +118,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
                 if (errors.message) setErrors((prev) => ({ ...prev, message: false }));
               } }
             />
+            { errors.message && <span className="field-error">Messaggio troppo breve</span> }
           </div>
           { submitError && <p className="form-error" role="alert">{ submitError }</p> }
           <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
