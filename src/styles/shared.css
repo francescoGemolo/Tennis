@@ -42,8 +42,10 @@
   box-shadow: var(--shadow-sm);
 }
 
-.cta-primary:hover {
-  background-color: var(--accent);
+@media (hover: hover) {
+  .cta-primary:hover {
+    background-color: var(--accent);
+  }
 }
 
 .cta-secondary {
@@ -52,14 +54,16 @@
   border: var(--border-hairline);
 }
 
-.cta-secondary:hover {
-  background: var(--accent-strong);
-  color: var(--neutral-50);
-  border-color: var(--accent-strong);
-}
+@media (hover: hover) {
+  .cta-secondary:hover {
+    background: var(--accent-strong);
+    color: var(--neutral-50);
+    border-color: var(--accent-strong);
+  }
 
-.cta-secondary:hover .icon-secondary {
-  color: var(--neutral-50);
+  .cta-secondary:hover .icon-secondary {
+    color: var(--neutral-50);
+  }
 }
 
 .btn-ghost {
@@ -75,8 +79,10 @@
   transition: color var(--transition-fast);
 }
 
-.btn-ghost:hover {
-  color: var(--neutral-50);
+@media (hover: hover) {
+  .btn-ghost:hover {
+    color: var(--neutral-50);
+  }
 }
 
 .btn-round {
@@ -94,12 +100,12 @@
   transition: color var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
 }
 
-.btn-round:hover {
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-}
-
 @media (hover: hover) {
+  .btn-round:hover {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
   .btn-round:active {
     transform: scale(0.95);
   }

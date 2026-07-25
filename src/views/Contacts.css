@@ -44,8 +44,10 @@
   text-overflow: ellipsis;
 }
 
-.contact-value:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  .contact-value:hover {
+    color: var(--accent);
+  }
 }
 
 .contacts .field-group {

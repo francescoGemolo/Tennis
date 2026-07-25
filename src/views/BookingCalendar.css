@@ -18,17 +18,19 @@
   transition: background-color var(--transition-fast);
 }
 
-.month-nav-btn:hover {
-  background: var(--neutral-800);
-}
-
 .month-nav-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
 
-.month-nav-btn:disabled:hover {
-  background: var(--neutral-900);
+@media (hover: hover) {
+  .month-nav-btn:hover {
+    background: var(--neutral-800);
+  }
+
+  .month-nav-btn:disabled:hover {
+    background: var(--neutral-900);
+  }
 }
 
 .calendar-legend {
@@ -119,8 +121,10 @@
   color: var(--success);
 }
 
-.calendar-day--free:hover {
-  background: color-mix(in srgb, var(--success) 30%, transparent);
+@media (hover: hover) {
+  .calendar-day--free:hover {
+    background: color-mix(in srgb, var(--success) 30%, transparent);
+  }
 }
 
 .calendar-day--busy {
@@ -141,6 +145,8 @@
   cursor: pointer;
 }
 
-.calendar-day--partial:hover {
-  background: color-mix(in srgb, var(--partial) 30%, transparent);
+@media (hover: hover) {
+  .calendar-day--partial:hover {
+    background: color-mix(in srgb, var(--partial) 30%, transparent);
+  }
 }

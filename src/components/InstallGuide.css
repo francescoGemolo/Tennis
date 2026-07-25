@@ -40,6 +40,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-3);
+  border: var(--border-hairline);
   border-radius: var(--radius-md);
   background: var(--neutral-800);
   color: var(--neutral-200);

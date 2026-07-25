@@ -51,9 +51,9 @@ export function Account({ account, onBack }: AccountProps) {
           <span className="account-mono">{ phone }</span>
         </div>
 
-        <ul className="account-stats">
+        <ul className="card account-stats">
           { stats.map((stat) => (
-            <li className="card account-stat" key={ stat.label }>
+            <li className="account-stat" key={ stat.label }>
               <span className="account-stat-icon">
                 <HugeiconsIcon icon={ stat.icon } size={ 16 } strokeWidth={ 1.5 } />
               </span>
@@ -72,7 +72,7 @@ export function Account({ account, onBack }: AccountProps) {
             { bookings.map((booking) => (
               <li className="card account-booking" key={ booking.id }>
                 <span className="account-booking-date">{ formatShortDate(booking.date) }</span>
-                <span className="account-mono">{ booking.time } · { booking.durationHours }h</span>
+                <span className="account-mono">{ booking.time } - { booking.durationHours }h</span>
                 <span className="account-booking-price">{ formatPrice(bookingPrice(booking.durationHours)) }</span>
               </li>
             )) }

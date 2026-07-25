@@ -72,8 +72,10 @@
   transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
-.time-slot:hover:not(:disabled) {
-  border-color: var(--accent);
+@media (hover: hover) {
+  .time-slot:hover:not(:disabled) {
+    border-color: var(--accent);
+  }
 }
 
 .time-slot--selected {

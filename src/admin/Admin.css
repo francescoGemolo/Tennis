@@ -74,9 +74,11 @@ body.admin-mode {
   transition: background-color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
 }
 
-.admin-icon-btn:hover:not(:disabled) {
-  background: var(--accent);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .admin-icon-btn:hover:not(:disabled) {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
 }
 
 .admin-icon-btn:active:not(:disabled) {
@@ -119,8 +121,10 @@ body.admin-mode {
   letter-spacing: 0.04em;
 }
 
-.admin-table tbody tr:hover {
-  background: var(--neutral-900);
+@media (hover: hover) {
+  .admin-table tbody tr:hover {
+    background: var(--neutral-900);
+  }
 }
 
 .admin-table tbody tr:last-child td {
@@ -141,9 +145,11 @@ body.admin-mode {
   transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
-.admin-delete-btn:hover:not(:disabled) {
-  background: color-mix(in srgb, var(--danger) 16%, transparent);
-  color: var(--danger);
+@media (hover: hover) {
+  .admin-delete-btn:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--danger) 16%, transparent);
+    color: var(--danger);
+  }
 }
 
 .admin-delete-btn:active:not(:disabled) {
