@@ -16,7 +16,7 @@ service cloud.firestore {
     }
 
     function isValidPhone(value) {
-      return value is string && value.matches('^[0-9+()\\-\\s]{8,10}$');
+      return value is string && value.matches('^[0-9]{10}$');
     }
 
     match /slotLocks/{docId} {
