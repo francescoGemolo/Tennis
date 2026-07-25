@@ -32,7 +32,7 @@ export interface AdminBooking {
   createdAt: string;
 }
 
-export type ViewId = 'welcome' | 'booking' | 'datetime' | 'bookingForm' | 'contacts';
+export type ViewId = 'welcome' | 'booking' | 'datetime' | 'bookingForm' | 'contacts' | 'account';
 
 export interface ContactFormValues {
   name: string;
@@ -43,4 +43,19 @@ export interface BookingFormValues {
   firstName: string;
   lastName: string;
   phone: string;
+}
+
+export interface AccountBooking {
+  id: string;
+  date: string;
+  time: string;
+  durationHours: DurationHours;
+}
+
+export interface Account {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  memberSince: string;
+  bookings: AccountBooking[];
 }

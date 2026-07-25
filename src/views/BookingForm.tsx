@@ -3,7 +3,9 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
 import { formatFullDate } from '../calendar';
-import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH, PRICE_PER_HOUR } from '../config';
+import { bookingPrice, formatPrice } from '../pricing';
+import { SlotUnavailableError } from '../services/bookings';
+import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import { isValidName, isValidPhone, sanitizePhone, sanitizeText } from '../validation';
 import type { BookingFormValues, DurationHours } from '../types';
 import './BookingForm.css';
@@ -31,7 +33,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
   const [submitError, setSubmitError] = useState<string | null>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
 
-  const totalPrice = durationHours * PRICE_PER_HOUR;
+  const totalPrice = bookingPrice(durationHours);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -54,8 +56,12 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
     setIsSubmitting(true);
     try {
       await onSubmit({ firstName: cleanFirstName, lastName: cleanLastName, phone: cleanPhone });
-    } catch {
-      setSubmitError('Non è stato possibile completare la prenotazione. Riprova.');
+    } catch (error) {
+      setSubmitError(
+        error instanceof SlotUnavailableError
+          ? error.message
+          : 'Non è stato possibile completare la prenotazione. Riprova.',
+      );
       setIsSubmitting(false);
     }
   }
@@ -67,11 +73,11 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
         <h2 className="view-title" id="booking-form-title">I tuoi dati</h2>
       </div>
 
-      <div className="booking-form-scroll">
+      <div className="view-scroll">
         <div className="card booking-summary">
           <span className="section-label">Prenotazione per</span>
           <span className="booking-summary-value">{ formatFullDate(date) } - { time } - { durationHours }h</span>
-          <span className="booking-summary-price">Totale: { totalPrice } € a persona</span>
+          <span className="booking-summary-price">Totale: { formatPrice(totalPrice) } a persona</span>
         </div>
 
         <form className="card field-group" onSubmit={ handleSubmit }>

@@ -1,14 +1,15 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { Hero } from './views/Hero';
 import { BookingCalendar } from './views/BookingCalendar';
 import { DateTimePicker } from './views/DateTimePicker';
 import { BookingForm } from './views/BookingForm';
 import { ConfirmationModal } from './views/ConfirmationModal';
 import { Contacts } from './views/Contacts';
-import { Admin } from './admin/Admin';
+import { Account } from './views/Account';
+import { PLACEHOLDER_ACCOUNT } from './account';
 import { createBooking, createMessage } from './services/bookings';
 import { formatFullDate, toDateKey } from './calendar';
-import { PRICE_PER_HOUR } from './config';
+import { bookingPrice, formatPrice } from './pricing';
 import type { BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types';
 import './App.css';
 
@@ -17,31 +18,7 @@ interface Confirmation {
   details: ReactNode;
 }
 
-function isAdminLocation(): boolean {
-  const path = window.location.pathname.replace(import.meta.env.BASE_URL, '');
-  return path === 'admin' || path === 'admin/' || window.location.hash === '#admin';
-}
-
-function useIsAdminRoute(): boolean {
-  const [isAdminRoute, setIsAdminRoute] = useState(isAdminLocation);
-
-  useEffect(() => {
-    function handleLocationChange() {
-      setIsAdminRoute(isAdminLocation());
-    }
-    window.addEventListener('hashchange', handleLocationChange);
-    window.addEventListener('popstate', handleLocationChange);
-    return () => {
-      window.removeEventListener('hashchange', handleLocationChange);
-      window.removeEventListener('popstate', handleLocationChange);
-    };
-  }, []);
-
-  return isAdminRoute;
-}
-
 function App() {
-  const isAdminRoute = useIsAdminRoute();
   const [view, setView] = useState<ViewId>('welcome');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
@@ -69,20 +46,15 @@ function App() {
       ...values,
     });
 
-    const totalPrice = selectedDuration * PRICE_PER_HOUR;
     setConfirmation({
       title: 'Prenotazione confermata',
       details: (
         <>
-          {formatFullDate(selectedDate)} - <span className="confirmation-mono">{selectedTime}</span> - <span className="confirmation-mono">{selectedDuration}h · {totalPrice} €</span>
+          { formatFullDate(selectedDate) } - <span className="confirmation-mono">{ selectedTime }</span> - <span className="confirmation-mono">{ selectedDuration }h · { formatPrice(bookingPrice(selectedDuration)) }</span>
         </>
       ),
     });
     setView('welcome');
-  }
-
-  function handleConfirmationClose() {
-    setConfirmation(null);
   }
 
   async function handleContactSubmit(values: ContactFormValues) {
@@ -94,14 +66,14 @@ function App() {
     setView('welcome');
   }
 
-  if (isAdminRoute) {
-    return <Admin />;
-  }
-
   return (
     <main className="app">
       { view === 'welcome' && (
-        <Hero onBook={ () => setView('booking') } onContact={ () => setView('contacts') } />
+        <Hero
+          onBook={ () => setView('booking') }
+          onContact={ () => setView('contacts') }
+          onAccount={ () => setView('account') }
+        />
       ) }
 
       { view === 'booking' && (
@@ -130,12 +102,15 @@ function App() {
         <Contacts onBack={ () => setView('welcome') } onSubmit={ handleContactSubmit } />
       ) }
 
+      { view === 'account' && (
+        <Account account={ PLACEHOLDER_ACCOUNT } onBack={ () => setView('welcome') } />
+      ) }
+
       { confirmation && (
         <ConfirmationModal
-          open
           title={ confirmation.title }
           details={ confirmation.details }
-          onClose={ handleConfirmationClose }
+          onClose={ () => setConfirmation(null) }
         />
       ) }
     </main>

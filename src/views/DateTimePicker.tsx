@@ -49,7 +49,7 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
     <section className="view datetime" aria-labelledby="datetime-heading">
       <div className="view-header">
         <BackButton onClick={ onBack } />
-        <div className="datetime-topbar">
+        <div className="view-header-row">
           <h2 className="view-title" id="datetime-heading">Orari disponibili</h2>
           <div className="datetime-date-pill">
             <span>{ formatFullDate(date) }</span>

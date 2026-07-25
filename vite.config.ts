@@ -1,6 +1,9 @@
+import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+
+const BASE = '/Tennis/'
 
 export default defineConfig({
   plugins: [
@@ -8,26 +11,24 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: false,
+      manifest: false,
       includeAssets: ['icons/apple-touch-icon.png'],
-      manifest: {
-        name: 'Salandra Tennis',
-        short_name: 'SL Tennis',
-        description: 'Prenota il tuo turno al Circolo Tennis in pochi tocchi.',
-        lang: 'it',
-        start_url: '/Tennis/',
-        scope: '/Tennis/',
-        display: 'standalone',
-        background_color: '#0E1116',
-        theme_color: '#0E1116',
-        icons: [
-          { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },
-        ],
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'],
+        navigateFallback: `${BASE}index.html`,
+        navigateFallbackDenylist: [new RegExp(`^${BASE}admin`)],
+        cleanupOutdatedCaches: true,
       },
     }),
   ],
-  base: '/Tennis/',
+  base: BASE,
   build: {
-    chunkSizeWarningLimit: 1000
-  }
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      input: {
+        main: resolve(import.meta.dirname, 'index.html'),
+        admin: resolve(import.meta.dirname, 'admin/index.html'),
+      },
+    },
+  },
 })

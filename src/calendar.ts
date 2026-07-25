@@ -25,17 +25,6 @@ function isBeforeToday(date: Date): boolean {
   return compare < today;
 }
 
-export function getSlotTimes(): string[] {
-  const times: string[] = [];
-  const lastStart = CLOSING_MINUTES - SLOT_DURATION_MINUTES;
-  for (let minutes = OPENING_MINUTES; minutes <= lastStart; minutes += SLOT_DURATION_MINUTES) {
-    const hh = String(Math.floor(minutes / 60)).padStart(2, '0');
-    const mm = String(minutes % 60).padStart(2, '0');
-    times.push(`${hh}:${mm}`);
-  }
-  return times;
-}
-
 function timeToMinutes(time: string): number {
   const [hh, mm] = time.split(':').map(Number);
   return hh * 60 + mm;
@@ -46,6 +35,17 @@ function minutesToTime(minutes: number): string {
   const mm = String(minutes % 60).padStart(2, '0');
   return `${hh}:${mm}`;
 }
+
+function buildSlotTimes(): string[] {
+  const times: string[] = [];
+  const lastStart = CLOSING_MINUTES - SLOT_DURATION_MINUTES;
+  for (let minutes = OPENING_MINUTES; minutes <= lastStart; minutes += SLOT_DURATION_MINUTES) {
+    times.push(minutesToTime(minutes));
+  }
+  return times;
+}
+
+export const SLOT_TIMES = buildSlotTimes();
 
 export function getOccupiedTimes(booking: AvailabilityRecord): string[] {
   const start = timeToMinutes(booking.time);
@@ -62,9 +62,7 @@ export function getDayStatus(date: Date, bookings: AvailabilityRecord[]): DaySta
     bookings.filter((b) => b.date === dateKey).flatMap((b) => getOccupiedTimes(b)),
   );
   if (occupiedTimes.size === 0) return 'free';
-
-  const totalSlots = getSlotTimes().length;
-  return occupiedTimes.size >= totalSlots ? 'busy' : 'partial';
+  return occupiedTimes.size >= SLOT_TIMES.length ? 'busy' : 'partial';
 }
 
 export function getMonthMatrix(year: number, month: number, bookings: AvailabilityRecord[]): CalendarCell[] {
@@ -91,7 +89,7 @@ export function getTimeSlots(date: Date, bookings: AvailabilityRecord[], duratio
     bookings.filter((b) => b.date === dateKey).flatMap((b) => getOccupiedTimes(b)),
   );
 
-  return getSlotTimes().map((time) => {
+  return SLOT_TIMES.map((time) => {
     const start = timeToMinutes(time);
     const fitsBeforeClosing = start + durationHours * SLOT_DURATION_MINUTES <= CLOSING_MINUTES;
     const requiredTimes = Array.from({ length: durationHours }, (_, i) => minutesToTime(start + i * SLOT_DURATION_MINUTES));
@@ -106,4 +104,8 @@ export function formatMonthTitle(year: number, month: number): string {
 
 export function formatFullDate(date: Date): string {
   return date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+export function formatShortDate(dateKey: string): string {
+  return new Date(`${dateKey}T00:00:00`).toLocaleDateString('it-IT', { day: '2-digit', month: 'short' });
 }

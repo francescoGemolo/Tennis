@@ -1,59 +1,31 @@
-.booking-form {
-    gap: var(--space-3);
-}
-
-.booking-form-scroll {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: var(--space-3);
-}
-
 .booking-summary {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  flex-shrink: 0;
 }
 
 .booking-summary-value {
-    font-family: var(--font-family-mono);
-    font-size: var(--font-size-sm);
-    color: var(--neutral-50);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  color: var(--neutral-50);
 }
 
 .booking-summary-price {
-    font-family: var(--font-family-mono);
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--accent);
-}
-
-.form-error {
-    color: var(--danger);
-    font-size: var(--font-size-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--accent);
 }
 
 .booking-form .field-group {
-    gap: var(--space-5);
+  gap: var(--space-5);
 }
 
-.field-row {
-    display: flex;
-    gap: var(--space-3);
-}
-
-.field-row .field {
-    flex: 1;
-    min-width: 0;
-}
-
-.field {
-    display: flex;
+@media (max-width: 359px) {
+  .field-row {
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-4);
+  }
 }

@@ -4,13 +4,8 @@
   height: 100%;
 }
 
-.view {
-  width: 100%;
-  height: 100dvh;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: calc(var(--safe-top) + var(--space-4)) calc(var(--safe-right) + var(--space-5)) calc(var(--safe-bottom) + var(--space-4)) calc(var(--safe-left) + var(--space-5));
-  gap: var(--space-6);
+@media (min-width: 768px) {
+  .app {
+    max-width: 560px;
+  }
 }

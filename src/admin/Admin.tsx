@@ -10,17 +10,6 @@ export function Admin() {
 
   useEffect(() => subscribeToAuth(setUser), []);
 
-  useEffect(() => {
-    document.body.classList.add('admin-mode');
-    const manifestLink = document.querySelector('link[rel="manifest"]');
-    const defaultHref = manifestLink?.getAttribute('href') ?? null;
-    manifestLink?.setAttribute('href', `${import.meta.env.BASE_URL}manifest-admin.webmanifest`);
-    return () => {
-      document.body.classList.remove('admin-mode');
-      if (manifestLink && defaultHref) manifestLink.setAttribute('href', defaultHref);
-    };
-  }, []);
-
   if (user === undefined) return null;
 
   return (

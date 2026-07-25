@@ -53,23 +53,25 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
 
   return (
     <section className="view booking" aria-labelledby="booking-title">
-      <BackButton onClick={ onBack } />
+      <div className="view-header">
+        <BackButton onClick={ onBack } />
 
-      <nav className="month-switcher" aria-label="Cambia mese">
-        <button
-          className="month-nav-btn"
-          type="button"
-          aria-label="Mese precedente"
-          disabled={ isAtEarliestMonth }
-          onClick={ () => goToMonth(-1) }
-        >
-          <HugeiconsIcon icon={ ArrowLeft01Icon } size={ 18 } strokeWidth={ 1.5 } />
-        </button>
-        <h2 id="booking-title" className="view-title month-switcher-title">{ formatMonthTitle(year, month) }</h2>
-        <button className="month-nav-btn" type="button" aria-label="Mese successivo" onClick={ () => goToMonth(1) }>
-          <HugeiconsIcon icon={ ArrowRight01Icon } size={ 18 } strokeWidth={ 1.5 } />
-        </button>
-      </nav>
+        <nav className="view-header-row" aria-label="Cambia mese">
+          <button
+            className="month-nav-btn"
+            type="button"
+            aria-label="Mese precedente"
+            disabled={ isAtEarliestMonth }
+            onClick={ () => goToMonth(-1) }
+          >
+            <HugeiconsIcon icon={ ArrowLeft01Icon } size={ 18 } strokeWidth={ 1.5 } />
+          </button>
+          <h2 id="booking-title" className="view-title month-switcher-title">{ formatMonthTitle(year, month) }</h2>
+          <button className="month-nav-btn" type="button" aria-label="Mese successivo" onClick={ () => goToMonth(1) }>
+            <HugeiconsIcon icon={ ArrowRight01Icon } size={ 18 } strokeWidth={ 1.5 } />
+          </button>
+        </nav>
+      </div>
 
       <ul className="calendar-legend" aria-label="Legenda disponibilità">
         <li><span className="legend-dot legend-dot--free" aria-hidden="true" />Libero</li>

@@ -57,7 +57,7 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
         <h2 id="contacts-title" className="view-title">Contatti</h2>
       </div>
 
-      <div className="contacts-scroll">
+      <div className="view-scroll">
         <div className="card contact-list">
           <div className="contact-item">
             <span className="contact-icon"><HugeiconsIcon icon={ CallIcon } size={ 18 } strokeWidth={ 1.5 } /></span>
