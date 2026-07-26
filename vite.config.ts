@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
-const BASE = '/Tennis/'
+const BASE = '/salandra-tennis/'
 
 export default defineConfig({
   plugins: [
