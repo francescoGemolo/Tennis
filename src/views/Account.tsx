@@ -1,7 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { CallIcon, Calendar03Icon, Clock01Icon, CoinsEuroIcon, TennisBallIcon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
+import { ConfirmDialog } from '../components/ConfirmDialog';
+import { PasswordField } from '../components/PasswordField';
+import { useAuth } from '../auth/AuthContext';
 import { formatShortDate } from '../calendar';
 import { bookingPrice, formatPrice } from '../pricing';
 import type { Account as AccountData } from '../types';
@@ -18,6 +21,20 @@ interface AccountProps {
 
 export function Account({ account, bookingsLoading, bookingsError, onBack, onBook, onLogout }: AccountProps) {
   const { firstName, lastName, phone, memberSince, bookings } = account;
+  const {
+    authUser,
+    deleteAccount,
+    reauthenticateWithPassword,
+    reauthenticateWithGoogleRedirect,
+    getAuthProviderId,
+    isReauthRecent,
+  } = useAuth();
+
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [needsPassword, setNeedsPassword] = useState(false);
+  const [reauthPassword, setReauthPassword] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   const stats = useMemo(() => {
     const hours = bookings.reduce((total, booking) => total + booking.durationHours, 0);
@@ -30,6 +47,66 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
   }, [bookings]);
 
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+
+  function openConfirm() {
+    setDeleteError(null);
+    setNeedsPassword(false);
+    setReauthPassword('');
+    setConfirmOpen(true);
+  }
+
+  function closeConfirm() {
+    if (isDeleting) return;
+    setConfirmOpen(false);
+  }
+
+  async function handleConfirmDelete() {
+    if (!authUser) return;
+    setDeleteError(null);
+
+    if (needsPassword) {
+      if (!reauthPassword) {
+        setDeleteError('Inserisci la password per continuare.');
+        return;
+      }
+      setIsDeleting(true);
+      try {
+        await reauthenticateWithPassword(reauthPassword);
+      } catch {
+        setDeleteError('Password errata.');
+        setIsDeleting(false);
+        return;
+      }
+    } else if (!isReauthRecent(authUser)) {
+      const providerId = getAuthProviderId(authUser);
+      if (providerId === 'password') {
+        setNeedsPassword(true);
+        return;
+      }
+      setIsDeleting(true);
+      try {
+        // Navigates away to Google and back; deletion resumes automatically on return.
+        await reauthenticateWithGoogleRedirect();
+      } catch {
+        setDeleteError('Non è stato possibile verificare la tua identità con Google. Riprova.');
+        setIsDeleting(false);
+      }
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await deleteAccount();
+    } catch (error) {
+      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      setDeleteError(
+        code === 'auth/requires-recent-login'
+          ? 'Sessione scaduta. Esegui di nuovo l\'accesso e riprova subito dopo.'
+          : 'Non è stato possibile eliminare l\'account. Riprova.',
+      );
+      setIsDeleting(false);
+    }
+  }
 
   return (
     <section className="view account" aria-labelledby="account-title">
@@ -95,7 +172,37 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
             )) }
           </ul>
         ) }
+
+        <button type="button" className="btn-ghost btn-ghost-danger account-delete-link" onClick={ openConfirm }>
+          Elimina account
+        </button>
       </div>
+
+      { confirmOpen && (
+        <ConfirmDialog
+          title="Elimina account"
+          message={ needsPassword
+            ? 'Per motivi di sicurezza conferma la tua password per continuare.'
+            : 'Il profilo e le prenotazioni future verranno eliminati definitivamente e gli orari torneranno disponibili. Le prenotazioni passate restano come storico. L\'operazione non è reversibile.'
+          }
+          confirmLabel={ needsPassword ? 'Conferma password' : 'Elimina account' }
+          danger
+          isSubmitting={ isDeleting }
+          error={ deleteError }
+          onConfirm={ handleConfirmDelete }
+          onCancel={ closeConfirm }
+        >
+          { needsPassword && (
+            <PasswordField
+              id="delete-account-password"
+              label="Password attuale"
+              autoComplete="current-password"
+              value={ reauthPassword }
+              onChange={ setReauthPassword }
+            />
+          ) }
+        </ConfirmDialog>
+      ) }
     </section>
   );
 }

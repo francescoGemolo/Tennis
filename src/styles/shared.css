@@ -66,6 +66,19 @@
   }
 }
 
+.cta-danger {
+  background: var(--danger-strong);
+  color: var(--neutral-50);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (hover: hover) {
+  .cta-danger:hover {
+    background-color: var(--danger);
+  }
+}
+
 .btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -82,6 +95,16 @@
 @media (hover: hover) {
   .btn-ghost:hover {
     color: var(--neutral-50);
+  }
+}
+
+.btn-ghost-danger {
+  color: var(--danger);
+}
+
+@media (hover: hover) {
+  .btn-ghost-danger:hover {
+    color: var(--danger-strong);
   }
 }
 

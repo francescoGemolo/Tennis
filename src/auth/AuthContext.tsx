@@ -1,8 +1,15 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import type { User } from 'firebase/auth';
 import { db } from '../services/firebase';
 import {
+  consumePendingAccountDeletion,
+  deleteAccount,
+  getAuthProviderId,
+  getGoogleRedirectResult,
+  isReauthRecent,
+  reauthenticateWithGoogleRedirect,
+  reauthenticateWithPassword,
   sendReset,
   signIn,
   signInAsGuest,
@@ -16,6 +23,14 @@ import type { UserProfile } from '../types';
 
 type AuthStatus = 'loading' | 'signedOut' | 'needsProfile' | 'ready' | 'error';
 
+function googleRedirectErrorMessage(error: unknown): string {
+  const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+  if (code === 'auth/account-exists-with-different-credential') {
+    return 'Questo indirizzo email è già registrato con un altro metodo di accesso.';
+  }
+  return 'Accesso con Google non riuscito.';
+}
+
 interface AuthContextValue {
   authUser: User | null | undefined;
   profile: UserProfile | null | undefined;
@@ -27,6 +42,13 @@ interface AuthContextValue {
   signInAsGuest: typeof signInAsGuest;
   signOutUser: typeof signOutUser;
   sendReset: typeof sendReset;
+  deleteAccount: typeof deleteAccount;
+  reauthenticateWithPassword: typeof reauthenticateWithPassword;
+  reauthenticateWithGoogleRedirect: typeof reauthenticateWithGoogleRedirect;
+  getAuthProviderId: typeof getAuthProviderId;
+  isReauthRecent: typeof isReauthRecent;
+  googleRedirectError: string | null;
+  clearGoogleRedirectError: () => void;
   retry: () => void;
 }
 
@@ -37,8 +59,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null | undefined>(undefined);
   const [profileError, setProfileError] = useState(false);
   const [retryToken, setRetryToken] = useState(0);
+  const [googleRedirectError, setGoogleRedirectError] = useState<string | null>(null);
+  const redirectHandled = useRef(false);
 
   useEffect(() => subscribeToAuth(setAuthUser), []);
+
+  // Runs once at boot to pick up the result of a signInWithRedirect/
+  // reauthenticateWithRedirect Google round-trip (the page just reloaded).
+  useEffect(() => {
+    if (redirectHandled.current) return;
+    redirectHandled.current = true;
+
+    getGoogleRedirectResult()
+      .then((result) => {
+        if (result && consumePendingAccountDeletion()) {
+          void deleteAccount().catch(() => {
+            setGoogleRedirectError('Non è stato possibile eliminare l\'account. Riprova.');
+          });
+        }
+      })
+      .catch((error) => setGoogleRedirectError(googleRedirectErrorMessage(error)));
+  }, []);
 
   useEffect(() => {
     setProfile(undefined);
@@ -79,6 +120,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     signInAsGuest,
     signOutUser,
     sendReset,
+    deleteAccount,
+    reauthenticateWithPassword,
+    reauthenticateWithGoogleRedirect,
+    getAuthProviderId,
+    isReauthRecent,
+    googleRedirectError,
+    clearGoogleRedirectError: () => setGoogleRedirectError(null),
     retry: () => setRetryToken((token) => token + 1),
   };
 

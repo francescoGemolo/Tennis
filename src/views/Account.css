@@ -161,6 +161,11 @@
   white-space: nowrap;
 }
 
+.account-delete-link {
+  align-self: center;
+  margin-top: var(--space-2);
+}
+
 @media (max-width: 359px) {
   .account-stat-value {
     font-size: var(--font-size-xs);

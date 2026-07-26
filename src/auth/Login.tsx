@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { GoogleButton } from './GoogleButton';
@@ -18,12 +18,18 @@ interface LoginProps {
 }
 
 export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
-  const { signIn, signInWithGoogle, signInAsGuest } = useAuth();
+  const { signIn, signInWithGoogle, signInAsGuest, googleRedirectError, clearGoogleRedirectError } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<FieldErrors>({ email: null, password: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!googleRedirectError) return;
+    setSubmitError(googleRedirectError);
+    clearGoogleRedirectError();
+  }, [googleRedirectError, clearGoogleRedirectError]);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -40,8 +46,16 @@ export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
     setIsSubmitting(true);
     try {
       await signIn(email, password);
-    } catch {
-      setSubmitError('Credenziali non valide.');
+    } catch (error) {
+      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      if (import.meta.env.DEV) console.error('Login fallito:', code, error);
+      if (code === 'auth/network-request-failed') {
+        setSubmitError('Controlla la connessione a internet.');
+      } else if (code === 'auth/too-many-requests') {
+        setSubmitError('Troppi tentativi, riprova più tardi.');
+      } else {
+        setSubmitError('Credenziali non valide.');
+      }
       setIsSubmitting(false);
     }
   }
@@ -51,18 +65,11 @@ export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
     setSubmitError(null);
     setIsSubmitting(true);
     try {
+      // Navigates away to Google; on failure to even start the redirect we land back here.
       await signInWithGoogle();
     } catch (error) {
-      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
-      if (code === 'auth/popup-closed-by-user') {
-        setIsSubmitting(false);
-        return;
-      }
-      if (code === 'auth/account-exists-with-different-credential') {
-        setSubmitError('Questo indirizzo email è già registrato con un altro metodo di accesso.');
-      } else {
-        setSubmitError('Accesso con Google non riuscito.');
-      }
+      if (import.meta.env.DEV) console.error('Redirect Google fallito:', error);
+      setSubmitError('Accesso con Google non riuscito.');
       setIsSubmitting(false);
     }
   }

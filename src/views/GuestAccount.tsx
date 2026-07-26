@@ -18,7 +18,7 @@ export function GuestAccount({ onBack }: GuestAccountProps) {
 
       <div className="view-scroll">
         <div className="card account-empty-state">
-          <p className="account-empty">Effettua l'accesso per vedere la tua area personale e lo storico prenotazioni.</p>
+          <p className="account-empty">Effettua l'accesso per vedere la tua area personale.</p>
           <button className="icon-cta cta-primary" type="button" onClick={ () => void signOutUser() }>
             Accedi
           </button>

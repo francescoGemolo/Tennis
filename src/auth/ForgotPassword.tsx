@@ -52,6 +52,7 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
                 <HugeiconsIcon icon={ MailSend01Icon } size={ 20 } strokeWidth={ 1.5 } />
               </span>
               <p className="auth-sent-desc">Controlla la casella di <strong>{ email }</strong> e segui le istruzioni per reimpostare la password.</p>
+              <p className="auth-sent-desc">Non vedi l'email? Controlla anche nello spam o nelle promozioni.</p>
               <button className="icon-cta cta-primary" type="button" onClick={ onBack }>Torna al login</button>
             </div>
           ) : (

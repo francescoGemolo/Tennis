@@ -1,6 +1,6 @@
 import { addDoc, collection, doc, getDocs, query, runTransaction, where, writeBatch } from 'firebase/firestore';
 import { db } from './firebase';
-import { getOccupiedTimes } from '../calendar';
+import { getOccupiedTimes, toDateKey } from '../calendar';
 import type { AccountBooking, AdminBooking, AvailabilityRecord, BookingFormValues, ContactFormValues, DurationHours } from '../types';
 
 const AVAILABILITY_COLLECTION = 'availability';
@@ -97,6 +97,29 @@ export async function cancelBooking(booking: AdminBooking): Promise<void> {
   const occupiedTimes = getOccupiedTimes(booking);
   occupiedTimes.forEach((t) => {
     batch.delete(doc(db, SLOT_LOCKS_COLLECTION, `${booking.date}_${t}`));
+  });
+  await batch.commit();
+}
+
+// Frees up slots reserved by the user's own upcoming bookings (used when deleting
+// an account) while leaving past bookings in place as a historical record.
+export async function cancelFutureBookingsForUser(uid: string): Promise<void> {
+  const q = query(collection(db, BOOKINGS_COLLECTION), where('userId', '==', uid));
+  const snapshot = await getDocs(q);
+  const todayKey = toDateKey(new Date());
+  const futureBookings = snapshot.docs
+    .map((d) => ({ id: d.id, ...(d.data() as Omit<AdminBooking, 'id'>) }))
+    .filter((booking) => booking.date >= todayKey);
+
+  if (futureBookings.length === 0) return;
+
+  const batch = writeBatch(db);
+  futureBookings.forEach((booking) => {
+    batch.delete(doc(db, BOOKINGS_COLLECTION, booking.id));
+    batch.delete(doc(db, AVAILABILITY_COLLECTION, booking.availabilityId));
+    getOccupiedTimes(booking).forEach((t) => {
+      batch.delete(doc(db, SLOT_LOCKS_COLLECTION, `${booking.date}_${t}`));
+    });
   });
   await batch.commit();
 }

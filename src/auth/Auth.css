@@ -133,3 +133,15 @@
 .auth-guest-link {
   justify-content: center;
 }
+
+.welcome-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+.welcome-title {
+  font-size: var(--font-size-xl);
+}

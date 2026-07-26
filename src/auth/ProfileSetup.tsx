@@ -14,7 +14,7 @@ interface FieldErrors {
 }
 
 export function ProfileSetup() {
-  const { authUser } = useAuth();
+  const { authUser, signOutUser } = useAuth();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
@@ -127,6 +127,10 @@ export function ProfileSetup() {
               { isSubmitting ? 'Salvataggio…' : 'Completa profilo' }
             </button>
           </form>
+
+          <button type="button" className="btn-ghost auth-guest-link" onClick={ () => void signOutUser() } disabled={ isSubmitting }>
+            Esci
+          </button>
         </div>
       </div>
     </section>
