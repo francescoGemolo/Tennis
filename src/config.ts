@@ -11,7 +11,7 @@ export const MAX_PHONE_LENGTH = 10;
 export const MAX_MESSAGE_LENGTH = 200;
 
 export const BADGE_NAME = 'Prenotazione rapida';
-export const HERO_TITLE = 'Tennis Salandra';
+export const HERO_TITLE = 'Salandra Tennis';
 export const HERO_SUBTITLE = 'Prenota il campo online e scendi in gioco.';
 
 export const CONTACT_PHONE_DISPLAY = '+39 348 462 5219';

@@ -171,6 +171,7 @@
   align-items: flex-start;
   gap: var(--space-4);
   flex-shrink: 0;
+  width: 100%;
 }
 
 .view-header-row {

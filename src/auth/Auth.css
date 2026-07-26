@@ -107,7 +107,25 @@
 .auth-sent {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: var(--space-4);
   text-align: left;
+}
+
+.auth-sent-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border: var(--border-hairline);
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--accent);
+}
+
+.auth-sent-desc {
+  font-size: var(--font-size-sm);
+  color: var(--neutral-300);
+  overflow-wrap: break-word;
 }

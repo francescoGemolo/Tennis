@@ -36,9 +36,11 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
 
           { sent ? (
             <div className="auth-sent">
-              <HugeiconsIcon icon={ MailSend01Icon } size={ 28 } strokeWidth={ 1.5 } className="icon-secondary" />
-              <p>Ti abbiamo inviato un'email a <strong>{ email }</strong> con le istruzioni per reimpostare la password.</p>
-              <button className="icon-cta cta-secondary" type="button" onClick={ onBack }>Torna al login</button>
+              <span className="auth-sent-icon" aria-hidden="true">
+                <HugeiconsIcon icon={ MailSend01Icon } size={ 20 } strokeWidth={ 1.5 } />
+              </span>
+              <p className="auth-sent-desc">Controlla la casella di <strong>{ email }</strong> e segui le istruzioni per reimpostare la password.</p>
+              <button className="icon-cta cta-primary" type="button" onClick={ onBack }>Torna al login</button>
             </div>
           ) : (
             <form className="field-group" noValidate onSubmit={ handleSubmit }>

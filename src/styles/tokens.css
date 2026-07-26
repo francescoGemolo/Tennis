@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap');
 
 :root {
   --neutral-950: #0E1116;
@@ -42,9 +42,10 @@
   --radius-lg: 1.25rem;
   --radius-full: 999px;
 
-  --font-family-display: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-display: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+/*   --font-family-hero: 'Space Grotesk', 'Inter', system-ui, sans-serif; */
 
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
