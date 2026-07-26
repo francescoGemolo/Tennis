@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { CallIcon, Calendar03Icon, Clock01Icon, CoinsEuroIcon } from '@hugeicons/core-free-icons';
+import { CallIcon, Calendar03Icon, Clock01Icon, CoinsEuroIcon, TennisBallIcon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
 import { formatShortDate } from '../calendar';
 import { bookingPrice, formatPrice } from '../pricing';
@@ -10,9 +10,10 @@ import './Account.css';
 interface AccountProps {
   account: AccountData;
   onBack: () => void;
+  onBook: () => void;
 }
 
-export function Account({ account, onBack }: AccountProps) {
+export function Account({ account, onBack, onBook }: AccountProps) {
   const { firstName, lastName, phone, memberSince, bookings } = account;
 
   const stats = useMemo(() => {
@@ -66,7 +67,13 @@ export function Account({ account, onBack }: AccountProps) {
         <span className="section-label account-section-title">Le tue prenotazioni</span>
 
         { bookings.length === 0 ? (
-          <p className="account-empty">Non hai ancora prenotazioni.</p>
+          <div className="account-empty-state">
+            <p className="account-empty">Nessuna prenotazione, prenota ora.</p>
+            <button className="icon-cta cta-primary" type="button" onClick={ onBook }>
+              <HugeiconsIcon icon={ TennisBallIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" />
+              Prenota
+            </button>
+          </div>
         ) : (
           <ul className="account-bookings">
             { bookings.map((booking) => (

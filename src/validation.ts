@@ -43,6 +43,38 @@ export function phoneError(value: string, maxLength = 10): string | null {
   return null;
 }
 
+export function emailError(value: string): string | null {
+  const clean = value.trim();
+  if (clean.length === 0) return 'Campo obbligatorio';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) return 'Email non valida';
+  return null;
+}
+
+export function passwordError(value: string): string | null {
+  if (value.length === 0) return 'Campo obbligatorio';
+  return null;
+}
+
+export function newPasswordError(value: string): string | null {
+  if (value.length === 0) return 'Campo obbligatorio';
+  if (value.length < 6) return 'Almeno 6 caratteri';
+  return null;
+}
+
+export function confirmPasswordError(password: string, confirmPassword: string): string | null {
+  if (confirmPassword.length === 0) return 'Campo obbligatorio';
+  if (confirmPassword !== password) return 'Le password non coincidono';
+  return null;
+}
+
+export function capitalizeName(value: string): string {
+  return sanitizeText(value)
+    .split(' ')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
 export function messageError(value: string, maxLength = 200): string | null {
   const clean = sanitizeText(value, maxLength);
   if (clean.length === 0) return 'Campo obbligatorio';

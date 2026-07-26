@@ -3,6 +3,10 @@
   text-align: center;
 }
 
+.hero .view-utilities .btn-round:last-child {
+  margin-left: auto;
+}
+
 .hero-main {
   flex: 1;
   min-height: 0;

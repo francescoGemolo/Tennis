@@ -79,10 +79,10 @@ body.admin-mode {
     background: var(--accent);
     border-color: var(--accent);
   }
-}
 
-.admin-icon-btn:active:not(:disabled) {
-  transform: scale(0.95);
+  .admin-icon-btn:active:not(:disabled) {
+    transform: scale(0.95);
+  }
 }
 
 .admin-icon-btn:disabled {
@@ -139,21 +139,20 @@ body.admin-mode {
   height: 2.75rem;
   border: none;
   border-radius: var(--radius-md);
-  background: transparent;
-  color: var(--neutral-300);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  color: var(--danger);
   cursor: pointer;
   transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
 }
 
 @media (hover: hover) {
   .admin-delete-btn:hover:not(:disabled) {
-    background: color-mix(in srgb, var(--danger) 16%, transparent);
-    color: var(--danger);
+    background: color-mix(in srgb, var(--danger) 22%, transparent);
   }
-}
 
-.admin-delete-btn:active:not(:disabled) {
-  transform: scale(0.95);
+  .admin-delete-btn:active:not(:disabled) {
+    transform: scale(0.95);
+  }
 }
 
 .admin-delete-btn:disabled {

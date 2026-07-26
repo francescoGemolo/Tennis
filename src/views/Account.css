@@ -116,6 +116,17 @@
   margin-top: var(--space-2);
 }
 
+.account-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+.account-empty-state .icon-cta {
+  align-self: stretch;
+}
+
 .account-empty {
   font-size: var(--font-size-sm);
   color: var(--neutral-500);

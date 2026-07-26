@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from 'react';
+import { AuthGate } from './auth/AuthGate';
 import { Hero } from './views/Hero';
 import { BookingCalendar } from './views/BookingCalendar';
 import { DateTimePicker } from './views/DateTimePicker';
@@ -18,11 +19,16 @@ interface Confirmation {
 }
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [view, setView] = useState<ViewId>('welcome');
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedDuration, setSelectedDuration] = useState<DurationHours | null>(null);
   const [confirmation, setConfirmation] = useState<Confirmation | null>(null);
+
+  if (!isAuthenticated) {
+    return <AuthGate onComplete={ () => setIsAuthenticated(true) } />;
+  }
 
   function handleSelectDate(date: Date) {
     setSelectedDate(date);
@@ -103,7 +109,7 @@ function App() {
       ) }
 
       { view === 'account' && (
-        <Account account={ PLACEHOLDER_ACCOUNT } onBack={ () => setView('welcome') } />
+        <Account account={ PLACEHOLDER_ACCOUNT } onBack={ () => setView('welcome') } onBook={ () => setView('booking') } />
       ) }
 
       { confirmation && (

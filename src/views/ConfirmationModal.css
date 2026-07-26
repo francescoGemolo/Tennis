@@ -93,11 +93,11 @@
         background: var(--neutral-700);
         border-color: var(--neutral-600);
     }
-}
 
-.confirmation-done-btn:active {
-    background: var(--neutral-900);
-    transform: scale(0.96);
+    .confirmation-done-btn:active {
+        background: var(--neutral-900);
+        transform: scale(0.96);
+    }
 }
 
 @keyframes banner-bounce {
