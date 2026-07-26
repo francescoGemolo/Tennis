@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
+import { useAuth } from './AuthContext';
+import { createUserProfile } from '../services/users';
 import { MAX_PHONE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import { capitalizeName, nameError, phoneError, sanitizePhone } from '../validation';
 import './Auth.css';
@@ -11,18 +13,18 @@ interface FieldErrors {
   phone: string | null;
 }
 
-interface ProfileSetupProps {
-  onComplete: () => void;
-}
-
-export function ProfileSetup({ onComplete }: ProfileSetupProps) {
+export function ProfileSetup() {
+  const { authUser } = useAuth();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
   const [errors, setErrors] = useState<FieldErrors>({ firstName: null, lastName: null, phone: null });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (isSubmitting || !authUser) return;
 
     const cleanFirstName = capitalizeName(firstName);
     const cleanLastName = capitalizeName(lastName);
@@ -37,13 +39,26 @@ export function ProfileSetup({ onComplete }: ProfileSetupProps) {
 
     setFirstName(cleanFirstName);
     setLastName(cleanLastName);
-    onComplete();
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      await createUserProfile(authUser.uid, {
+        firstName: cleanFirstName,
+        lastName: cleanLastName,
+        phone,
+        email: authUser.email ?? '',
+      });
+    } catch {
+      setSubmitError('Non è stato possibile salvare il profilo. Riprova.');
+      setIsSubmitting(false);
+    }
   }
 
   return (
     <section className="view auth-view" aria-labelledby="profile-title">
       <div className="auth-content">
         <div className="card auth-card">
+          <span className="eyebrow">Benvenuto/a</span>
           <h2 className="view-title" id="profile-title">Completa il profilo</h2>
 
           <form className="field-group" noValidate onSubmit={ handleSubmit }>
@@ -105,9 +120,11 @@ export function ProfileSetup({ onComplete }: ProfileSetupProps) {
               { errors.phone && <span className="field-error">{ errors.phone }</span> }
             </div>
 
-            <button className="icon-cta cta-primary" type="submit">
+            { submitError && <p className="form-error" role="alert">{ submitError }</p> }
+
+            <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
               <HugeiconsIcon icon={ ArrowBigRightDashIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" />
-              Completa profilo
+              { isSubmitting ? 'Salvataggio…' : 'Completa profilo' }
             </button>
           </form>
         </div>

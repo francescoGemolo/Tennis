@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon, MailSend01Icon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
+import { useAuth } from './AuthContext';
 import { emailError } from '../validation';
 import './Auth.css';
 
@@ -10,18 +11,29 @@ interface ForgotPasswordProps {
 }
 
 export function ForgotPassword({ onBack }: ForgotPasswordProps) {
+  const { sendReset } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const nextError = emailError(email);
     setError(nextError);
     if (nextError) return;
 
-    setSent(true);
+    setIsSubmitting(true);
+    try {
+      await sendReset(email);
+      setSent(true);
+    } catch {
+      setError('Non è stato possibile inviare l\'email. Riprova.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -61,9 +73,9 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
                 { error && <span className="field-error">{ error }</span> }
               </div>
 
-              <button className="icon-cta cta-primary" type="submit">
+              <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
                 <HugeiconsIcon icon={ ArrowBigRightDashIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" />
-                Invia link di recupero
+                { isSubmitting ? 'Invio in corso…' : 'Invia link di recupero' }
               </button>
             </form>
           ) }

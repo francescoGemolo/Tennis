@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import './styles/tokens.css';
 import './styles/shared.css';
+import { AuthProvider } from './auth/AuthContext';
 import App from './App';
 
 const { hash, pathname } = window.location;
@@ -14,7 +15,9 @@ if (hash === '#admin' || pathname.endsWith('/admin')) {
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </StrictMode>,
   );
 }

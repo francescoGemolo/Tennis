@@ -129,3 +129,7 @@
   color: var(--neutral-300);
   overflow-wrap: break-word;
 }
+
+.auth-guest-link {
+  justify-content: center;
+}

@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { GoogleButton } from './GoogleButton';
+import { useAuth } from './AuthContext';
+import { PasswordField } from '../components/PasswordField';
 import { confirmPasswordError, emailError, newPasswordError } from '../validation';
 import './Auth.css';
 
@@ -12,19 +14,21 @@ interface FieldErrors {
 }
 
 interface SignupProps {
-  onSignupSuccess: () => void;
-  onGoogleSignIn: () => void;
   onSwitchToLogin: () => void;
 }
 
-export function Signup({ onSignupSuccess, onGoogleSignIn, onSwitchToLogin }: SignupProps) {
+export function Signup({ onSwitchToLogin }: SignupProps) {
+  const { signUp, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<FieldErrors>({ email: null, password: null, confirmPassword: null });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const nextErrors: FieldErrors = {
       email: emailError(email),
@@ -34,7 +38,40 @@ export function Signup({ onSignupSuccess, onGoogleSignIn, onSwitchToLogin }: Sig
     setErrors(nextErrors);
     if (nextErrors.email || nextErrors.password || nextErrors.confirmPassword) return;
 
-    onSignupSuccess();
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      await signUp(email, password);
+    } catch (error) {
+      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      setSubmitError(
+        code === 'auth/email-already-in-use'
+          ? 'Questo indirizzo email è già registrato.'
+          : 'Registrazione non riuscita. Riprova.',
+      );
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleGoogleClick() {
+    if (isSubmitting) return;
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      if (code === 'auth/popup-closed-by-user') {
+        setIsSubmitting(false);
+        return;
+      }
+      if (code === 'auth/account-exists-with-different-credential') {
+        setSubmitError('Questo indirizzo email è già registrato con un altro metodo di accesso.');
+      } else {
+        setSubmitError('Accesso con Google non riuscito.');
+      }
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -61,49 +98,41 @@ export function Signup({ onSignupSuccess, onGoogleSignIn, onSwitchToLogin }: Sig
               { errors.email && <span className="field-error">{ errors.email }</span> }
             </div>
 
-            <div className={ `field${errors.password ? ' field--invalid' : ''}` }>
-              <label htmlFor="signup-password">Password</label>
-              <input
-                id="signup-password"
-                type="password"
-                autoComplete="new-password"
-                required
-                aria-invalid={ !!errors.password }
-                value={ password }
-                onChange={ (e) => {
-                  setPassword(e.target.value);
-                  if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
-                } }
-              />
-              { errors.password && <span className="field-error">{ errors.password }</span> }
-            </div>
+            <PasswordField
+              id="signup-password"
+              label="Password"
+              autoComplete="new-password"
+              value={ password }
+              error={ errors.password }
+              onChange={ (value) => {
+                setPassword(value);
+                if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
+              } }
+            />
 
-            <div className={ `field${errors.confirmPassword ? ' field--invalid' : ''}` }>
-              <label htmlFor="signup-confirm-password">Conferma password</label>
-              <input
-                id="signup-confirm-password"
-                type="password"
-                autoComplete="new-password"
-                required
-                aria-invalid={ !!errors.confirmPassword }
-                value={ confirmPassword }
-                onChange={ (e) => {
-                  setConfirmPassword(e.target.value);
-                  if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: null }));
-                } }
-              />
-              { errors.confirmPassword && <span className="field-error">{ errors.confirmPassword }</span> }
-            </div>
+            <PasswordField
+              id="signup-confirm-password"
+              label="Conferma password"
+              autoComplete="new-password"
+              value={ confirmPassword }
+              error={ errors.confirmPassword }
+              onChange={ (value) => {
+                setConfirmPassword(value);
+                if (errors.confirmPassword) setErrors((prev) => ({ ...prev, confirmPassword: null }));
+              } }
+            />
 
-            <button className="icon-cta cta-primary" type="submit">
+            { submitError && <p className="form-error" role="alert">{ submitError }</p> }
+
+            <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
               <HugeiconsIcon icon={ ArrowBigRightDashIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" />
-              Registrati
+              { isSubmitting ? 'Registrazione in corso…' : 'Registrati' }
             </button>
           </form>
 
           <span className="auth-divider">Oppure</span>
 
-          <GoogleButton label="Continua con Google" onClick={ onGoogleSignIn } />
+          <GoogleButton label="Continua con Google" onClick={ handleGoogleClick } />
 
           <p className="auth-switch">
             Hai già un account?

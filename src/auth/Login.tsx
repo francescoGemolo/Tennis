@@ -2,6 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { GoogleButton } from './GoogleButton';
+import { useAuth } from './AuthContext';
+import { PasswordField } from '../components/PasswordField';
 import { emailError, passwordError } from '../validation';
 import './Auth.css';
 
@@ -11,19 +13,21 @@ interface FieldErrors {
 }
 
 interface LoginProps {
-  onLoginSuccess: () => void;
-  onGoogleSignIn: () => void;
   onForgotPassword: () => void;
   onSwitchToSignup: () => void;
 }
 
-export function Login({ onLoginSuccess, onGoogleSignIn, onForgotPassword, onSwitchToSignup }: LoginProps) {
+export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
+  const { signIn, signInWithGoogle, signInAsGuest } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState<FieldErrors>({ email: null, password: null });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    if (isSubmitting) return;
 
     const nextErrors: FieldErrors = {
       email: emailError(email),
@@ -32,7 +36,47 @@ export function Login({ onLoginSuccess, onGoogleSignIn, onForgotPassword, onSwit
     setErrors(nextErrors);
     if (nextErrors.email || nextErrors.password) return;
 
-    onLoginSuccess();
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      await signIn(email, password);
+    } catch {
+      setSubmitError('Credenziali non valide.');
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleGoogleClick() {
+    if (isSubmitting) return;
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      await signInWithGoogle();
+    } catch (error) {
+      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      if (code === 'auth/popup-closed-by-user') {
+        setIsSubmitting(false);
+        return;
+      }
+      if (code === 'auth/account-exists-with-different-credential') {
+        setSubmitError('Questo indirizzo email è già registrato con un altro metodo di accesso.');
+      } else {
+        setSubmitError('Accesso con Google non riuscito.');
+      }
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleGuestClick() {
+    if (isSubmitting) return;
+    setSubmitError(null);
+    setIsSubmitting(true);
+    try {
+      await signInAsGuest();
+    } catch {
+      setSubmitError('Accesso come ospite non riuscito. Riprova.');
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -59,41 +103,42 @@ export function Login({ onLoginSuccess, onGoogleSignIn, onForgotPassword, onSwit
               { errors.email && <span className="field-error">{ errors.email }</span> }
             </div>
 
-            <div className={ `field${errors.password ? ' field--invalid' : ''}` }>
-              <label htmlFor="login-password">Password</label>
-              <input
-                id="login-password"
-                type="password"
-                autoComplete="current-password"
-                required
-                aria-invalid={ !!errors.password }
-                value={ password }
-                onChange={ (e) => {
-                  setPassword(e.target.value);
-                  if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
-                } }
-              />
-              { errors.password && <span className="field-error">{ errors.password }</span> }
-            </div>
+            <PasswordField
+              id="login-password"
+              label="Password"
+              autoComplete="current-password"
+              value={ password }
+              error={ errors.password }
+              onChange={ (value) => {
+                setPassword(value);
+                if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
+              } }
+            />
 
             <button type="button" className="auth-forgot-link" onClick={ onForgotPassword }>
               Password dimenticata?
             </button>
 
-            <button className="icon-cta cta-primary" type="submit">
+            { submitError && <p className="form-error" role="alert">{ submitError }</p> }
+
+            <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
               <HugeiconsIcon icon={ ArrowBigRightDashIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" />
-              Accedi
+              { isSubmitting ? 'Accesso in corso…' : 'Accedi' }
             </button>
           </form>
 
           <span className="auth-divider">Oppure</span>
 
-          <GoogleButton label="Continua con Google" onClick={ onGoogleSignIn } />
+          <GoogleButton label="Continua con Google" onClick={ handleGoogleClick } />
 
           <p className="auth-switch">
             Non hai un account?
             <button type="button" onClick={ onSwitchToSignup }>Registrati</button>
           </p>
+
+          <button type="button" className="btn-ghost auth-guest-link" onClick={ handleGuestClick } disabled={ isSubmitting }>
+            Continua come ospite
+          </button>
         </div>
       </div>
     </section>

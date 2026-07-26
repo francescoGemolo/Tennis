@@ -3,7 +3,7 @@ import { HugeiconsIcon } from '@hugeicons/react';
 import { Delete02Icon, Download04Icon } from '@hugeicons/core-free-icons';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { cancelBooking, fetchAllBookings } from '../services/bookings';
-import { signOutAdmin } from '../services/auth';
+import { signOutUser } from '../services/auth';
 import type { AdminBooking } from '../types';
 import './Admin.css';
 
@@ -100,7 +100,7 @@ export function AdminDashboard() {
     <section className="view admin-dashboard" aria-labelledby="admin-dashboard-title">
       <div className="view-header-row">
         <h2 className="view-title" id="admin-dashboard-title">Prenotazioni</h2>
-        <button type="button" className="btn-ghost" onClick={ signOutAdmin }>Esci</button>
+        <button type="button" className="btn-ghost" onClick={ signOutUser }>Esci</button>
       </div>
 
       <div className="admin-toolbar">
