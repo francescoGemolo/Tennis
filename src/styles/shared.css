@@ -250,6 +250,37 @@
   border-color: var(--danger);
 }
 
+.password-input {
+  position: relative;
+  display: flex;
+}
+
+.password-input input {
+  padding-right: calc(var(--space-3) + 1.75rem);
+}
+
+.password-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+@media (hover: hover) {
+  .password-toggle:hover {
+    color: var(--accent-strong);
+  }
+}
+
 .field-error {
   color: var(--danger);
   font-size: var(--font-size-xs);

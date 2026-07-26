@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { signIn } from '../services/auth';
+import { PasswordField } from '../components/PasswordField';
 import { emailError, passwordError } from '../validation';
 import './Admin.css';
 
@@ -57,22 +58,17 @@ export function AdminLogin() {
           />
           { errors.email && <span className="field-error">{ errors.email }</span> }
         </div>
-        <div className={ `field${errors.password ? ' field--invalid' : ''}` }>
-          <label htmlFor="admin-password">Password</label>
-          <input
-            id="admin-password"
-            type="password"
-            autoComplete="current-password"
-            required
-            aria-invalid={ !!errors.password }
-            value={ password }
-            onChange={ (e) => {
-              setPassword(e.target.value);
-              if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
-            } }
-          />
-          { errors.password && <span className="field-error">{ errors.password }</span> }
-        </div>
+        <PasswordField
+          id="admin-password"
+          label="Password"
+          autoComplete="current-password"
+          value={ password }
+          error={ errors.password }
+          onChange={ (value) => {
+            setPassword(value);
+            if (errors.password) setErrors((prev) => ({ ...prev, password: null }));
+          } }
+        />
         { submitError && <p className="form-error" role="alert">{ submitError }</p> }
         <button className="icon-cta cta-primary" type="submit" disabled={ isSubmitting }>
           { isSubmitting ? 'Accesso in corso…' : 'Accedi' }
