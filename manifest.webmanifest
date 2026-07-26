@@ -3,20 +3,20 @@
   "short_name": "SL Tennis",
   "description": "Prenota il tuo turno al Circolo Tennis in pochi tocchi.",
   "lang": "it",
-  "id": "/Tennis/",
-  "start_url": "/Tennis/",
-  "scope": "/Tennis/",
+  "id": "/salandra-tennis/",
+  "start_url": "/salandra-tennis/",
+  "scope": "/salandra-tennis/",
   "display": "standalone",
   "background_color": "#0E1116",
   "theme_color": "#0E1116",
   "icons": [
     {
-      "src": "/Tennis/icons/icon-192.png",
+      "src": "/salandra-tennis/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/Tennis/icons/icon-512.png",
+      "src": "/salandra-tennis/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
