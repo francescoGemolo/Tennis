@@ -9,11 +9,14 @@ import './Account.css';
 
 interface AccountProps {
   account: AccountData;
+  bookingsLoading: boolean;
+  bookingsError: boolean;
   onBack: () => void;
   onBook: () => void;
+  onLogout: () => void;
 }
 
-export function Account({ account, onBack, onBook }: AccountProps) {
+export function Account({ account, bookingsLoading, bookingsError, onBack, onBook, onLogout }: AccountProps) {
   const { firstName, lastName, phone, memberSince, bookings } = account;
 
   const stats = useMemo(() => {
@@ -31,7 +34,10 @@ export function Account({ account, onBack, onBook }: AccountProps) {
   return (
     <section className="view account" aria-labelledby="account-title">
       <div className="view-header">
-        <BackButton onClick={ onBack } />
+        <div className="view-header-row">
+          <BackButton onClick={ onBack } />
+          <button type="button" className="btn-ghost" onClick={ onLogout }>Esci</button>
+        </div>
         <h2 className="view-title" id="account-title">Area personale</h2>
       </div>
 
@@ -66,9 +72,13 @@ export function Account({ account, onBack, onBook }: AccountProps) {
 
         <span className="section-label account-section-title">Le tue prenotazioni</span>
 
-        { bookings.length === 0 ? (
+        { bookingsError ? (
+          <p className="form-error" role="alert">Impossibile caricare le prenotazioni. Riprova più tardi.</p>
+        ) : bookingsLoading ? (
+          <p className="section-label">Caricamento…</p>
+        ) : bookings.length === 0 ? (
           <div className="account-empty-state">
-            <p className="account-empty">Nessuna prenotazione, prenota ora.</p>
+            <p className="account-empty">Ancora nessuna prenotazione qui, prenota ora.</p>
             <button className="icon-cta cta-primary" type="button" onClick={ onBook }>
               <HugeiconsIcon icon={ TennisBallIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" />
               Prenota

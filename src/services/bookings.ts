@@ -1,7 +1,7 @@
 import { addDoc, collection, doc, getDocs, query, runTransaction, where, writeBatch } from 'firebase/firestore';
 import { db } from './firebase';
 import { getOccupiedTimes } from '../calendar';
-import type { AdminBooking, AvailabilityRecord, BookingFormValues, ContactFormValues, DurationHours } from '../types';
+import type { AccountBooking, AdminBooking, AvailabilityRecord, BookingFormValues, ContactFormValues, DurationHours } from '../types';
 
 const AVAILABILITY_COLLECTION = 'availability';
 const BOOKINGS_COLLECTION = 'bookings';
@@ -35,10 +35,11 @@ interface CreateBookingInput extends BookingFormValues {
   date: string;
   time: string;
   durationHours: DurationHours;
+  userId: string;
 }
 
 export async function createBooking(input: CreateBookingInput): Promise<void> {
-  const { date, time, durationHours, firstName, lastName, phone } = input;
+  const { date, time, durationHours, firstName, lastName, phone, userId } = input;
   const requiredTimes = getOccupiedTimes({ date, time, durationHours });
   const lockRefs = requiredTimes.map((t) => doc(db, SLOT_LOCKS_COLLECTION, `${date}_${t}`));
 
@@ -65,12 +66,21 @@ export async function createBooking(input: CreateBookingInput): Promise<void> {
       phone,
       createdAt,
       availabilityId: availabilityRef.id,
+      userId,
     });
   });
 }
 
 export async function createMessage(values: ContactFormValues): Promise<void> {
   await addDoc(collection(db, MESSAGES_COLLECTION), { ...values, createdAt: new Date().toISOString() });
+}
+
+export async function fetchMyBookings(uid: string): Promise<AccountBooking[]> {
+  const q = query(collection(db, BOOKINGS_COLLECTION), where('userId', '==', uid));
+  const snapshot = await getDocs(q);
+  return snapshot.docs
+    .map((d) => ({ id: d.id, ...(d.data() as Omit<AccountBooking, 'id'>) }))
+    .sort((a, b) => (a.date + a.time < b.date + b.time ? 1 : -1));
 }
 
 export async function fetchAllBookings(): Promise<AdminBooking[]> {
