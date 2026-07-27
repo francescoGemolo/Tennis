@@ -11,6 +11,10 @@ interface HeroProps {
 }
 
 export function Hero({ onBook, onContact, onAccount }: HeroProps) {
+  const heroTitleWords = HERO_TITLE.split(' ');
+  const heroTitleAccent = heroTitleWords.pop();
+  const heroTitleLead = heroTitleWords.join(' ');
+
   return (
     <section className="view hero" aria-labelledby="welcome-title">
       <div className="view-utilities">
@@ -23,7 +27,7 @@ export function Hero({ onBook, onContact, onAccount }: HeroProps) {
       <div className="hero-main">
         <div className="hero-content">
           <span className="eyebrow">{ BADGE_NAME }</span>
-          <h1 id="welcome-title">{ HERO_TITLE }</h1>
+          <h1 id="welcome-title">{ heroTitleLead ? `${heroTitleLead} ` : '' }<span className="text-accent">{ heroTitleAccent }</span></h1>
           <p>{ HERO_SUBTITLE }</p>
         </div>
 

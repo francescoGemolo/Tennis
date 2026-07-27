@@ -1,13 +1,13 @@
 import { useMemo, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { CallIcon, Calendar03Icon, Clock01Icon, CoinsEuroIcon, TennisBallIcon } from '@hugeicons/core-free-icons';
+import { CallIcon, Calendar03Icon, Clock01Icon, CoinsEuroIcon, Delete02Icon, TennisBallIcon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { PasswordField } from '../components/PasswordField';
 import { useAuth } from '../auth/AuthContext';
-import { formatShortDate } from '../calendar';
+import { formatShortDate, toDateKey } from '../calendar';
 import { bookingPrice, formatPrice } from '../pricing';
-import type { Account as AccountData } from '../types';
+import type { Account as AccountData, AccountBooking } from '../types';
 import './Account.css';
 
 interface AccountProps {
@@ -17,9 +17,10 @@ interface AccountProps {
   onBack: () => void;
   onBook: () => void;
   onLogout: () => void;
+  onCancelBooking: (booking: AccountBooking) => Promise<void>;
 }
 
-export function Account({ account, bookingsLoading, bookingsError, onBack, onBook, onLogout }: AccountProps) {
+export function Account({ account, bookingsLoading, bookingsError, onBack, onBook, onLogout, onCancelBooking }: AccountProps) {
   const { firstName, lastName, phone, memberSince, bookings } = account;
   const {
     authUser,
@@ -35,6 +36,32 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
   const [reauthPassword, setReauthPassword] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const [cancelTarget, setCancelTarget] = useState<AccountBooking | null>(null);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState<string | null>(null);
+
+  const todayKey = toDateKey(new Date());
+
+  function closeCancelDialog() {
+    if (isCancelling) return;
+    setCancelTarget(null);
+    setCancelError(null);
+  }
+
+  async function handleConfirmCancel() {
+    if (!cancelTarget) return;
+    setIsCancelling(true);
+    setCancelError(null);
+    try {
+      await onCancelBooking(cancelTarget);
+      setCancelTarget(null);
+    } catch {
+      setCancelError('Non è stato possibile annullare la prenotazione. Riprova.');
+    } finally {
+      setIsCancelling(false);
+    }
+  }
 
   const stats = useMemo(() => {
     const hours = bookings.reduce((total, booking) => total + booking.durationHours, 0);
@@ -122,7 +149,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
         <div className="card account-profile">
           <span className="account-avatar" aria-hidden="true">{ initials }</span>
           <div className="account-identity">
-            <span className="account-name">{ firstName } { lastName }</span>
+            <span className="account-name">{ firstName } <span className="text-accent">{ lastName }</span></span>
             <span className="section-label">Membro dal { memberSince }</span>
           </div>
         </div>
@@ -168,6 +195,16 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
                 <span className="account-booking-date">{ formatShortDate(booking.date) }</span>
                 <span className="account-mono">{ booking.time } - { booking.durationHours }h</span>
                 <span className="account-booking-price">{ formatPrice(bookingPrice(booking.durationHours)) }</span>
+                { booking.date >= todayKey && (
+                  <button
+                    type="button"
+                    className="account-booking-cancel"
+                    aria-label="Annulla prenotazione"
+                    onClick={ () => setCancelTarget(booking) }
+                  >
+                    <HugeiconsIcon icon={ Delete02Icon } size={ 16 } strokeWidth={ 1.5 } />
+                  </button>
+                ) }
               </li>
             )) }
           </ul>
@@ -202,6 +239,19 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
             />
           ) }
         </ConfirmDialog>
+      ) }
+
+      { cancelTarget && (
+        <ConfirmDialog
+          title="Annulla prenotazione"
+          message={ `Vuoi annullare la prenotazione del ${formatShortDate(cancelTarget.date)} alle ${cancelTarget.time}? L'orario tornerà disponibile.` }
+          confirmLabel="Annulla prenotazione"
+          danger
+          isSubmitting={ isCancelling }
+          error={ cancelError }
+          onConfirm={ handleConfirmCancel }
+          onCancel={ closeCancelDialog }
+        />
       ) }
     </section>
   );

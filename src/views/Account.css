@@ -161,6 +161,24 @@
   white-space: nowrap;
 }
 
+.account-booking-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--neutral-500);
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .account-booking-cancel:hover {
+    color: var(--danger);
+  }
+}
+
 .account-delete-link {
   align-self: center;
   margin-top: var(--space-2);

@@ -16,7 +16,7 @@ export function Welcome({ name }: WelcomeProps) {
             <HugeiconsIcon icon={ TennisBallIcon } size={ 22 } strokeWidth={ 1.5 } />
           </span>
           <span className="eyebrow">{ HERO_TITLE }</span>
-          <h1 className="welcome-title">Benvenuto, { name }</h1>
+          <h1 className="welcome-title">Benvenuto, <span className="text-accent">{ name }</span></h1>
         </div>
       </div>
     </section>

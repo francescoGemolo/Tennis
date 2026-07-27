@@ -51,10 +51,10 @@ export async function createBooking(input: CreateBookingInput): Promise<void> {
 
     const createdAt = new Date().toISOString();
 
-    lockRefs.forEach((ref) => transaction.set(ref, { date, createdAt }));
+    lockRefs.forEach((ref) => transaction.set(ref, { date, createdAt, userId }));
 
     const availabilityRef = doc(collection(db, AVAILABILITY_COLLECTION));
-    transaction.set(availabilityRef, { date, time, durationHours, createdAt });
+    transaction.set(availabilityRef, { date, time, durationHours, createdAt, userId });
 
     const bookingRef = doc(collection(db, BOOKINGS_COLLECTION));
     transaction.set(bookingRef, {
@@ -90,7 +90,7 @@ export async function fetchAllBookings(): Promise<AdminBooking[]> {
     .sort((a, b) => (a.date + a.time < b.date + b.time ? 1 : -1));
 }
 
-export async function cancelBooking(booking: AdminBooking): Promise<void> {
+export async function cancelBooking(booking: Pick<AdminBooking, 'id' | 'availabilityId' | 'date' | 'time' | 'durationHours'>): Promise<void> {
   const batch = writeBatch(db);
   batch.delete(doc(db, BOOKINGS_COLLECTION, booking.id));
   batch.delete(doc(db, AVAILABILITY_COLLECTION, booking.availabilityId));

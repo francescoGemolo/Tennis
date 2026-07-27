@@ -180,6 +180,10 @@
   text-overflow: ellipsis;
 }
 
+.text-accent {
+  color: var(--accent);
+}
+
 .section-label {
   font-size: var(--font-size-xs);
   font-weight: 600;

@@ -14,7 +14,7 @@ import { ConfirmationModal } from './views/ConfirmationModal';
 import { Contacts } from './views/Contacts';
 import { Account } from './views/Account';
 import { GuestAccount } from './views/GuestAccount';
-import { createBooking, createMessage, fetchMyBookings } from './services/bookings';
+import { cancelBooking, createBooking, createMessage, fetchMyBookings } from './services/bookings';
 import { formatShortDate, toDateKey } from './calendar';
 import type { AccountBooking, BookingFormValues, ContactFormValues, DurationHours, ViewId } from './types';
 import './App.css';
@@ -148,6 +148,11 @@ function App() {
       void signOutUser();
     };
 
+    const handleCancelBooking = async (booking: AccountBooking) => {
+      await cancelBooking(booking);
+      setAccountBookings((prev) => prev.filter((b) => b.id !== booking.id));
+    };
+
     content = (
       <main className="app">
         { view === 'welcome' && (
@@ -202,6 +207,7 @@ function App() {
             onBack={ () => setView('welcome') }
             onBook={ () => setView('booking') }
             onLogout={ handleLogout }
+            onCancelBooking={ handleCancelBooking }
           />
         ) }
 

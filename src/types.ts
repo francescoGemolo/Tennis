@@ -48,6 +48,7 @@ export interface BookingFormValues {
 
 export interface AccountBooking {
   id: string;
+  availabilityId: string;
   date: string;
   time: string;
   durationHours: DurationHours;
