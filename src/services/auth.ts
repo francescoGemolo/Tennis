@@ -4,16 +4,15 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   EmailAuthProvider,
-  getRedirectResult,
   GoogleAuthProvider,
   onAuthStateChanged,
   reauthenticateWithCredential,
-  reauthenticateWithRedirect,
+  reauthenticateWithPopup,
   sendPasswordResetEmail,
   setPersistence,
   signInAnonymously,
   signInWithEmailAndPassword,
-  signInWithRedirect,
+  signInWithPopup,
   signOut,
   verifyPasswordResetCode,
   type ActionCodeSettings,
@@ -25,7 +24,6 @@ import { auth, db } from './firebase';
 import { USERS_COLLECTION } from './users';
 import { cancelFutureBookingsForUser } from './bookings';
 
-const PENDING_ACCOUNT_DELETION_KEY = 'salandra:pendingAccountDeletion';
 const RECENT_LOGIN_THRESHOLD_MS = 4 * 60 * 1000;
 
 export async function signIn(email: string, password: string): Promise<UserCredential> {
@@ -38,11 +36,7 @@ export async function signUp(email: string, password: string): Promise<UserCrede
 
 export async function signInWithGoogle(): Promise<void> {
   await setPersistence(auth, browserLocalPersistence);
-  await signInWithRedirect(auth, new GoogleAuthProvider());
-}
-
-export async function getGoogleRedirectResult(): Promise<UserCredential | null> {
-  return getRedirectResult(auth);
+  await signInWithPopup(auth, new GoogleAuthProvider());
 }
 
 export async function signInAsGuest(): Promise<UserCredential> {
@@ -98,18 +92,10 @@ export async function reauthenticateWithPassword(password: string): Promise<void
   await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, password));
 }
 
-export async function reauthenticateWithGoogleRedirect(): Promise<void> {
+export async function reauthenticateWithGooglePopup(): Promise<void> {
   const user = auth.currentUser;
   if (!user) throw new Error('No authenticated user.');
-  sessionStorage.setItem(PENDING_ACCOUNT_DELETION_KEY, '1');
-  await setPersistence(auth, browserLocalPersistence);
-  await reauthenticateWithRedirect(user, new GoogleAuthProvider());
-}
-
-export function consumePendingAccountDeletion(): boolean {
-  if (sessionStorage.getItem(PENDING_ACCOUNT_DELETION_KEY) !== '1') return false;
-  sessionStorage.removeItem(PENDING_ACCOUNT_DELETION_KEY);
-  return true;
+  await reauthenticateWithPopup(user, new GoogleAuthProvider());
 }
 
 export async function deleteAccount(): Promise<void> {

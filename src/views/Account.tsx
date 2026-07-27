@@ -26,7 +26,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
     authUser,
     deleteAccount,
     reauthenticateWithPassword,
-    reauthenticateWithGoogleRedirect,
+    reauthenticateWithGooglePopup,
     getAuthProviderId,
     isReauthRecent,
   } = useAuth();
@@ -112,12 +112,12 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
       }
       setIsDeleting(true);
       try {
-        await reauthenticateWithGoogleRedirect();
+        await reauthenticateWithGooglePopup();
       } catch {
         setDeleteError('Non è stato possibile verificare la tua identità con Google. Riprova.');
         setIsDeleting(false);
+        return;
       }
-      return;
     }
 
     setIsDeleting(true);

@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { GoogleButton } from './GoogleButton';
@@ -18,27 +18,13 @@ interface SignupProps {
 }
 
 export function Signup({ onSwitchToLogin }: SignupProps) {
-  const { signUp, signInWithGoogle, googleRedirectError, clearGoogleRedirectError } = useAuth();
+  const { signUp, signInWithGoogle } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<FieldErrors>({ email: null, password: null, confirmPassword: null });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!googleRedirectError) return;
-    setSubmitError(googleRedirectError);
-    clearGoogleRedirectError();
-  }, [googleRedirectError, clearGoogleRedirectError]);
-
-  useEffect(() => {
-    function handlePageShow(event: PageTransitionEvent) {
-      if (event.persisted) setIsSubmitting(false);
-    }
-    window.addEventListener('pageshow', handlePageShow);
-    return () => window.removeEventListener('pageshow', handlePageShow);
-  }, []);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -77,8 +63,18 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
     try {
       await signInWithGoogle();
     } catch (error) {
-      if (import.meta.env.DEV) console.error('Redirect Google fallito:', error);
-      setSubmitError('Accesso con Google non riuscito.');
+      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      if (import.meta.env.DEV) console.error('Accesso Google fallito:', code, error);
+      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
+        // Annullato dall'utente, nessun messaggio d'errore da mostrare.
+      } else if (code === 'auth/popup-blocked') {
+        setSubmitError('Il browser ha bloccato il popup. Consenti i popup per questo sito e riprova.');
+      } else if (code === 'auth/account-exists-with-different-credential') {
+        setSubmitError('Questo indirizzo email è già registrato con un altro metodo di accesso.');
+      } else {
+        setSubmitError('Accesso con Google non riuscito.');
+      }
+    } finally {
       setIsSubmitting(false);
     }
   }
