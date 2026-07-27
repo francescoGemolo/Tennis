@@ -65,7 +65,6 @@ export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
     setSubmitError(null);
     setIsSubmitting(true);
     try {
-      // Navigates away to Google; on failure to even start the redirect we land back here.
       await signInWithGoogle();
     } catch (error) {
       if (import.meta.env.DEV) console.error('Redirect Google fallito:', error);

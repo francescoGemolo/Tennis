@@ -26,7 +26,6 @@ import { USERS_COLLECTION } from './users';
 import { cancelFutureBookingsForUser } from './bookings';
 
 const PENDING_ACCOUNT_DELETION_KEY = 'salandra:pendingAccountDeletion';
-// Firebase requires a "recent" sign-in (~5 min) for deleteUser; 4 min gives margin.
 const RECENT_LOGIN_THRESHOLD_MS = 4 * 60 * 1000;
 
 export async function signIn(email: string, password: string): Promise<UserCredential> {
@@ -38,8 +37,6 @@ export async function signUp(email: string, password: string): Promise<UserCrede
 }
 
 export async function signInWithGoogle(): Promise<void> {
-  // Pins persistence before the full-page redirect so mobile browsers (Safari
-  // in particular) reliably recover the pending sign-in on return.
   await setPersistence(auth, browserLocalPersistence);
   await signInWithRedirect(auth, new GoogleAuthProvider());
 }
@@ -115,8 +112,6 @@ export function consumePendingAccountDeletion(): boolean {
   return true;
 }
 
-// Deletes the user's own Firestore data and Auth account, in this order,
-// so every step still runs with a valid, authenticated session.
 export async function deleteAccount(): Promise<void> {
   const user = auth.currentUser;
   if (!user) throw new Error('No authenticated user.');

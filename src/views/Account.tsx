@@ -112,7 +112,6 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
       }
       setIsDeleting(true);
       try {
-        // Navigates away to Google and back; deletion resumes automatically on return.
         await reauthenticateWithGoogleRedirect();
       } catch {
         setDeleteError('Non è stato possibile verificare la tua identità con Google. Riprova.');

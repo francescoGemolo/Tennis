@@ -75,8 +75,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  // Runs once at boot to pick up the result of a signInWithRedirect/
-  // reauthenticateWithRedirect Google round-trip (the page just reloaded).
   useEffect(() => {
     if (redirectHandled.current) return;
     redirectHandled.current = true;

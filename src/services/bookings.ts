@@ -101,8 +101,6 @@ export async function cancelBooking(booking: Pick<AdminBooking, 'id' | 'availabi
   await batch.commit();
 }
 
-// Frees up slots reserved by the user's own upcoming bookings (used when deleting
-// an account) while leaving past bookings in place as a historical record.
 export async function cancelFutureBookingsForUser(uid: string): Promise<void> {
   const q = query(collection(db, BOOKINGS_COLLECTION), where('userId', '==', uid));
   const snapshot = await getDocs(q);
