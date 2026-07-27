@@ -89,6 +89,19 @@ service cloud.firestore {
       allow delete: if request.auth != null && request.auth.uid == uid;
     }
 
+    match /phoneNumbers/{phone} {
+      allow read: if false;
+      allow create: if request.auth != null &&
+        request.resource.data.keys().hasOnly(['uid']) &&
+        request.resource.data.uid == request.auth.uid;
+      allow update: if false;
+      // resource è null se il documento non esiste (utenti registrati prima
+      // dell'introduzione di questa collezione): va comunque permesso, altrimenti
+      // l'intera transazione di eliminazione account fallisce.
+      allow delete: if request.auth != null &&
+        (resource == null || request.auth.uid == resource.data.uid);
+    }
+
     match /admins/{uid} {
       allow read: if request.auth != null && request.auth.uid == uid;
       allow write: if false;
