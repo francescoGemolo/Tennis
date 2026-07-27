@@ -1,4 +1,5 @@
 import {
+  browserLocalPersistence,
   confirmPasswordReset,
   createUserWithEmailAndPassword,
   deleteUser,
@@ -9,6 +10,7 @@ import {
   reauthenticateWithCredential,
   reauthenticateWithRedirect,
   sendPasswordResetEmail,
+  setPersistence,
   signInAnonymously,
   signInWithEmailAndPassword,
   signInWithRedirect,
@@ -36,6 +38,9 @@ export async function signUp(email: string, password: string): Promise<UserCrede
 }
 
 export async function signInWithGoogle(): Promise<void> {
+  // Pins persistence before the full-page redirect so mobile browsers (Safari
+  // in particular) reliably recover the pending sign-in on return.
+  await setPersistence(auth, browserLocalPersistence);
   await signInWithRedirect(auth, new GoogleAuthProvider());
 }
 
@@ -100,6 +105,7 @@ export async function reauthenticateWithGoogleRedirect(): Promise<void> {
   const user = auth.currentUser;
   if (!user) throw new Error('No authenticated user.');
   sessionStorage.setItem(PENDING_ACCOUNT_DELETION_KEY, '1');
+  await setPersistence(auth, browserLocalPersistence);
   await reauthenticateWithRedirect(user, new GoogleAuthProvider());
 }
 
