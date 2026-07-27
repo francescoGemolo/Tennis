@@ -151,6 +151,14 @@ function App() {
     const handleCancelBooking = async (booking: AccountBooking) => {
       await cancelBooking(booking);
       setAccountBookings((prev) => prev.filter((b) => b.id !== booking.id));
+      setConfirmation({
+        title: 'Prenotazione annullata',
+        details: (
+          <>
+            { formatShortDate(booking.date) } · <span className="confirmation-mono">{ booking.time }</span>
+          </>
+        ),
+      });
     };
 
     content = (
