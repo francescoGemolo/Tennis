@@ -60,9 +60,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profileError, setProfileError] = useState(false);
   const [retryToken, setRetryToken] = useState(0);
   const [googleRedirectError, setGoogleRedirectError] = useState<string | null>(null);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
   const redirectHandled = useRef(false);
 
   useEffect(() => subscribeToAuth(setAuthUser), []);
+
+  async function performAccountDeletion(): Promise<void> {
+    setIsDeletingAccount(true);
+    try {
+      await deleteAccount();
+    } catch (error) {
+      setIsDeletingAccount(false);
+      throw error;
+    }
+  }
 
   // Runs once at boot to pick up the result of a signInWithRedirect/
   // reauthenticateWithRedirect Google round-trip (the page just reloaded).
@@ -73,13 +84,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     getGoogleRedirectResult()
       .then((result) => {
         if (result && consumePendingAccountDeletion()) {
-          void deleteAccount().catch(() => {
+          void performAccountDeletion().catch(() => {
             setGoogleRedirectError('Non è stato possibile eliminare l\'account. Riprova.');
           });
         }
       })
       .catch((error) => setGoogleRedirectError(googleRedirectErrorMessage(error)));
   }, []);
+
+  useEffect(() => {
+    if (authUser === null) setIsDeletingAccount(false);
+  }, [authUser]);
 
   useEffect(() => {
     setProfile(undefined);
@@ -106,8 +121,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profileError ? 'error' :
           profile === undefined ? 'loading' :
             isGuest ? 'ready' :
-              profile === null ? 'needsProfile' :
-                'ready';
+              isDeletingAccount ? 'loading' :
+                profile === null ? 'needsProfile' :
+                  'ready';
 
   const value: AuthContextValue = {
     authUser,

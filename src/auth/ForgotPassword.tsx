@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { ArrowBigRightDashIcon, MailSend01Icon } from '@hugeicons/core-free-icons';
+import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
 import { useAuth } from './AuthContext';
 import { emailError } from '../validation';
@@ -48,9 +48,6 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
 
           { sent ? (
             <div className="auth-sent">
-              <span className="auth-sent-icon" aria-hidden="true">
-                <HugeiconsIcon icon={ MailSend01Icon } size={ 20 } strokeWidth={ 1.5 } />
-              </span>
               <p className="auth-sent-desc">Controlla la casella di <strong>{ email }</strong> e segui le istruzioni per reimpostare la password.</p>
               <p className="auth-sent-desc">Non vedi l'email? Controlla anche nello spam o nelle promozioni.</p>
               <button className="icon-cta cta-primary" type="button" onClick={ onBack }>Torna al login</button>
