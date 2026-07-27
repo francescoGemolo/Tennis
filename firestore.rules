@@ -24,9 +24,6 @@ service cloud.firestore {
         exists(/databases/$(database)/documents/admins/$(request.auth.uid));
     }
 
-    // Legacy availability/slotLocks docs created before ownership tagging lack
-    // `userId`; they remain deletable by any authenticated user until they age
-    // out, so existing users can still cancel bookings made before this change.
     function canManageSlot(data) {
       return isAdmin() ||
         (request.auth != null && (!('userId' in data) || data.userId == request.auth.uid));
