@@ -1,5 +1,4 @@
 import {
-  browserLocalPersistence,
   confirmPasswordReset,
   createUserWithEmailAndPassword,
   deleteUser,
@@ -9,7 +8,6 @@ import {
   reauthenticateWithCredential,
   reauthenticateWithPopup,
   sendPasswordResetEmail,
-  setPersistence,
   signInAnonymously,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -35,7 +33,6 @@ export async function signUp(email: string, password: string): Promise<UserCrede
 }
 
 export async function signInWithGoogle(): Promise<void> {
-  await setPersistence(auth, browserLocalPersistence);
   await signInWithPopup(auth, new GoogleAuthProvider());
 }
 

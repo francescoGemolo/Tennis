@@ -3,7 +3,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import type { User } from 'firebase/auth';
 import { db } from '../services/firebase';
 import {
-  deleteAccount,
+  deleteAccount as deleteAccountService,
   getAuthProviderId,
   isReauthRecent,
   reauthenticateWithGooglePopup,
@@ -32,7 +32,7 @@ interface AuthContextValue {
   signInAsGuest: typeof signInAsGuest;
   signOutUser: typeof signOutUser;
   sendReset: typeof sendReset;
-  deleteAccount: typeof deleteAccount;
+  deleteAccount: typeof deleteAccountService;
   reauthenticateWithPassword: typeof reauthenticateWithPassword;
   reauthenticateWithGooglePopup: typeof reauthenticateWithGooglePopup;
   getAuthProviderId: typeof getAuthProviderId;
@@ -47,8 +47,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null | undefined>(undefined);
   const [profileError, setProfileError] = useState(false);
   const [retryToken, setRetryToken] = useState(0);
+  const [isDeletingAccount, setIsDeletingAccount] = useState(false);
 
   useEffect(() => subscribeToAuth(setAuthUser), []);
+
+  useEffect(() => {
+    if (authUser === null) setIsDeletingAccount(false);
+  }, [authUser]);
+
+  async function deleteAccount(): Promise<void> {
+    setIsDeletingAccount(true);
+    try {
+      await deleteAccountService();
+    } catch (error) {
+      setIsDeletingAccount(false);
+      throw error;
+    }
+  }
 
   useEffect(() => {
     setProfile(undefined);
@@ -75,8 +90,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         profileError ? 'error' :
           profile === undefined ? 'loading' :
             isGuest ? 'ready' :
-              profile === null ? 'needsProfile' :
-                'ready';
+              isDeletingAccount ? 'loading' :
+                profile === null ? 'needsProfile' :
+                  'ready';
 
   const value: AuthContextValue = {
     authUser,
