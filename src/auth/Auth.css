@@ -54,6 +54,11 @@
   transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
+.google-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (hover: hover) {
   .google-btn:hover {
     background: #f8f9fa;

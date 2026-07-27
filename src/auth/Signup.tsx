@@ -32,6 +32,14 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
     clearGoogleRedirectError();
   }, [googleRedirectError, clearGoogleRedirectError]);
 
+  useEffect(() => {
+    function handlePageShow(event: PageTransitionEvent) {
+      if (event.persisted) setIsSubmitting(false);
+    }
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
+
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     if (isSubmitting) return;
@@ -133,7 +141,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
 
           <span className="auth-divider">Oppure</span>
 
-          <GoogleButton label="Continua con Google" onClick={ handleGoogleClick } />
+          <GoogleButton label="Continua con Google" onClick={ handleGoogleClick } disabled={ isSubmitting } />
 
           <p className="auth-switch">
             Hai già un account?

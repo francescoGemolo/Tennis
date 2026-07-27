@@ -48,7 +48,7 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
 
           { sent ? (
             <div className="auth-sent">
-              <p className="auth-sent-desc">Controlla la casella di <strong>{ email }</strong> e segui le istruzioni per reimpostare la password.</p>
+              <p className="auth-sent-desc">Se esiste un account associato a <strong>{ email }</strong>, riceverai a breve un'email con le istruzioni per reimpostare la password.</p>
               <p className="auth-sent-desc">Non vedi l'email? Controlla anche nello spam o nelle promozioni.</p>
               <button className="icon-cta cta-primary" type="button" onClick={ onBack }>Torna al login</button>
             </div>
