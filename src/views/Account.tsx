@@ -31,6 +31,8 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
     isReauthRecent,
   } = useAuth();
 
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false);
+
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [needsPassword, setNeedsPassword] = useState(false);
   const [reauthPassword, setReauthPassword] = useState('');
@@ -139,7 +141,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
       <div className="view-header">
         <div className="view-header-row">
           <BackButton onClick={ onBack } />
-          <button type="button" className="btn-ghost" onClick={ onLogout }>Esci</button>
+          <button type="button" className="btn-ghost" onClick={ () => setLogoutConfirmOpen(true) }>Esci</button>
         </div>
         <h2 className="view-title" id="account-title">Area personale</h2>
       </div>
@@ -250,6 +252,19 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
           error={ cancelError }
           onConfirm={ handleConfirmCancel }
           onCancel={ closeCancelDialog }
+        />
+      ) }
+
+      { logoutConfirmOpen && (
+        <ConfirmDialog
+          title="Esci dall'account"
+          message="Vuoi uscire dal tuo account?"
+          confirmLabel="Esci"
+          onConfirm={ () => {
+            setLogoutConfirmOpen(false);
+            onLogout();
+          } }
+          onCancel={ () => setLogoutConfirmOpen(false) }
         />
       ) }
     </section>

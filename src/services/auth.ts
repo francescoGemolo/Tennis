@@ -17,10 +17,11 @@ import {
   type User,
   type UserCredential,
 } from 'firebase/auth';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { doc, getDoc, writeBatch } from 'firebase/firestore';
 import { auth, db } from './firebase';
-import { USERS_COLLECTION } from './users';
+import { PHONE_NUMBERS_COLLECTION, USERS_COLLECTION } from './users';
 import { cancelFutureBookingsForUser } from './bookings';
+import type { UserProfile } from '../types';
 
 const RECENT_LOGIN_THRESHOLD_MS = 4 * 60 * 1000;
 
@@ -99,6 +100,15 @@ export async function deleteAccount(): Promise<void> {
   const user = auth.currentUser;
   if (!user) throw new Error('No authenticated user.');
   await cancelFutureBookingsForUser(user.uid);
-  await deleteDoc(doc(db, USERS_COLLECTION, user.uid));
+
+  const profileSnap = await getDoc(doc(db, USERS_COLLECTION, user.uid));
+  const batch = writeBatch(db);
+  batch.delete(doc(db, USERS_COLLECTION, user.uid));
+  if (profileSnap.exists()) {
+    const phone = (profileSnap.data() as UserProfile).phone;
+    if (phone) batch.delete(doc(db, PHONE_NUMBERS_COLLECTION, phone));
+  }
+  await batch.commit();
+
   await deleteUser(user);
 }

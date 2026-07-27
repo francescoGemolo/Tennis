@@ -48,8 +48,13 @@ export function ProfileSetup() {
         phone,
         email: authUser.email ?? '',
       });
-    } catch {
-      setSubmitError('Non è stato possibile salvare il profilo. Riprova.');
+    } catch (error) {
+      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      if (code === 'permission-denied') {
+        setErrors((prev) => ({ ...prev, phone: 'Questo numero di telefono è già registrato.' }));
+      } else {
+        setSubmitError('Non è stato possibile salvare il profilo. Riprova.');
+      }
       setIsSubmitting(false);
     }
   }
