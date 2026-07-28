@@ -62,17 +62,14 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
         <address className="card info-list contacts-list">
           <div className="info-row">
             <span className="info-icon"><HugeiconsIcon icon={ Location01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <span className="section-label">Dove</span>
             <span className="contact-value">{ COURT_LOCATION }</span>
           </div>
           <div className="info-row">
             <span className="info-icon"><HugeiconsIcon icon={ CallIcon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <span className="section-label">Telefono</span>
             <span className="contact-value">{ CONTACT_PHONE_DISPLAY }</span>
           </div>
           <div className="info-row">
             <span className="info-icon"><HugeiconsIcon icon={ Mail01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <span className="section-label">Email</span>
             <span className="contact-value">{ CONTACT_EMAIL }</span>
           </div>
         </address>

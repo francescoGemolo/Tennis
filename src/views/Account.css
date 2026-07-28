@@ -181,4 +181,8 @@
   .account-booking {
     padding: var(--space-3);
   }
+
+  .account-empty {
+    font-size: var(--font-size-xs);
+  }
 }
