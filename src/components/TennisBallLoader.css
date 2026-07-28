@@ -1,0 +1,8 @@
+.tennis-ball-loader {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  filter: drop-shadow(0 4px 8px color-mix(in srgb, var(--accent) 45%, transparent));
+  animation: spin 900ms linear infinite;
+}

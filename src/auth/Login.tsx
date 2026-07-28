@@ -6,6 +6,7 @@ import { BackButton } from '../components/BackButton';
 import { useAuth } from './AuthContext';
 import { PasswordField } from '../components/PasswordField';
 import { firebaseErrorCode } from '../services/auth';
+import { useGoogleSignIn } from './useGoogleSignIn';
 import { emailError, passwordError } from '../validation';
 import './Auth.css';
 
@@ -57,27 +58,7 @@ export function Login({ onBack, onForgotPassword, onSwitchToSignup }: LoginProps
     }
   }
 
-  async function handleGoogleClick() {
-    if (isSubmitting) return;
-    setSubmitError(null);
-    setIsSubmitting(true);
-    try {
-      await signInWithGoogle();
-    } catch (error) {
-      const code = firebaseErrorCode(error);
-      if (import.meta.env.DEV) console.error('Accesso Google fallito:', code, error);
-      if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
-      } else if (code === 'auth/popup-blocked') {
-        setSubmitError('Il browser ha bloccato il popup. Consenti i popup per questo sito e riprova.');
-      } else if (code === 'auth/account-exists-with-different-credential') {
-        setSubmitError('Questo indirizzo email è già registrato con un altro metodo di accesso.');
-      } else {
-        setSubmitError('Accesso con Google non riuscito.');
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
+  const handleGoogleClick = useGoogleSignIn({ signInWithGoogle, setSubmitError, setIsSubmitting, isSubmitting });
 
   async function handleGuestClick() {
     if (isSubmitting) return;

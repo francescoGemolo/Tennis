@@ -120,8 +120,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: var(--size-icon-xl);
+  height: var(--size-icon-xl);
   flex-shrink: 0;
   border: var(--border-hairline);
   border-radius: var(--radius-full);

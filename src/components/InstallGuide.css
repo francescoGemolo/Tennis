@@ -12,6 +12,10 @@
   animation: overlay-fade-in 200ms ease-out;
 }
 
+.install-overlay--closing {
+  animation: overlay-fade-out 200ms ease-in forwards;
+}
+
 .install-panel {
   width: 100%;
   max-width: 20rem;
@@ -25,6 +29,18 @@
   box-shadow: var(--shadow-lg);
   text-align: center;
   animation: modal-pop-in 240ms ease-out;
+}
+
+.install-panel--closing {
+  animation: modal-pop-out 200ms ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .install-overlay--closing,
+  .install-panel--closing {
+    animation: none;
+  }
 }
 
 .install-title {

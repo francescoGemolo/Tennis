@@ -46,16 +46,8 @@
 }
 
 .account-contact-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  flex-shrink: 0;
-  border: var(--border-hairline);
-  border-radius: var(--radius-md);
-  background: var(--neutral-800);
-  color: var(--accent);
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
 }
 
 .account-contact .section-label {
@@ -88,16 +80,8 @@
 }
 
 .account-stat-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  flex-shrink: 0;
-  border: var(--border-hairline);
-  border-radius: var(--radius-md);
-  background: var(--neutral-800);
-  color: var(--accent);
+  width: var(--size-icon-sm);
+  height: var(--size-icon-sm);
 }
 
 .account-stat-label {

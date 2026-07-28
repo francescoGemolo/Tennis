@@ -2,53 +2,27 @@
   padding: var(--space-4);
 }
 
-.contact-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+.contacts-list {
   flex-shrink: 0;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.contact-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  flex-shrink: 0;
-  border: var(--border-hairline);
-  border-radius: var(--radius-md);
-  background: var(--neutral-800);
-  color: var(--accent);
-}
-
-.contact-item address {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  gap: var(--space-1);
   font-style: normal;
-  min-width: 0;
+}
+
+.contacts-list .info-row {
+  margin-inline: calc(var(--space-4) * -1);
+  padding-inline: var(--space-4);
+}
+
+.contacts-list .section-label {
+  flex: 1;
 }
 
 .contact-value {
   color: var(--neutral-50);
-  text-decoration: none;
   font-weight: 500;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-@media (hover: hover) {
-  .contact-value:hover {
-    color: var(--accent);
-  }
+  white-space: nowrap;
 }
 
 .contacts .field-group {

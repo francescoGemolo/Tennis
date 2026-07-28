@@ -40,6 +40,11 @@
   --radius-lg: 1.25rem;
   --radius-full: 999px;
 
+  --size-icon-sm: 2rem;
+  --size-icon-md: 2.25rem;
+  --size-icon-lg: 2.5rem;
+  --size-icon-xl: 2.75rem;
+
   --font-family-display: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'IBM Plex Mono', 'SF Mono', monospace;
@@ -161,6 +166,16 @@ select:focus-visible {
   }
 }
 
+@keyframes overlay-fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
 @keyframes modal-pop-in {
   from {
     opacity: 0;
@@ -170,6 +185,28 @@ select:focus-visible {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes modal-pop-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import './ConfirmDialog.css';
 
 interface ConfirmDialogProps {
@@ -26,23 +26,35 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const [closing, setClosing] = useState(false);
+
+  const handleCancel = useCallback(() => {
+    if (isSubmitting) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      onCancel();
+      return;
+    }
+    setClosing(true);
+  }, [isSubmitting, onCancel]);
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape' && !isSubmitting) onCancel();
+      if (event.key === 'Escape') handleCancel();
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onCancel, isSubmitting]);
+  }, [handleCancel]);
 
   return (
     <div
-      className="confirm-overlay"
+      className={ `confirm-overlay${closing ? ' confirm-overlay--closing' : ''}` }
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-dialog-title"
-      onClick={ () => !isSubmitting && onCancel() }
+      onClick={ handleCancel }
+      onAnimationEnd={ () => closing && onCancel() }
     >
-      <div className="confirm-panel" onClick={ (e) => e.stopPropagation() }>
+      <div className={ `confirm-panel${closing ? ' confirm-panel--closing' : ''}` } onClick={ (e) => e.stopPropagation() }>
         <h2 className="confirm-title" id="confirm-dialog-title">{ title }</h2>
         <div className="confirm-message">{ message }</div>
 
@@ -51,7 +63,7 @@ export function ConfirmDialog({
         { error && <p className="form-error" role="alert">{ error }</p> }
 
         <div className="confirm-actions">
-          <button type="button" className="btn-ghost" onClick={ onCancel } disabled={ isSubmitting }>
+          <button type="button" className="btn-ghost" onClick={ handleCancel } disabled={ isSubmitting }>
             { cancelLabel }
           </button>
           <button

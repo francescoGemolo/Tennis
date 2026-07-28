@@ -1,7 +1,7 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { Message01Icon, TennisBallIcon, UserIcon } from '@hugeicons/core-free-icons';
 import { InstallGuide } from '../components/InstallGuide';
-import { BADGE_NAME, HERO_SUBTITLE, HERO_TITLE } from '../config';
+import { HERO_SUBTITLE, HERO_TITLE } from '../config';
 import './Hero.css';
 
 interface HeroProps {
@@ -26,7 +26,6 @@ export function Hero({ onBook, onContact, onAccount }: HeroProps) {
 
       <div className="hero-main">
         <div className="hero-content">
-          <span className="eyebrow">{ BADGE_NAME }</span>
           <h1 id="welcome-title">{ heroTitleLead ? `${heroTitleLead} ` : '' }<span className="text-accent">{ heroTitleAccent }</span></h1>
           <p>{ HERO_SUBTITLE }</p>
         </div>

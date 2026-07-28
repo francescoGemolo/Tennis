@@ -10,13 +10,13 @@ export const MAX_TEXT_LENGTH = 40;
 export const MAX_PHONE_LENGTH = 10;
 export const MAX_MESSAGE_LENGTH = 200;
 
+export const PASSWORD_HINT = 'Min. 6 caratteri, 1 maiuscola, 1 speciale';
+
 export const BADGE_NAME = 'Campo "Nicola Dipersia"';
 export const HERO_TITLE = 'Salandra Tennis';
 export const HERO_SUBTITLE = 'Prenota il campo online e scendi in gioco.';
 
 export const CONTACT_PHONE_DISPLAY = '+39 348 462 5219';
-export const CONTACT_PHONE_HREF = '+393484625219';
 export const CONTACT_EMAIL = 'amministrazionetennis@gmail.com';
 
-export const COURT_NAME = 'Nicola Dipersia';
-export const COURT_LOCATION = 'Salandra (MT)';
+export const COURT_LOCATION = 'Salandra (MT), 75017';

@@ -4,7 +4,7 @@ import { ArrowBigRightDashIcon, CallIcon, Location01Icon, Mail01Icon } from '@hu
 import { BackButton } from '../components/BackButton';
 import { HoneypotField } from '../components/HoneypotField';
 import { messageError, nameError, sanitizeText } from '../validation';
-import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF, COURT_LOCATION, COURT_NAME, MAX_MESSAGE_LENGTH, MAX_TEXT_LENGTH } from '../config';
+import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, COURT_LOCATION, MAX_MESSAGE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import type { ContactFormValues } from '../types';
 import './Contacts.css';
 
@@ -59,29 +59,23 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
       </div>
 
       <div className="view-scroll">
-        <div className="card contact-list">
-          <div className="contact-item">
-            <span className="contact-icon"><HugeiconsIcon icon={ Location01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <address>
-              <span className="section-label">Dove</span>
-              <span className="contact-value">Campo "{ COURT_NAME }", { COURT_LOCATION }</span>
-            </address>
+        <address className="card info-list contacts-list">
+          <div className="info-row">
+            <span className="info-icon"><HugeiconsIcon icon={ Location01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
+            <span className="section-label">Dove</span>
+            <span className="contact-value">{ COURT_LOCATION }</span>
           </div>
-          <div className="contact-item">
-            <span className="contact-icon"><HugeiconsIcon icon={ CallIcon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <address>
-              <span className="section-label">Telefono</span>
-              <a className="contact-value" href={ `tel:${CONTACT_PHONE_HREF}` }>{ CONTACT_PHONE_DISPLAY }</a>
-            </address>
+          <div className="info-row">
+            <span className="info-icon"><HugeiconsIcon icon={ CallIcon } size={ 18 } strokeWidth={ 1.5 } /></span>
+            <span className="section-label">Telefono</span>
+            <span className="contact-value">{ CONTACT_PHONE_DISPLAY }</span>
           </div>
-          <div className="contact-item">
-            <span className="contact-icon"><HugeiconsIcon icon={ Mail01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <address>
-              <span className="section-label">Email</span>
-              <a className="contact-value" href={ `mailto:${CONTACT_EMAIL}` }>{ CONTACT_EMAIL }</a>
-            </address>
+          <div className="info-row">
+            <span className="info-icon"><HugeiconsIcon icon={ Mail01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
+            <span className="section-label">Email</span>
+            <span className="contact-value">{ CONTACT_EMAIL }</span>
           </div>
-        </div>
+        </address>
 
         <form className="card field-group" aria-label="Scrivici un messaggio" noValidate onSubmit={ handleSubmit }>
           <HoneypotField ref={ honeypotRef } />

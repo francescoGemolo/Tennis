@@ -1,6 +1,5 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { TennisBallIcon } from '@hugeicons/core-free-icons';
-import { HERO_TITLE } from '../config';
 import { isFeminineName } from '../nameGender';
 import './Auth.css';
 
@@ -18,7 +17,6 @@ export function Welcome({ name }: WelcomeProps) {
           <span className="auth-sent-icon" aria-hidden="true">
             <HugeiconsIcon icon={ TennisBallIcon } size={ 22 } strokeWidth={ 1.5 } />
           </span>
-          <span className="eyebrow">{ HERO_TITLE }</span>
           <h1 className="welcome-title">{ greeting }, <span className="text-accent">{ name }</span></h1>
         </div>
       </div>

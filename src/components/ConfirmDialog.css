@@ -12,6 +12,10 @@
   animation: overlay-fade-in 200ms ease-out;
 }
 
+.confirm-overlay--closing {
+  animation: overlay-fade-out 200ms ease-in forwards;
+}
+
 .confirm-panel {
   width: 100%;
   max-width: 22rem;
@@ -24,6 +28,18 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   animation: modal-pop-in 240ms ease-out;
+}
+
+.confirm-panel--closing {
+  animation: modal-pop-out 200ms ease-in forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .confirm-overlay--closing,
+  .confirm-panel--closing {
+    animation: none;
+  }
 }
 
 .confirm-title {

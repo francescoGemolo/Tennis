@@ -7,8 +7,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--size-icon-lg);
+  height: var(--size-icon-lg);
   flex-shrink: 0;
   border: var(--border-hairline);
   border-radius: var(--radius-md);

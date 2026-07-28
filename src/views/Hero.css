@@ -24,14 +24,6 @@
   gap: var(--space-3);
 }
 
-.eyebrow {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
 .hero-content h1 {
   font-family: var(--font-family-display);
   font-size: clamp(1.5rem, 8vw, 2.25rem);

@@ -19,25 +19,18 @@ function isTrivialSequence(digits: string): boolean {
   return false;
 }
 
-export function isValidPhone(value: string, maxLength = 10): boolean {
-  const digits = sanitizePhone(value, maxLength);
-  return digits.length === 10 && !isTrivialSequence(digits);
-}
-
-export function isValidName(value: string, maxLength = 40): boolean {
-  return sanitizeText(value, maxLength).length >= 2;
-}
+const REQUIRED_FIELD_ERROR = 'Campo obbligatorio';
 
 export function nameError(value: string, maxLength = 40): string | null {
   const clean = sanitizeText(value, maxLength);
-  if (clean.length === 0) return 'Campo obbligatorio';
+  if (clean.length === 0) return REQUIRED_FIELD_ERROR;
   if (clean.length < 2) return 'Deve contenere almeno 2 caratteri';
   return null;
 }
 
 export function phoneError(value: string, maxLength = 10): string | null {
   const digits = sanitizePhone(value, maxLength);
-  if (digits.length === 0) return 'Campo obbligatorio';
+  if (digits.length === 0) return REQUIRED_FIELD_ERROR;
   if (digits.length < 10) return 'Il numero deve avere 10 cifre';
   if (isTrivialSequence(digits)) return 'Numero non valido';
   return null;
@@ -45,18 +38,18 @@ export function phoneError(value: string, maxLength = 10): string | null {
 
 export function emailError(value: string): string | null {
   const clean = value.trim();
-  if (clean.length === 0) return 'Campo obbligatorio';
+  if (clean.length === 0) return REQUIRED_FIELD_ERROR;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) return 'Email non valida';
   return null;
 }
 
 export function passwordError(value: string): string | null {
-  if (value.length === 0) return 'Campo obbligatorio';
+  if (value.length === 0) return REQUIRED_FIELD_ERROR;
   return null;
 }
 
 export function newPasswordError(value: string): string | null {
-  if (value.length === 0) return 'Campo obbligatorio';
+  if (value.length === 0) return REQUIRED_FIELD_ERROR;
   if (value.length < 6) return 'Almeno 6 caratteri';
   if (!/[A-Z]/.test(value)) return 'Deve contenere almeno una lettera maiuscola';
   if (!/[^A-Za-z0-9]/.test(value)) return 'Deve contenere almeno un carattere speciale';
@@ -64,7 +57,7 @@ export function newPasswordError(value: string): string | null {
 }
 
 export function confirmPasswordError(password: string, confirmPassword: string): string | null {
-  if (confirmPassword.length === 0) return 'Campo obbligatorio';
+  if (confirmPassword.length === 0) return REQUIRED_FIELD_ERROR;
   if (confirmPassword !== password) return 'Le password non coincidono';
   return null;
 }
@@ -79,7 +72,7 @@ export function capitalizeName(value: string): string {
 
 export function messageError(value: string, maxLength = 200): string | null {
   const clean = sanitizeText(value, maxLength);
-  if (clean.length === 0) return 'Campo obbligatorio';
+  if (clean.length === 0) return REQUIRED_FIELD_ERROR;
   if (clean.length < 2) return 'Messaggio troppo breve';
   return null;
 }

@@ -4,6 +4,7 @@ import { ArrowBigRightDashIcon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { PasswordField } from '../components/PasswordField';
 import { confirmReset, firebaseErrorCode, verifyResetCode } from '../services/auth';
 import { confirmPasswordError, newPasswordError } from '../validation';
+import { PASSWORD_HINT } from '../config';
 import './Auth.css';
 
 interface ResetPasswordProps {
@@ -97,7 +98,7 @@ export function ResetPassword({ oobCode }: ResetPasswordProps) {
                 autoComplete="new-password"
                 value={ password }
                 error={ errors.password }
-                hint="Min. 6 caratteri, 1 maiuscola, 1 speciale"
+                hint={ PASSWORD_HINT }
                 onChange={ (value) => {
                   setPassword(value);
                   if (errors.password) setErrors((prev) => ({ ...prev, password: null }));

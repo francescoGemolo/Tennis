@@ -64,7 +64,6 @@ export function ProfileSetup() {
     <section className="view auth-view" aria-labelledby="profile-title">
       <div className="auth-content">
         <div className="card auth-card">
-          <span className="eyebrow">Benvenuto/a</span>
           <h2 className="view-title" id="profile-title">Completa il profilo</h2>
 
           <form className="field-group" noValidate onSubmit={ handleSubmit }>

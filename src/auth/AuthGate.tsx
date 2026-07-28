@@ -13,10 +13,12 @@ const fadeVariants = {
   exit: { opacity: 0, y: -8 },
 };
 
-let hasPassedLanding = false;
+const LANDING_SEEN_KEY = 'sl-landing-seen';
 
 export function AuthGate() {
-  const [stage, setStage] = useState<AuthStage>(hasPassedLanding ? 'login' : 'landing');
+  const [stage, setStage] = useState<AuthStage>(
+    sessionStorage.getItem(LANDING_SEEN_KEY) ? 'login' : 'landing',
+  );
 
   return (
     <AnimatePresence mode="wait">
@@ -29,7 +31,7 @@ export function AuthGate() {
         transition={ { duration: 0.18, ease: 'easeOut' } }
       >
         { stage === 'landing' && (
-          <PublicLanding onEnter={ () => { hasPassedLanding = true; setStage('login'); } } />
+          <PublicLanding onEnter={ () => { sessionStorage.setItem(LANDING_SEEN_KEY, '1'); setStage('login'); } } />
         ) }
         { stage === 'signup' && (
           <Signup onSwitchToLogin={ () => setStage('login') } />

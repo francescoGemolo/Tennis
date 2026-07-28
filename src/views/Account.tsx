@@ -4,6 +4,7 @@ import { CallIcon, Calendar03Icon, Clock01Icon, CoinsEuroIcon, Delete02Icon, Ten
 import { BackButton } from '../components/BackButton';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { PasswordField } from '../components/PasswordField';
+import { TennisBallLoader } from '../components/TennisBallLoader';
 import { useAuth } from '../auth/AuthContext';
 import { firebaseErrorCode } from '../services/auth';
 import { formatShortDate, toDateKey } from '../calendar';
@@ -157,7 +158,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
         </div>
 
         <div className="card account-contact">
-          <span className="account-contact-icon">
+          <span className="info-icon account-contact-icon">
             <HugeiconsIcon icon={ CallIcon } size={ 16 } strokeWidth={ 1.5 } />
           </span>
           <span className="section-label">Telefono</span>
@@ -167,7 +168,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
         <ul className="card account-stats">
           { stats.map((stat) => (
             <li className="account-stat" key={ stat.label }>
-              <span className="account-stat-icon">
+              <span className="info-icon account-stat-icon">
                 <HugeiconsIcon icon={ stat.icon } size={ 16 } strokeWidth={ 1.5 } />
               </span>
               <span className="section-label account-stat-label">{ stat.label }</span>
@@ -181,7 +182,10 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
         { bookingsError ? (
           <p className="form-error" role="alert">Impossibile caricare le prenotazioni. Riprova più tardi.</p>
         ) : bookingsLoading ? (
-          <p className="section-label">Caricamento…</p>
+          <div className="loading-state">
+            <TennisBallLoader size="sm" />
+            <span className="section-label">Caricamento…</span>
+          </div>
         ) : bookings.length === 0 ? (
           <div className="account-empty-state">
             <p className="account-empty">Ancora nessuna prenotazione qui, prenota ora.</p>
