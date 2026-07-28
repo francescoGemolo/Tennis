@@ -16,4 +16,4 @@ export const HERO_SUBTITLE = 'Prenota il campo online e scendi in gioco.';
 
 export const CONTACT_PHONE_DISPLAY = '+39 348 462 5219';
 export const CONTACT_PHONE_HREF = '+393484625219';
-export const CONTACT_EMAIL = 'mariodanzi99@gmail.com';
+export const CONTACT_EMAIL = 'amministrazionetennis@gmail.com';
