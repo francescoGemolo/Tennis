@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { PublicLanding } from './PublicLanding';
 import { Login } from './Login';
 import { Signup } from './Signup';
 import { ForgotPassword } from './ForgotPassword';
 
-type AuthStage = 'login' | 'signup' | 'forgot';
+type AuthStage = 'landing' | 'login' | 'signup' | 'forgot';
 
 const fadeVariants = {
   initial: { opacity: 0, y: 8 },
@@ -12,8 +13,10 @@ const fadeVariants = {
   exit: { opacity: 0, y: -8 },
 };
 
+let hasPassedLanding = false;
+
 export function AuthGate() {
-  const [stage, setStage] = useState<AuthStage>('login');
+  const [stage, setStage] = useState<AuthStage>(hasPassedLanding ? 'login' : 'landing');
 
   return (
     <AnimatePresence mode="wait">
@@ -25,6 +28,9 @@ export function AuthGate() {
         exit="exit"
         transition={ { duration: 0.18, ease: 'easeOut' } }
       >
+        { stage === 'landing' && (
+          <PublicLanding onEnter={ () => { hasPassedLanding = true; setStage('login'); } } />
+        ) }
         { stage === 'signup' && (
           <Signup onSwitchToLogin={ () => setStage('login') } />
         ) }
@@ -33,6 +39,7 @@ export function AuthGate() {
         ) }
         { stage === 'login' && (
           <Login
+            onBack={ () => setStage('landing') }
             onForgotPassword={ () => setStage('forgot') }
             onSwitchToSignup={ () => setStage('signup') }
           />

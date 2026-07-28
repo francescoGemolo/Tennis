@@ -10,7 +10,7 @@ export const MAX_TEXT_LENGTH = 40;
 export const MAX_PHONE_LENGTH = 10;
 export const MAX_MESSAGE_LENGTH = 200;
 
-export const BADGE_NAME = 'Campo Nicola Dipersia';
+export const BADGE_NAME = 'Campo "Nicola Dipersia"';
 export const HERO_TITLE = 'Salandra Tennis';
 export const HERO_SUBTITLE = 'Prenota il campo online e scendi in gioco.';
 

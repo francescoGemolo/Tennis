@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { GoogleButton } from './GoogleButton';
+import { BackButton } from '../components/BackButton';
 import { useAuth } from './AuthContext';
 import { PasswordField } from '../components/PasswordField';
 import { firebaseErrorCode } from '../services/auth';
@@ -14,11 +15,12 @@ interface FieldErrors {
 }
 
 interface LoginProps {
+  onBack: () => void;
   onForgotPassword: () => void;
   onSwitchToSignup: () => void;
 }
 
-export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
+export function Login({ onBack, onForgotPassword, onSwitchToSignup }: LoginProps) {
   const { signIn, signInWithGoogle, signInAsGuest } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -91,6 +93,10 @@ export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
 
   return (
     <section className="view auth-view" aria-labelledby="login-title">
+      <div className="view-header">
+        <BackButton onClick={ onBack } />
+      </div>
+
       <div className="auth-content">
         <div className="card auth-card">
           <h2 className="view-title" id="login-title">Accedi</h2>
