@@ -1,4 +1,3 @@
-// Nomi italiani comuni che non seguono la regola "finisce per -a = femminile".
 const MASCULINE_EXCEPTIONS = new Set([
   'andrea', 'luca', 'nicola', 'elia', 'mattia', 'enea', 'geremia', 'isaia', 'tobia', 'boemondo',
 ]);

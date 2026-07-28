@@ -4,6 +4,7 @@ import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { GoogleButton } from './GoogleButton';
 import { useAuth } from './AuthContext';
 import { PasswordField } from '../components/PasswordField';
+import { firebaseErrorCode } from '../services/auth';
 import { emailError, passwordError } from '../validation';
 import './Auth.css';
 
@@ -41,7 +42,7 @@ export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
     try {
       await signIn(email, password);
     } catch (error) {
-      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      const code = firebaseErrorCode(error);
       if (import.meta.env.DEV) console.error('Login fallito:', code, error);
       if (code === 'auth/network-request-failed') {
         setSubmitError('Controlla la connessione a internet.');
@@ -61,10 +62,9 @@ export function Login({ onForgotPassword, onSwitchToSignup }: LoginProps) {
     try {
       await signInWithGoogle();
     } catch (error) {
-      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      const code = firebaseErrorCode(error);
       if (import.meta.env.DEV) console.error('Accesso Google fallito:', code, error);
       if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') {
-        // Annullato dall'utente, nessun messaggio d'errore da mostrare.
       } else if (code === 'auth/popup-blocked') {
         setSubmitError('Il browser ha bloccato il popup. Consenti i popup per questo sito e riprova.');
       } else if (code === 'auth/account-exists-with-different-credential') {

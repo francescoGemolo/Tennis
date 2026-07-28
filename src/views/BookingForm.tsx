@@ -2,10 +2,11 @@ import { useRef, useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { BackButton } from '../components/BackButton';
+import { HoneypotField } from '../components/HoneypotField';
 import { formatFullDate } from '../calendar';
 import { bookingPrice, formatPrice } from '../pricing';
 import { SlotUnavailableError } from '../services/bookings';
-import { HONEYPOT_FIELD_NAME, MAX_PHONE_LENGTH, MAX_TEXT_LENGTH } from '../config';
+import { MAX_PHONE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import { nameError, phoneError, sanitizePhone, sanitizeText } from '../validation';
 import type { BookingFormValues, DurationHours } from '../types';
 import './BookingForm.css';
@@ -81,15 +82,7 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
         </div>
 
         <form className="card field-group" noValidate onSubmit={ handleSubmit }>
-          <input
-            ref={ honeypotRef }
-            type="text"
-            name={ HONEYPOT_FIELD_NAME }
-            className="honeypot-field"
-            tabIndex={ -1 }
-            autoComplete="off"
-            aria-hidden="true"
-          />
+          <HoneypotField ref={ honeypotRef } />
 
           <div className="field-row">
             <div className={ `field${errors.firstName ? ' field--invalid' : ''}` }>

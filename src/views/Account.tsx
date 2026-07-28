@@ -5,6 +5,7 @@ import { BackButton } from '../components/BackButton';
 import { ConfirmDialog } from '../components/ConfirmDialog';
 import { PasswordField } from '../components/PasswordField';
 import { useAuth } from '../auth/AuthContext';
+import { firebaseErrorCode } from '../services/auth';
 import { formatShortDate, toDateKey } from '../calendar';
 import { bookingPrice, formatPrice } from '../pricing';
 import type { Account as AccountData, AccountBooking } from '../types';
@@ -126,7 +127,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
     try {
       await deleteAccount();
     } catch (error) {
-      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      const code = firebaseErrorCode(error);
       setDeleteError(
         code === 'auth/requires-recent-login'
           ? 'Sessione scaduta. Esegui di nuovo l\'accesso e riprova subito dopo.'

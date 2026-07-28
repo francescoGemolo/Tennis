@@ -25,6 +25,10 @@ import type { UserProfile } from '../types';
 
 const RECENT_LOGIN_THRESHOLD_MS = 4 * 60 * 1000;
 
+export function firebaseErrorCode(error: unknown): string | undefined {
+  return error instanceof Error ? (error as { code?: string }).code : undefined;
+}
+
 export async function signIn(email: string, password: string): Promise<UserCredential> {
   return signInWithEmailAndPassword(auth, email, password);
 }
@@ -49,7 +53,7 @@ export async function sendReset(email: string): Promise<void> {
   try {
     await sendPasswordResetEmail(auth, email, actionCodeSettings);
   } catch (error) {
-    const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+    const code = firebaseErrorCode(error);
     if (code === 'auth/invalid-continue-uri' || code === 'auth/unauthorized-continue-uri') {
       await sendPasswordResetEmail(auth, email);
       return;

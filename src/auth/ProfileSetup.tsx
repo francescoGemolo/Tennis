@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon } from '@hugeicons/core-free-icons';
 import { useAuth } from './AuthContext';
+import { firebaseErrorCode } from '../services/auth';
 import { createUserProfile } from '../services/users';
 import { MAX_PHONE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import { capitalizeName, nameError, phoneError, sanitizePhone } from '../validation';
@@ -49,7 +50,7 @@ export function ProfileSetup() {
         email: authUser.email ?? '',
       });
     } catch (error) {
-      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      const code = firebaseErrorCode(error);
       if (code === 'permission-denied') {
         setErrors((prev) => ({ ...prev, phone: 'Questo numero di telefono è già registrato.' }));
       } else {

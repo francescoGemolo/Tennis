@@ -4,7 +4,7 @@ export const SLOT_DURATION_MINUTES = 60;
 
 export const PRICE_PER_HOUR = 2.5;
 
-export const HONEYPOT_FIELD_NAME = 'companyWebsite';
+export const HONEYPOT_FIELD_NAME = 'extraNotes';
 
 export const MAX_TEXT_LENGTH = 40;
 export const MAX_PHONE_LENGTH = 10;

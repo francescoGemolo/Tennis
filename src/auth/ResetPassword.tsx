@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowBigRightDashIcon, Tick02Icon } from '@hugeicons/core-free-icons';
 import { PasswordField } from '../components/PasswordField';
-import { confirmReset, verifyResetCode } from '../services/auth';
+import { confirmReset, firebaseErrorCode, verifyResetCode } from '../services/auth';
 import { confirmPasswordError, newPasswordError } from '../validation';
 import './Auth.css';
 
@@ -52,7 +52,7 @@ export function ResetPassword({ oobCode }: ResetPasswordProps) {
       await confirmReset(oobCode, password);
       setStage('success');
     } catch (error) {
-      const code = error instanceof Error ? (error as { code?: string }).code : undefined;
+      const code = firebaseErrorCode(error);
       if (code === 'auth/expired-action-code') {
         setSubmitError('Il link è scaduto. Richiedine uno nuovo dalla schermata di accesso.');
       } else if (code === 'auth/invalid-action-code') {

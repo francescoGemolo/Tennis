@@ -327,12 +327,7 @@
 }
 
 .honeypot-field {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-  left: -9999px;
+  display: none;
 }
 
 @media (min-width: 768px) {
