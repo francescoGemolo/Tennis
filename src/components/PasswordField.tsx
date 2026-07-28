@@ -9,9 +9,10 @@ interface PasswordFieldProps {
   value: string;
   onChange: (value: string) => void;
   error?: string | null;
+  hint?: string;
 }
 
-export function PasswordField({ id, label, autoComplete, value, onChange, error }: PasswordFieldProps) {
+export function PasswordField({ id, label, autoComplete, value, onChange, error, hint }: PasswordFieldProps) {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -36,7 +37,7 @@ export function PasswordField({ id, label, autoComplete, value, onChange, error 
           <HugeiconsIcon icon={ visible ? ViewOffIcon : ViewIcon } size={ 18 } strokeWidth={ 1.5 } />
         </button>
       </div>
-      { error && <span className="field-error">{ error }</span> }
+      { error ? <span className="field-error">{ error }</span> : hint && <span className="field-hint">{ hint }</span> }
     </div>
   );
 }

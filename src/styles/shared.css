@@ -313,6 +313,14 @@
   font-size: var(--font-size-xs);
 }
 
+.field-hint {
+  color: var(--neutral-500);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .form-error {
   color: var(--danger);
   font-size: var(--font-size-sm);

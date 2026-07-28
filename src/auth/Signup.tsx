@@ -109,6 +109,7 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
               autoComplete="new-password"
               value={ password }
               error={ errors.password }
+              hint="Min. 6 caratteri, 1 maiuscola, 1 speciale"
               onChange={ (value) => {
                 setPassword(value);
                 if (errors.password) setErrors((prev) => ({ ...prev, password: null }));

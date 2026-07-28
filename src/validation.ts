@@ -58,6 +58,8 @@ export function passwordError(value: string): string | null {
 export function newPasswordError(value: string): string | null {
   if (value.length === 0) return 'Campo obbligatorio';
   if (value.length < 6) return 'Almeno 6 caratteri';
+  if (!/[A-Z]/.test(value)) return 'Deve contenere almeno una lettera maiuscola';
+  if (!/[^A-Za-z0-9]/.test(value)) return 'Deve contenere almeno un carattere speciale';
   return null;
 }
 
