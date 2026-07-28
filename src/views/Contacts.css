@@ -5,7 +5,7 @@
 .contact-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-4);
   flex-shrink: 0;
 }
 
@@ -30,6 +30,7 @@
 
 .contact-item address {
   display: flex;
+  justify-content: center;
   flex-direction: column;
   gap: var(--space-1);
   font-style: normal;
