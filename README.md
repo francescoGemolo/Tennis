@@ -83,7 +83,7 @@ firebase deploy --only hosting
 ## Build e deploy dell'app
 
 ```
-npm run build     # compila TypeScript e builda con Vite
+npm run build      # compila TypeScript e builda con Vite
 npm run deploy     # builda e pubblica su GitHub Pages (branch gh-pages)
 ```
 
