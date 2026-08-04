@@ -73,13 +73,13 @@ export function Login({ onBack, onForgotPassword, onSwitchToSignup }: LoginProps
   }
 
   return (
-    <section className="view auth-view" aria-labelledby="login-title">
+    <section className="view items-center" aria-labelledby="login-title">
       <div className="view-header">
         <BackButton onClick={ onBack } />
       </div>
 
-      <div className="auth-content">
-        <div className="card auth-card">
+      <div className="flex-1 w-full flex flex-col items-center justify-center">
+        <div className="card w-full max-w-[360px] flex flex-col gap-5">
           <h2 className="view-title" id="login-title">Accedi</h2>
 
           <form className="field-group" noValidate onSubmit={ handleSubmit }>
@@ -112,7 +112,11 @@ export function Login({ onBack, onForgotPassword, onSwitchToSignup }: LoginProps
               } }
             />
 
-            <button type="button" className="auth-forgot-link" onClick={ onForgotPassword }>
+            <button
+              type="button"
+              className="self-end bg-transparent border-0 p-0 text-xs text-accent cursor-pointer hover:underline"
+              onClick={ onForgotPassword }
+            >
               Password dimenticata?
             </button>
 
@@ -128,12 +132,18 @@ export function Login({ onBack, onForgotPassword, onSwitchToSignup }: LoginProps
 
           <GoogleButton label="Continua con Google" onClick={ handleGoogleClick } disabled={ isSubmitting } />
 
-          <p className="auth-switch">
+          <p className="flex justify-center gap-2 text-sm text-neutral-300">
             Non hai un account?
-            <button type="button" onClick={ onSwitchToSignup }>Registrati</button>
+            <button
+              type="button"
+              className="bg-transparent border-0 p-0 text-accent cursor-pointer [font:inherit] hover:underline"
+              onClick={ onSwitchToSignup }
+            >
+              Registrati
+            </button>
           </p>
 
-          <button type="button" className="btn-ghost auth-guest-link" onClick={ handleGuestClick } disabled={ isSubmitting }>
+          <button type="button" className="btn-ghost justify-center" onClick={ handleGuestClick } disabled={ isSubmitting }>
             Continua come ospite
           </button>
         </div>

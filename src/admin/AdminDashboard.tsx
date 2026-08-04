@@ -5,7 +5,6 @@ import { useMediaQuery } from '../hooks/useMediaQuery';
 import { cancelBooking, fetchAllBookings } from '../services/bookings';
 import { signOutUser } from '../services/auth';
 import type { AdminBooking } from '../types';
-import './Admin.css';
 
 const COMPACT_QUERY = '(max-width: 767px)';
 
@@ -97,16 +96,19 @@ export function AdminDashboard() {
   }
 
   return (
-    <section className="view admin-dashboard" aria-labelledby="admin-dashboard-title">
+    <section
+      className="view h-auto min-h-dvh overflow-visible gap-4"
+      aria-labelledby="admin-dashboard-title"
+    >
       <div className="view-header-row">
         <h2 className="view-title" id="admin-dashboard-title">Prenotazioni</h2>
         <button type="button" className="btn-ghost" onClick={ signOutUser }>Esci</button>
       </div>
 
-      <div className="admin-toolbar">
+      <div className="flex gap-2">
         <input
           type="search"
-          className="admin-input"
+          className="flex-1 min-w-0 h-12 border-hairline rounded-md px-3 bg-neutral-800 text-neutral-50 [font-family:inherit] text-sm focus:border-accent focus:outline-none"
           aria-label="Cerca prenotazione"
           placeholder="Cerca cliente o telefono"
           value={ search }
@@ -131,7 +133,7 @@ export function AdminDashboard() {
 
       { !isLoading && filtered.length > 0 && (
         isCompact ? (
-          <ul className="admin-cards">
+          <ul className="flex flex-col gap-3">
             { filtered.map((b) => (
               <li className="admin-card" key={ b.id }>
                 <div className="admin-card-header">
@@ -150,8 +152,8 @@ export function AdminDashboard() {
             )) }
           </ul>
         ) : (
-          <div className="admin-table-wrap">
-            <table className="admin-table">
+          <div className="overflow-x-auto [-webkit-overflow-scrolling:touch] border-hairline rounded-lg">
+            <table className="admin-table w-full border-collapse text-sm">
               <thead>
                 <tr>
                   <th>Data</th>

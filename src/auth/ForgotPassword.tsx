@@ -37,19 +37,19 @@ export function ForgotPassword({ onBack }: ForgotPasswordProps) {
   }
 
   return (
-    <section className="view auth-view" aria-labelledby="forgot-title">
+    <section className="view items-center" aria-labelledby="forgot-title">
       <div className="view-header">
         <BackButton onClick={ onBack } />
       </div>
 
-      <div className="auth-content">
-        <div className="card auth-card">
+      <div className="flex-1 w-full flex flex-col items-center justify-center">
+        <div className="card w-full max-w-[360px] flex flex-col gap-5">
           <h2 className="view-title" id="forgot-title">Recupera password</h2>
 
           { sent ? (
-            <div className="auth-sent">
-              <p className="auth-sent-desc">Se esiste un account associato a <strong>{ email }</strong>, riceverai a breve un'email con le istruzioni per reimpostare la password.</p>
-              <p className="auth-sent-desc">Non vedi l'email? Controlla anche nello spam o nelle promozioni.</p>
+            <div className="flex flex-col gap-4 text-left">
+              <p className="text-sm text-neutral-300 [overflow-wrap:break-word]">Se esiste un account associato a <strong>{ email }</strong>, riceverai a breve un'email con le istruzioni per reimpostare la password.</p>
+              <p className="text-sm text-neutral-300 [overflow-wrap:break-word]">Non vedi l'email? Controlla anche nello spam o nelle promozioni.</p>
               <button className="icon-cta cta-primary" type="button" onClick={ onBack }>Torna al login</button>
             </div>
           ) : (

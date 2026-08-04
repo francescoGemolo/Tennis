@@ -9,7 +9,6 @@ import { SlotUnavailableError } from '../services/bookings';
 import { MAX_PHONE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import { nameError, phoneError, sanitizePhone, sanitizeText } from '../validation';
 import type { BookingFormValues, DurationHours } from '../types';
-import './BookingForm.css';
 
 interface BookingFormProps {
   date: Date;
@@ -68,20 +67,20 @@ export function BookingForm({ date, time, durationHours, onBack, onSubmit }: Boo
   }
 
   return (
-    <section className="view booking-form" aria-labelledby="booking-form-title">
+    <section className="view" aria-labelledby="booking-form-title">
       <div className="view-header">
         <BackButton onClick={ onBack } />
         <h2 className="view-title" id="booking-form-title">I tuoi dati</h2>
       </div>
 
       <div className="view-scroll">
-        <div className="card booking-summary">
+        <div className="card flex flex-col gap-1 p-4 shrink-0">
           <span className="section-label">Prenotazione per</span>
-          <span className="booking-summary-value">{ formatFullDate(date) } - { time } - { durationHours }h</span>
-          <span className="booking-summary-price">Totale: { formatPrice(totalPrice) } a persona</span>
+          <span className="font-mono text-sm text-neutral-50">{ formatFullDate(date) } - { time } - { durationHours }h</span>
+          <span className="font-mono text-sm font-semibold text-accent">Totale: { formatPrice(totalPrice) } a persona</span>
         </div>
 
-        <form className="card field-group" noValidate onSubmit={ handleSubmit }>
+        <form className="card field-group gap-5" noValidate onSubmit={ handleSubmit }>
           <HoneypotField ref={ honeypotRef } />
 
           <div className="field-row">

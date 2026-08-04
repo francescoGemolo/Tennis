@@ -5,6 +5,13 @@ import { fetchBookingsForDate } from '../services/bookings';
 import type { AvailabilityRecord, DurationHours } from '../types';
 import './DateTimePicker.css';
 
+const DURATION_BTN_BASE = 'flex-1 border-0 rounded-full py-2 px-3 bg-transparent text-neutral-300 [font:inherit] text-sm cursor-pointer [transition:background-color_var(--transition-fast),color_var(--transition-fast)]';
+const DURATION_BTN_ACTIVE = 'bg-accent-strong text-neutral-50';
+
+const SLOT_BASE = 'time-slot w-full border-hairline rounded-md py-3 px-2 bg-neutral-800 text-neutral-50 font-mono text-sm cursor-pointer [transition:background-color_var(--transition-fast),border-color_var(--transition-fast)]';
+const SLOT_SELECTED = 'bg-accent-strong border-accent-strong text-neutral-50';
+const SLOT_TAKEN = 'bg-transparent text-neutral-600 cursor-not-allowed border-neutral-800';
+
 interface DateTimePickerProps {
   date: Date;
   onBack: () => void;
@@ -46,21 +53,21 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
   }
 
   return (
-    <section className="view datetime" aria-labelledby="datetime-heading">
+    <section className="view" aria-labelledby="datetime-heading">
       <div className="view-header">
         <BackButton onClick={ onBack } />
         <div className="view-header-row">
           <h2 className="view-title" id="datetime-heading">Orari disponibili</h2>
-          <div className="datetime-date-pill">
+          <div className="flex items-center gap-2 text-neutral-300 font-mono text-xs whitespace-nowrap overflow-hidden text-ellipsis before:content-[''] before:w-[0.4rem] before:h-[0.4rem] before:shrink-0 before:rounded-full before:bg-accent">
             <span>{ formatFullDate(date) }</span>
           </div>
         </div>
       </div>
 
-      <div className="duration-toggle" role="group" aria-label="Durata prenotazione">
+      <div className="flex gap-2 p-1 border-hairline rounded-full bg-neutral-900 shrink-0" role="group" aria-label="Durata prenotazione">
         <button
           type="button"
-          className={ `duration-toggle-btn${duration === 1 ? ' duration-toggle-btn--active' : ''}` }
+          className={ `${DURATION_BTN_BASE}${duration === 1 ? ` ${DURATION_BTN_ACTIVE}` : ''}` }
           aria-pressed={ duration === 1 }
           onClick={ () => handleDurationChange(1) }
         >
@@ -68,7 +75,7 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
         </button>
         <button
           type="button"
-          className={ `duration-toggle-btn${duration === 2 ? ' duration-toggle-btn--active' : ''}` }
+          className={ `${DURATION_BTN_BASE}${duration === 2 ? ` ${DURATION_BTN_ACTIVE}` : ''}` }
           aria-pressed={ duration === 2 }
           onClick={ () => handleDurationChange(2) }
         >
@@ -76,11 +83,15 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
         </button>
       </div>
 
-      <ul className="time-slots" role="list" aria-busy={ isLoading }>
+      <ul
+        className="flex-1 min-h-0 overflow-y-auto [-webkit-overflow-scrolling:touch] grid grid-cols-3 md:grid-cols-4 gap-2 content-start pb-1 animate-[fade-in-up_280ms_ease-out_60ms_both]"
+        role="list"
+        aria-busy={ isLoading }
+      >
         { slots.map((slot) => (
           <li key={ slot.time }>
             <button
-              className={ `time-slot${slot.taken ? ' time-slot--taken' : ''}${selected === slot.time ? ' time-slot--selected' : ''}` }
+              className={ `${SLOT_BASE}${slot.taken ? ` ${SLOT_TAKEN}` : ''}${selected === slot.time ? ` ${SLOT_SELECTED}` : ''}` }
               type="button"
               disabled={ slot.taken }
               aria-pressed={ selected === slot.time }
@@ -93,7 +104,7 @@ export function DateTimePicker({ date, onBack, onConfirm }: DateTimePickerProps)
       </ul>
 
       <button
-        className="icon-cta cta-primary datetime-confirm"
+        className="icon-cta cta-primary w-full shrink-0"
         type="button"
         disabled={ !selected }
         onClick={ () => selected && onConfirm(selected, duration) }

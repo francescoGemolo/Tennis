@@ -6,7 +6,6 @@ import { HoneypotField } from '../components/HoneypotField';
 import { messageError, nameError, sanitizeText } from '../validation';
 import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, COURT_LOCATION, MAX_MESSAGE_LENGTH, MAX_TEXT_LENGTH } from '../config';
 import type { ContactFormValues } from '../types';
-import './Contacts.css';
 
 interface ContactsProps {
   onBack: () => void;
@@ -52,29 +51,29 @@ export function Contacts({ onBack, onSubmit }: ContactsProps) {
   }
 
   return (
-    <section className="view contacts" aria-labelledby="contacts-title">
+    <section className="view" aria-labelledby="contacts-title">
       <div className="view-header">
         <BackButton onClick={ onBack } />
         <h2 id="contacts-title" className="view-title">Contatti</h2>
       </div>
 
       <div className="view-scroll">
-        <address className="card info-list contacts-list">
-          <div className="info-row">
+        <address className="card info-list p-4 shrink-0 not-italic">
+          <div className="info-row -mx-4 px-4">
             <span className="info-icon"><HugeiconsIcon icon={ Location01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <span className="contact-value">{ COURT_LOCATION }</span>
+            <span className="text-neutral-50 font-normal min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">{ COURT_LOCATION }</span>
           </div>
-          <div className="info-row">
+          <div className="info-row -mx-4 px-4">
             <span className="info-icon"><HugeiconsIcon icon={ CallIcon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <span className="contact-value">{ CONTACT_PHONE_DISPLAY }</span>
+            <span className="text-neutral-50 font-normal min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">{ CONTACT_PHONE_DISPLAY }</span>
           </div>
-          <div className="info-row">
+          <div className="info-row -mx-4 px-4">
             <span className="info-icon"><HugeiconsIcon icon={ Mail01Icon } size={ 18 } strokeWidth={ 1.5 } /></span>
-            <span className="contact-value">{ CONTACT_EMAIL }</span>
+            <span className="text-neutral-50 font-normal min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">{ CONTACT_EMAIL }</span>
           </div>
         </address>
 
-        <form className="card field-group" aria-label="Scrivici un messaggio" noValidate onSubmit={ handleSubmit }>
+        <form className="card field-group gap-3" aria-label="Scrivici un messaggio" noValidate onSubmit={ handleSubmit }>
           <HoneypotField ref={ honeypotRef } />
           <div className={ `field${errors.name ? ' field--invalid' : ''}` }>
             <label htmlFor="name">Nome</label>

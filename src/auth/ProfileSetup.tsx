@@ -61,9 +61,9 @@ export function ProfileSetup() {
   }
 
   return (
-    <section className="view auth-view" aria-labelledby="profile-title">
-      <div className="auth-content">
-        <div className="card auth-card">
+    <section className="view items-center" aria-labelledby="profile-title">
+      <div className="flex-1 w-full flex flex-col items-center justify-center">
+        <div className="card w-full max-w-[360px] flex flex-col gap-5">
           <h2 className="view-title" id="profile-title">Completa il profilo</h2>
 
           <form className="field-group" noValidate onSubmit={ handleSubmit }>
@@ -133,7 +133,7 @@ export function ProfileSetup() {
             </button>
           </form>
 
-          <button type="button" className="btn-ghost auth-guest-link" onClick={ () => void signOutUser() } disabled={ isSubmitting }>
+          <button type="button" className="btn-ghost justify-center" onClick={ () => void signOutUser() } disabled={ isSubmitting }>
             Esci
           </button>
         </div>

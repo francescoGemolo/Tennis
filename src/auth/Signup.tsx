@@ -62,9 +62,9 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
   const handleGoogleClick = useGoogleSignIn({ signInWithGoogle, setSubmitError, setIsSubmitting, isSubmitting });
 
   return (
-    <section className="view auth-view" aria-labelledby="signup-title">
-      <div className="auth-content">
-        <div className="card auth-card">
+    <section className="view items-center" aria-labelledby="signup-title">
+      <div className="flex-1 w-full flex flex-col items-center justify-center">
+        <div className="card w-full max-w-[360px] flex flex-col gap-5">
           <h2 className="view-title" id="signup-title">Crea account</h2>
 
           <form className="field-group" noValidate onSubmit={ handleSubmit }>
@@ -122,9 +122,15 @@ export function Signup({ onSwitchToLogin }: SignupProps) {
 
           <GoogleButton label="Continua con Google" onClick={ handleGoogleClick } disabled={ isSubmitting } />
 
-          <p className="auth-switch">
+          <p className="flex justify-center gap-2 text-sm text-neutral-300">
             Hai già un account?
-            <button type="button" onClick={ onSwitchToLogin }>Accedi</button>
+            <button
+              type="button"
+              className="bg-transparent border-0 p-0 text-accent cursor-pointer [font:inherit] hover:underline"
+              onClick={ onSwitchToLogin }
+            >
+              Accedi
+            </button>
           </p>
         </div>
       </div>

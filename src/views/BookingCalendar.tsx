@@ -5,12 +5,21 @@ import { BackButton } from '../components/BackButton';
 import { WEEKDAY_LABELS, formatMonthTitle, getMonthMatrix, toDateKey } from '../calendar';
 import { fetchBookingsForMonth } from '../services/bookings';
 import type { AvailabilityRecord, CalendarCell } from '../types';
-import './BookingCalendar.css';
 
 interface BookingCalendarProps {
   onBack: () => void;
   onSelectDate: (date: Date) => void;
 }
+
+const DAY_BASE = 'w-full h-full flex items-center justify-center border-0 rounded-sm font-mono text-md cursor-pointer [transition:background-color_var(--transition-fast)]';
+
+const DAY_STATUS_CLASSES: Record<string, string> = {
+  empty: 'cursor-default invisible bg-transparent text-neutral-50',
+  free: 'bg-success-subtle text-success hover:bg-success-muted',
+  busy: 'bg-danger-subtle text-danger cursor-not-allowed',
+  past: 'bg-transparent text-neutral-700 cursor-not-allowed',
+  partial: 'bg-partial-subtle text-partial hover:bg-partial-muted',
+};
 
 export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) {
   const today = useMemo(() => new Date(), []);
@@ -52,13 +61,13 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
   }
 
   return (
-    <section className="view booking" aria-labelledby="booking-title">
+    <section className="view" aria-labelledby="booking-title">
       <div className="view-header">
         <BackButton onClick={ onBack } />
 
         <nav className="view-header-row" aria-label="Cambia mese">
           <button
-            className="month-nav-btn"
+            className="flex items-center justify-center w-[var(--size-icon-lg)] h-[var(--size-icon-lg)] shrink-0 border-hairline rounded-md bg-neutral-900 text-neutral-50 cursor-pointer [transition:background-color_var(--transition-fast)] hover:bg-neutral-800 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-neutral-900"
             type="button"
             aria-label="Mese precedente"
             disabled={ isAtEarliestMonth }
@@ -66,31 +75,36 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
           >
             <HugeiconsIcon icon={ ArrowLeft01Icon } size={ 18 } strokeWidth={ 1.5 } />
           </button>
-          <h2 id="booking-title" className="view-title month-switcher-title">{ formatMonthTitle(year, month) }</h2>
-          <button className="month-nav-btn" type="button" aria-label="Mese successivo" onClick={ () => goToMonth(1) }>
+          <h2 id="booking-title" className="view-title flex-1 text-center">{ formatMonthTitle(year, month) }</h2>
+          <button
+            className="flex items-center justify-center w-[var(--size-icon-lg)] h-[var(--size-icon-lg)] shrink-0 border-hairline rounded-md bg-neutral-900 text-neutral-50 cursor-pointer [transition:background-color_var(--transition-fast)] hover:bg-neutral-800 disabled:opacity-35 disabled:cursor-not-allowed disabled:hover:bg-neutral-900"
+            type="button"
+            aria-label="Mese successivo"
+            onClick={ () => goToMonth(1) }
+          >
             <HugeiconsIcon icon={ ArrowRight01Icon } size={ 18 } strokeWidth={ 1.5 } />
           </button>
         </nav>
       </div>
 
-      <ul className="calendar-legend" aria-label="Legenda disponibilità">
-        <li><span className="legend-dot legend-dot--free" aria-hidden="true" />Libero</li>
-        <li><span className="legend-dot legend-dot--partial" aria-hidden="true" />Parziale</li>
-        <li><span className="legend-dot legend-dot--busy" aria-hidden="true" />Occupato</li>
+      <ul className="flex flex-wrap gap-4 shrink-0 font-mono text-xs text-neutral-300" aria-label="Legenda disponibilità">
+        <li className="flex items-center gap-2"><span className="w-2 h-2 rounded-full shrink-0 bg-success" aria-hidden="true" />Libero</li>
+        <li className="flex items-center gap-2"><span className="w-2 h-2 rounded-full shrink-0 bg-partial" aria-hidden="true" />Parziale</li>
+        <li className="flex items-center gap-2"><span className="w-2 h-2 rounded-full shrink-0 bg-danger" aria-hidden="true" />Occupato</li>
       </ul>
 
-      <div className="card calendar">
-        <ul className="calendar-weekdays" aria-hidden="true">
+      <div className="card flex-1 min-h-0 flex flex-col p-4 animate-[fade-in-up_280ms_ease-out_60ms_both]">
+        <ul className="grid grid-cols-7 font-mono text-sm text-neutral-500 text-center mb-3" aria-hidden="true">
           { WEEKDAY_LABELS.map((label) => (
             <li key={ label }>{ label }</li>
           )) }
         </ul>
-        <ol className="calendar-days" aria-busy={ isLoading }>
+        <ol className="flex-1 min-h-0 grid grid-cols-7 grid-rows-6 gap-2" aria-busy={ isLoading }>
           { cells.map((cell, index) => {
             if (!cell.date) {
               return (
                 <li key={ index }>
-                  <button className="calendar-day calendar-day--empty" disabled tabIndex={ -1 } />
+                  <button className={ `${DAY_BASE} ${DAY_STATUS_CLASSES.empty}` } disabled tabIndex={ -1 } />
                 </li>
               );
             }
@@ -99,7 +113,7 @@ export function BookingCalendar({ onBack, onSelectDate }: BookingCalendarProps) 
             return (
               <li key={ index }>
                 <button
-                  className={ `calendar-day calendar-day--${statusClass}` }
+                  className={ `${DAY_BASE} ${DAY_STATUS_CLASSES[statusClass]}` }
                   type="button"
                   disabled={ !isSelectable }
                   onClick={ () => handleCellClick(cell) }

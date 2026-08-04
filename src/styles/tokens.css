@@ -1,64 +1,97 @@
+@import "tailwindcss";
+
+/* The whole app is touch-first (PWA). Every hover state in the pre-Tailwind
+   CSS was wrapped in @media (hover: hover) to avoid "sticky hover" on touch
+   devices. Redefine the default hover: variant so plain hover: utilities
+   keep that same guarantee everywhere, instead of repeating the media query. */
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+}
+
+@theme {
+  --color-neutral-950: #0E1116;
+  --color-neutral-900: #161B22;
+  --color-neutral-800: #202730;
+  --color-neutral-700: #323B47;
+  --color-neutral-600: #4A5566;
+  --color-neutral-500: #8894A3;
+  --color-neutral-400: #A0ABB8;
+  --color-neutral-300: #B7C1CC;
+  --color-neutral-200: #DAE1E8;
+  --color-neutral-100: #E8EDF1;
+  --color-neutral-50: #F5F8FA;
+
+  --color-accent: #409CFF;
+  --color-accent-strong: #0A84FF;
+
+  --color-success: #A8C956;
+  --color-success-strong: #7E9C3B;
+
+  --color-danger: #C24F4F;
+  --color-danger-strong: #973939;
+
+  --color-partial: #D79A55;
+  --color-partial-strong: #B87D3B;
+
+  /* Tinted backgrounds derived from the colors above, centralized as first-class
+     palette entries so they aren't recomputed inline with color-mix() at every
+     call site (bg-accent-subtle, bg-accent-muted, ...). */
+  --color-accent-subtle: color-mix(in srgb, var(--color-accent) 14%, transparent);
+  --color-accent-muted: color-mix(in srgb, var(--color-accent) 30%, transparent);
+
+  --color-success-subtle: color-mix(in srgb, var(--color-success) 18%, transparent);
+  --color-success-muted: color-mix(in srgb, var(--color-success) 30%, transparent);
+
+  --color-danger-subtle: color-mix(in srgb, var(--color-danger) 16%, transparent);
+  --color-danger-muted: color-mix(in srgb, var(--color-danger) 30%, transparent);
+
+  --color-partial-subtle: color-mix(in srgb, var(--color-partial) 18%, transparent);
+  --color-partial-muted: color-mix(in srgb, var(--color-partial) 30%, transparent);
+
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+  --spacing-7: 40px;
+  --spacing-8: 48px;
+  --spacing-9: 64px;
+  --spacing-10: 80px;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.5rem;
+  --text-3xl: 3.25rem;
+
+  --leading-tight: 1.1;
+  --leading-normal: 1.5;
+
+  --font-display: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+}
+
+@utility border-hairline {
+  border: 1px solid #323b4750;
+}
+
 :root {
-  --neutral-950: #0E1116;
-  --neutral-900: #161B22;
-  --neutral-800: #202730;
-  --neutral-700: #323B47;
-  --neutral-600: #4A5566;
-  --neutral-500: #8894A3;
-  --neutral-300: #B7C1CC;
-  --neutral-200: #DAE1E8;
-  --neutral-50: #F5F8FA;
-
-  --accent: #409CFF;
-  --accent-strong: #0A84FF;
-
-  --success: #A8C956;
-  --success-strong: #7E9C3B;
-
-  --danger: #C24F4F;
-  --danger-strong: #973939;
-
-  --warning: #6B7480;
-  --warning-strong: #4A5560;
-
-  --partial: #D79A55;
-  --partial-strong: #B87D3B;
-
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 2.5rem;
-  --space-8: 3rem;
-  --space-9: 4rem;
-  --space-10: 5rem;
-
-  --radius-sm: 0.375rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1.25rem;
-  --radius-full: 999px;
-
-  --size-icon-sm: 2rem;
-  --size-icon-md: 2.25rem;
-  --size-icon-lg: 2.5rem;
-  --size-icon-xl: 2.75rem;
-
-  --font-family-display: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-mono: 'IBM Plex Mono', 'SF Mono', monospace;
-
-  --font-size-xs: 0.75rem;
-  --font-size-sm: 0.875rem;
-  --font-size-md: 1rem;
-  --font-size-lg: 1.25rem;
-  --font-size-xl: 1.75rem;
-  --font-size-2xl: 2.5rem;
-  --font-size-3xl: 3.25rem;
-
-  --line-height-tight: 1.1;
-  --line-height-normal: 1.5;
+  --size-icon-sm: 32px;
+  --size-icon-md: 36px;
+  --size-icon-lg: 40px;
+  --size-icon-xl: 44px;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
@@ -86,7 +119,7 @@
 html {
   color-scheme: dark;
   height: 100%;
-  background: var(--neutral-950);
+  background: var(--color-neutral-950);
   overscroll-behavior: none;
 }
 
@@ -95,11 +128,11 @@ body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
-  font-family: var(--font-family-body);
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-normal);
-  color: var(--neutral-50);
-  background: var(--neutral-950);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: var(--leading-normal);
+  color: var(--color-neutral-50);
+  background: var(--color-neutral-950);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -110,8 +143,8 @@ body {
 h1,
 h2,
 h3 {
-  font-family: var(--font-family-display);
-  line-height: var(--line-height-tight);
+  font-family: var(--font-display);
+  line-height: var(--leading-tight);
   margin: 0;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -119,7 +152,7 @@ h3 {
 
 p {
   margin: 0;
-  color: var(--neutral-300);
+  color: var(--color-neutral-300);
 }
 
 ul,
@@ -134,7 +167,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 

@@ -5,7 +5,6 @@ import { PasswordField } from '../components/PasswordField';
 import { confirmReset, firebaseErrorCode, verifyResetCode } from '../services/auth';
 import { confirmPasswordError, newPasswordError } from '../validation';
 import { PASSWORD_HINT } from '../config';
-import './Auth.css';
 
 interface ResetPasswordProps {
   oobCode: string;
@@ -70,9 +69,9 @@ export function ResetPassword({ oobCode }: ResetPasswordProps) {
   }
 
   return (
-    <section className="view auth-view" aria-labelledby="reset-title">
-      <div className="auth-content">
-        <div className="card auth-card">
+    <section className="view items-center" aria-labelledby="reset-title">
+      <div className="flex-1 w-full flex flex-col items-center justify-center">
+        <div className="card w-full max-w-[360px] flex flex-col gap-5">
           <h2 className="view-title" id="reset-title">Reimposta password</h2>
 
           { stage === 'verifying' && (
@@ -90,7 +89,7 @@ export function ResetPassword({ oobCode }: ResetPasswordProps) {
 
           { stage === 'ready' && (
             <form className="field-group" noValidate onSubmit={ handleSubmit }>
-              <p className="auth-sent-desc">Stai reimpostando la password per <strong>{ email }</strong>.</p>
+              <p className="text-sm text-neutral-300 [overflow-wrap:break-word]">Stai reimpostando la password per <strong>{ email }</strong>.</p>
 
               <PasswordField
                 id="reset-password"
@@ -127,11 +126,14 @@ export function ResetPassword({ oobCode }: ResetPasswordProps) {
           ) }
 
           { stage === 'success' && (
-            <div className="auth-sent">
-              <span className="auth-sent-icon" aria-hidden="true">
+            <div className="flex flex-col gap-4 text-left">
+              <span
+                className="flex items-center justify-center w-[var(--size-icon-xl)] h-[var(--size-icon-xl)] shrink-0 border-hairline rounded-full bg-transparent text-accent"
+                aria-hidden="true"
+              >
                 <HugeiconsIcon icon={ Tick02Icon } size={ 20 } strokeWidth={ 1.5 } />
               </span>
-              <p className="auth-sent-desc">Password aggiornata. Ora puoi accedere con la nuova password.</p>
+              <p className="text-sm text-neutral-300 [overflow-wrap:break-word]">Password aggiornata. Ora puoi accedere con la nuova password.</p>
               <button className="icon-cta cta-primary" type="button" onClick={ goToApp }>Torna all'app</button>
             </div>
           ) }

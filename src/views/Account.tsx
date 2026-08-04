@@ -10,7 +10,6 @@ import { firebaseErrorCode } from '../services/auth';
 import { formatShortDate, toDateKey } from '../calendar';
 import { bookingPrice, formatPrice } from '../pricing';
 import type { Account as AccountData, AccountBooking } from '../types';
-import './Account.css';
 
 interface AccountProps {
   account: AccountData;
@@ -139,7 +138,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
   }
 
   return (
-    <section className="view account" aria-labelledby="account-title">
+    <section className="view" aria-labelledby="account-title">
       <div className="view-header">
         <div className="view-header-row">
           <BackButton onClick={ onBack } />
@@ -149,35 +148,43 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
       </div>
 
       <div className="view-scroll">
-        <div className="card account-profile">
-          <span className="account-avatar" aria-hidden="true">{ initials }</span>
-          <div className="account-identity">
-            <span className="account-name">{ firstName } <span className="text-accent">{ lastName }</span></span>
+        <div className="card flex items-center gap-3 p-4 shrink-0">
+          <span
+            className="flex items-center justify-center w-12 h-12 shrink-0 border-hairline rounded-full bg-[color-mix(in_srgb,var(--color-accent)_18%,transparent)] text-accent font-mono text-md font-medium"
+            aria-hidden="true"
+          >
+            { initials }
+          </span>
+          <div className="flex flex-col gap-1 min-w-0">
+            <span className="font-semibold text-neutral-50 overflow-hidden text-ellipsis whitespace-nowrap">{ firstName } <span className="text-accent">{ lastName }</span></span>
             <span className="section-label">Membro dal { memberSince }</span>
           </div>
         </div>
 
-        <div className="card account-contact">
-          <span className="info-icon account-contact-icon">
+        <div className="card flex items-center gap-3 py-3 px-4 shrink-0">
+          <span className="info-icon w-[var(--size-icon-sm)] h-[var(--size-icon-sm)]">
             <HugeiconsIcon icon={ CallIcon } size={ 16 } strokeWidth={ 1.5 } />
           </span>
-          <span className="section-label">Telefono</span>
-          <span className="account-mono">{ phone }</span>
+          <span className="section-label flex-1">Telefono</span>
+          <span className="font-mono text-sm text-neutral-50 whitespace-nowrap">{ phone }</span>
         </div>
 
-        <ul className="card account-stats">
-          { stats.map((stat) => (
-            <li className="account-stat" key={ stat.label }>
-              <span className="info-icon account-stat-icon">
+        <ul className="card flex flex-col py-1 px-4 shrink-0">
+          { stats.map((stat, index) => (
+            <li
+              className={ `flex items-center gap-3 py-3${index > 0 ? ' border-t border-t-[#323b4750]' : ''}` }
+              key={ stat.label }
+            >
+              <span className="info-icon w-[var(--size-icon-sm)] h-[var(--size-icon-sm)]">
                 <HugeiconsIcon icon={ stat.icon } size={ 16 } strokeWidth={ 1.5 } />
               </span>
-              <span className="section-label account-stat-label">{ stat.label }</span>
-              <span className="account-stat-value">{ stat.value }</span>
+              <span className="section-label flex-1 max-[359px]:text-[0.625rem] max-[359px]:tracking-normal">{ stat.label }</span>
+              <span className="font-mono text-sm font-semibold text-neutral-50 whitespace-nowrap max-[359px]:text-xs">{ stat.value }</span>
             </li>
           )) }
         </ul>
 
-        <span className="section-label account-section-title">Le tue prenotazioni</span>
+        <span className="section-label mt-2">Le tue prenotazioni</span>
 
         { bookingsError ? (
           <p className="form-error" role="alert">Impossibile caricare le prenotazioni. Riprova più tardi.</p>
@@ -187,24 +194,24 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
             <span className="section-label">Caricamento…</span>
           </div>
         ) : bookings.length === 0 ? (
-          <div className="account-empty-state">
-            <p className="account-empty">Ancora nessuna prenotazione qui, prenota ora.</p>
-            <button className="icon-cta cta-primary" type="button" onClick={ onBook }>
+          <div className="flex flex-col items-center gap-3">
+            <p className="text-sm text-neutral-500 max-[359px]:text-xs">Ancora nessuna prenotazione qui, prenota ora.</p>
+            <button className="icon-cta cta-primary self-stretch" type="button" onClick={ onBook }>
               <HugeiconsIcon icon={ TennisBallIcon } size={ 16 } strokeWidth={ 1.5 } className="icon-primary" />
               Prenota
             </button>
           </div>
         ) : (
-          <ul className="account-bookings">
+          <ul className="flex flex-col gap-2">
             { bookings.map((booking) => (
-              <li className="card account-booking" key={ booking.id }>
-                <span className="account-booking-date">{ formatShortDate(booking.date) }</span>
-                <span className="account-mono">{ booking.time } - { booking.durationHours }h</span>
-                <span className="account-booking-price">{ formatPrice(bookingPrice(booking.durationHours)) }</span>
+              <li className="card flex items-center justify-between gap-3 py-3 px-4 max-[359px]:p-3" key={ booking.id }>
+                <span className="text-sm font-semibold text-neutral-50 whitespace-nowrap capitalize">{ formatShortDate(booking.date) }</span>
+                <span className="font-mono text-sm text-neutral-50 whitespace-nowrap">{ booking.time } - { booking.durationHours }h</span>
+                <span className="font-mono text-sm text-accent whitespace-nowrap">{ formatPrice(bookingPrice(booking.durationHours)) }</span>
                 { booking.date >= todayKey && (
                   <button
                     type="button"
-                    className="account-booking-cancel"
+                    className="flex items-center justify-center shrink-0 p-0 border-0 bg-transparent text-neutral-500 cursor-pointer hover:text-danger"
                     aria-label="Annulla prenotazione"
                     onClick={ () => setCancelTarget(booking) }
                   >
@@ -216,7 +223,7 @@ export function Account({ account, bookingsLoading, bookingsError, onBack, onBoo
           </ul>
         ) }
 
-        <button type="button" className="btn-ghost btn-ghost-danger account-delete-link" onClick={ openConfirm }>
+        <button type="button" className="btn-ghost btn-ghost-danger self-center mt-2" onClick={ openConfirm }>
           Elimina account
         </button>
       </div>

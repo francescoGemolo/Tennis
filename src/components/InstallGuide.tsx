@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { AiPhone01Icon, AppleIcon, AndroidIcon } from '@hugeicons/core-free-icons';
-import './InstallGuide.css';
 
 const STEPS = [
   { icon: AppleIcon, os: 'iOS', text: 'Condividi › Aggiungi a Home' },
@@ -49,26 +48,32 @@ export function InstallGuide() {
 
       { open && (
         <div
-          className={ `install-overlay${closing ? ' install-overlay--closing' : ''}` }
+          className={ `modal-overlay${closing ? ' modal-overlay--closing' : ''}` }
           role="dialog"
           aria-modal="true"
           aria-labelledby="install-title"
           onClick={ close }
           onAnimationEnd={ () => { if (closing) { setOpen(false); setClosing(false); } } }
         >
-          <div className={ `install-panel${closing ? ' install-panel--closing' : ''}` } onClick={ (e) => e.stopPropagation() }>
-            <h2 className="install-title" id="install-title">Installa l'app</h2>
+          <div
+            className={ `modal-panel w-full max-w-[20rem] p-5 text-center${closing ? ' modal-panel--closing' : ''}` }
+            onClick={ (e) => e.stopPropagation() }
+          >
+            <h2 className="text-md" id="install-title">Installa l'app</h2>
 
-            <ul className="install-steps">
+            <ul className="flex flex-col gap-2">
               { STEPS.map((step) => (
-                <li className="install-step" key={ step.os }>
-                  <HugeiconsIcon icon={ step.icon } size={ 16 } strokeWidth={ 1.5 } className="install-step-icon" />
+                <li
+                  className="flex items-center gap-3 p-3 border-hairline rounded-md bg-neutral-800 text-neutral-200 text-sm whitespace-nowrap"
+                  key={ step.os }
+                >
+                  <HugeiconsIcon icon={ step.icon } size={ 16 } strokeWidth={ 1.5 } className="shrink-0 text-accent" />
                   { step.text }
                 </li>
               )) }
             </ul>
 
-            <button type="button" className="icon-cta cta-primary install-close" onClick={ close }>
+            <button type="button" className="icon-cta cta-primary w-full py-2 text-sm" onClick={ close }>
               Ho capito
             </button>
           </div>

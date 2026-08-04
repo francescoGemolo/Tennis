@@ -1,6 +1,5 @@
 import { HugeiconsIcon } from '@hugeicons/react';
 import { TennisBallIcon } from '@hugeicons/core-free-icons';
-import './TennisBallLoader.css';
 
 type TennisBallLoaderSize = 'sm' | 'md' | 'lg';
 
@@ -16,7 +15,10 @@ interface TennisBallLoaderProps {
 
 export function TennisBallLoader({ size = 'md' }: TennisBallLoaderProps) {
   return (
-    <span className="tennis-ball-loader" aria-hidden="true">
+    <span
+      className="inline-flex items-center justify-center text-accent animate-[spin_900ms_linear_infinite] drop-shadow-[0_4px_8px_color-mix(in_srgb,var(--color-accent)_45%,transparent)]"
+      aria-hidden="true"
+    >
       <HugeiconsIcon icon={ TennisBallIcon } size={ ICON_SIZE_PX[size] } strokeWidth={ 1.25 } />
     </span>
   );

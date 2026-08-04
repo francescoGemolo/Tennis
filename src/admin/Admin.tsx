@@ -33,7 +33,7 @@ export function Admin() {
   if (user && isAdmin !== true) return null;
 
   return (
-    <main className="admin-app">
+    <main className="max-w-[900px] mx-auto min-h-dvh flex flex-col">
       { user ? <AdminDashboard /> : <AdminLogin /> }
     </main>
   );

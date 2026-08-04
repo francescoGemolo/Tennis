@@ -128,7 +128,7 @@ function App() {
         title: 'Prenotazione confermata',
         details: (
           <>
-            { formatShortDate(dateKey) } · <span className="confirmation-mono">{ selectedTime }</span> · <span className="confirmation-mono">{ selectedDuration }h</span>
+            { formatShortDate(dateKey) } · <span className="font-mono">{ selectedTime }</span> · <span className="font-mono">{ selectedDuration }h</span>
           </>
         ),
       });
@@ -155,14 +155,14 @@ function App() {
         title: 'Prenotazione annullata',
         details: (
           <>
-            { formatShortDate(booking.date) } · <span className="confirmation-mono">{ booking.time }</span>
+            { formatShortDate(booking.date) } · <span className="font-mono">{ booking.time }</span>
           </>
         ),
       });
     };
 
     content = (
-      <main className="app">
+      <main className="app max-w-[480px] md:max-w-[560px] mx-auto h-full">
         { view === 'welcome' && (
           <Hero
             onBook={ () => setView('booking') }

@@ -1,75 +1,23 @@
-.hero {
-  align-items: center;
-  text-align: center;
-}
-
-.hero .view-utilities .btn-round:last-child {
-  margin-left: auto;
-}
-
-.hero-main {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-6);
-}
-
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.hero-content h1 {
-  font-family: var(--font-family-display);
-  font-size: clamp(1.5rem, 8vw, 2.25rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-}
-
-.hero-cta {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-3);
-  flex-shrink: 0;
-}
-
-.hero-cta .icon-cta {
-  flex: 1;
-  min-width: 8rem;
-}
-
-.site-signature {
-  position: absolute;
-  left: 50%;
-  bottom: calc(var(--safe-bottom) + 0.25rem);
-  transform: translateX(-50%);
-  font-size: 0.55rem;
-  letter-spacing: 0.02em;
-  color: var(--neutral-500);
-  opacity: 0.55;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-  transition: opacity var(--transition-normal);
-}
-
-@media (orientation: landscape) and (max-height: 520px) {
+@layer components {
   .hero-main {
-    gap: var(--space-4);
+    gap: var(--spacing-6);
   }
 
   .hero-content {
-    gap: var(--space-2);
+    gap: var(--spacing-3);
   }
 
-  .hero-content p {
-    font-size: var(--font-size-sm);
+  @media (orientation: landscape) and (max-height: 520px) {
+    .hero-main {
+      gap: var(--spacing-4);
+    }
+
+    .hero-content {
+      gap: var(--spacing-2);
+    }
+
+    .hero-content p {
+      font-size: var(--text-sm);
+    }
   }
 }

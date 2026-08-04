@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState, type ReactNode } from 'react';
-import './ConfirmDialog.css';
 
 interface ConfirmDialogProps {
   title: string;
@@ -47,28 +46,36 @@ export function ConfirmDialog({
 
   return (
     <div
-      className={ `confirm-overlay${closing ? ' confirm-overlay--closing' : ''}` }
+      className={ `modal-overlay${closing ? ' modal-overlay--closing' : ''}` }
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-dialog-title"
       onClick={ handleCancel }
       onAnimationEnd={ () => closing && onCancel() }
     >
-      <div className={ `confirm-panel${closing ? ' confirm-panel--closing' : ''}` } onClick={ (e) => e.stopPropagation() }>
-        <h2 className="confirm-title" id="confirm-dialog-title">{ title }</h2>
-        <div className="confirm-message">{ message }</div>
+      <div
+        className={ `modal-panel w-full max-w-[22rem] px-4 py-5${closing ? ' modal-panel--closing' : ''}` }
+        onClick={ (e) => e.stopPropagation() }
+      >
+        <h2 className="text-md text-center" id="confirm-dialog-title">{ title }</h2>
+        <div className="text-sm text-neutral-300 text-center">{ message }</div>
 
         { children }
 
         { error && <p className="form-error" role="alert">{ error }</p> }
 
-        <div className="confirm-actions">
-          <button type="button" className="btn-ghost" onClick={ handleCancel } disabled={ isSubmitting }>
+        <div className="flex items-center justify-center gap-2 flex-wrap">
+          <button
+            type="button"
+            className="btn-ghost flex-none whitespace-nowrap py-2 px-3 text-sm"
+            onClick={ handleCancel }
+            disabled={ isSubmitting }
+          >
             { cancelLabel }
           </button>
           <button
             type="button"
-            className={ `icon-cta ${danger ? 'cta-danger' : 'cta-primary'}` }
+            className={ `icon-cta ${danger ? 'cta-danger' : 'cta-primary'} flex-none whitespace-nowrap py-2 px-4 text-sm` }
             onClick={ onConfirm }
             disabled={ isSubmitting }
           >

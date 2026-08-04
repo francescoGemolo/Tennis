@@ -38,10 +38,13 @@ export function AdminLogin() {
   }
 
   return (
-    <section className="view admin-login" aria-labelledby="admin-login-title">
+    <section
+      className="view h-auto min-h-dvh overflow-visible justify-center items-center gap-5"
+      aria-labelledby="admin-login-title"
+    >
       <h2 className="view-title" id="admin-login-title">Accesso gestione</h2>
 
-      <form className="card field-group" noValidate onSubmit={ handleSubmit }>
+      <form className="card field-group w-full max-w-[360px]" noValidate onSubmit={ handleSubmit }>
         <div className={ `field${errors.email ? ' field--invalid' : ''}` }>
           <label htmlFor="admin-email">Email</label>
           <input
